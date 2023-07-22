@@ -5,6 +5,7 @@ module.exports = {
   reactStrictMode: false,
   experimental: {
     esmExternals: false,
+    outputStandalone: true,
     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
   },
   webpack: config => {

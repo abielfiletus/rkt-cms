@@ -1,9 +1,6 @@
 // ** React Imports
 import { ReactNode } from 'react'
 
-// ** Next Import
-import Link from 'next/link'
-
 // ** MUI Components
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
@@ -49,7 +46,7 @@ const Error401 = () => {
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>
             Anda tidak memiliki izin! 🔐
           </Typography>
-          <Typography variant='body2'>Anda tidak memiliki inzi untuk membuka halaman ini. Silahkan hubungi Admin</Typography>
+          <Typography variant='body2'>Anda tidak memiliki izin untuk membuka halaman ini. Silahkan hubungi Admin</Typography>
         </BoxWrapper>
         <Img height='487' alt='error-illustration' src='/images/pages/401.png' />
         <Button component='a' variant='contained' sx={{ px: 5.5 }} onClick={() => router.back()}>

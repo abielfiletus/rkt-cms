@@ -3,4 +3,5 @@ export interface IModalProp {
   id?: number
   type: 'detail' | 'tambah' | 'ubah'
   handleClose: (hasData: boolean) => void
+  additional?: any
 }

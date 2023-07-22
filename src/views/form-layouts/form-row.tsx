@@ -10,12 +10,15 @@ interface IProps {
   label: string
   content: JSX.Element
   contentSx?: SxProps<Record<string, any>>
+  boxSx?: SxProps<Record<string, any>>
+  boxGrid?: number
+  contentGrid?: number
   errors: Record<string, any>
   formikField: string
 }
 
 export default function FormRow(props: IProps) {
-  const { id, label, content, contentSx, errors, formikField } = props
+  const { id, label, content, contentSx, errors, formikField, boxSx, boxGrid, contentGrid } = props
 
   const theme = useTheme()
 
@@ -26,15 +29,15 @@ export default function FormRow(props: IProps) {
   })
 
   return (
-    <Grid marginTop={3} container>
-      <Grid sm={4} item>
-        <Box marginTop={2} fontWeight={500} id={id}>
+    <Grid marginTop={3} columnSpacing={2} alignItems={'end'} container>
+      <Grid xs={boxGrid || 4} item>
+        <Box marginTop={2} fontWeight={500} id={id} sx={boxSx}>
           {label} <span style={{ color: theme.palette.error.main }}>*</span>
         </Box>
       </Grid>
-      <Grid sx={contentSx} sm={8} item>
+      <Grid sx={contentSx} xs={contentGrid || 8} item>
         {content}
-        <ErrorMessage fontSize={13} message={typeof errMessage === 'object' ? null : errMessage} />
+        <ErrorMessage sx={contentSx} fontSize={13} message={typeof errMessage === 'object' ? null : errMessage} />
       </Grid>
     </Grid>
   )

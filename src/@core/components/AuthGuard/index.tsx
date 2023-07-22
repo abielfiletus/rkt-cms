@@ -23,7 +23,14 @@ const AuthGuard = (props: AuthGuardProps) => {
         return
       }
 
-      if (!router.pathname.includes('login') && auth.user === null && !window.localStorage.getItem('access')) {
+      if (window.localStorage.getItem('access') && router.query.returnUrl) {
+        router.replace(router.query.returnUrl as string)
+      }
+
+      if (!router.pathname.includes('login') && !window.localStorage.getItem('access')) {
+        auth.setUser(null)
+        auth.setAcl(null)
+
         if (router.asPath !== '/') {
           router.replace({
             pathname: '/login',
@@ -37,6 +44,10 @@ const AuthGuard = (props: AuthGuardProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router.route]
   )
+
+  if (window.localStorage.getItem('access') && router.query.returnUrl) {
+    router.replace(router.query.returnUrl as string)
+  }
 
   if (!router.pathname.includes('login') && auth.loading) {
     return fallback

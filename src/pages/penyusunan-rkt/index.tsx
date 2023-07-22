@@ -2,19 +2,22 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import { MicrosoftExcel, PlusCircleOutline } from 'mdi-material-ui'
+import { DeleteOutline, FileEyeOutline, MicrosoftExcel, PencilOutline, PlusCircleOutline } from 'mdi-material-ui'
 import { OutlinedInput, Select, useTheme } from '@mui/material'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import LoaderPage from '../../views/loader'
 import { apiGet } from '../../util/api-fetch'
-import { ReverseVerificationStatus, VerificationStatus, VerificationStatusColor } from '../../configs/enum'
+import { ConfigKey, ReverseVerificationStatus, VerificationStatus, VerificationStatusColor } from '../../configs/enum'
 import CustomTable from '../../views/tables/CustomTable'
 import DeleteModal from '../../@core/components/modal/delete'
 import PenyusunanRKTModal from '../../@core/components/penyusunan-rkt/modal'
 import LoaderModal from '../../@core/components/modal/loader'
 import PenyusunanRKTVerification from '../../@core/components/penyusunan-rkt/verification'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import IconButton from '@mui/material/IconButton'
+import { useAuth } from '../../@core/hooks/useAuth'
 
 const PenyusunanRktPage = () => {
   // state
@@ -33,13 +36,18 @@ const PenyusunanRktPage = () => {
   const [submitFilter, setSubmitFilter] = useState<Array<string>>([])
   const [yearFilter, setYearFilter] = useState<Array<string>>([])
   const [id, setId] = useState<number>()
+  const [configOpen, setConfigOpen] = useState<boolean>(false)
   const baseUrl = '/penyusunan-rkt'
 
   useEffect(() => {
     apiGet(baseUrl + '/filter').then(res => {
       setYearFilter(res?.data?.tahun)
       setSubmitFilter(res?.data?.submit_user)
-      setIsLoading(false)
+
+      apiGet('/config/by-key/' + ConfigKey.RKT).then(config => {
+        setConfigOpen(config?.data?.status)
+        setIsLoading(false)
+      })
     })
   }, [])
 
@@ -61,8 +69,11 @@ const PenyusunanRktPage = () => {
   // HTML ref
   const nameRef = useRef<HTMLInputElement>()
 
+  const auth = useAuth()
   const theme = useTheme()
   const ability = useContext(AbilityContext)
+  const isTabletAndBelow = useMediaQuery(theme.breakpoints.down('lg'))
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   // handler
   const handleDetailClick = (data: Record<string, any>) => {
@@ -106,7 +117,7 @@ const PenyusunanRktPage = () => {
                   <OutlinedInput
                     placeholder={'Nama RKT...'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, minWidth: 250 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, minWidth: 250 }}
                     onKeyUp={() => {
                       if (idleTimer) clearTimeout(idleTimer)
 
@@ -121,16 +132,18 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.tahun || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, tahun: value })
                       else setFilterDT({ ...filterDT, tahun: '' })
                     }}
                   >
-                    <MenuItem value='0'>Tahun RKT</MenuItem>
+                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      Tahun RKT
+                    </MenuItem>
                     {yearFilter.map(item => (
-                      <MenuItem key={item} value={item}>
+                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                         {item}
                       </MenuItem>
                     ))}
@@ -140,16 +153,18 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.submit_name || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, submit_name: value })
                       else setFilterDT({ ...filterDT, submit_name: '' })
                     }}
                   >
-                    <MenuItem value='0'>Pengusul</MenuItem>
+                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      Pengusul
+                    </MenuItem>
                     {submitFilter.map(item => (
-                      <MenuItem key={item} value={item}>
+                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                         {item}
                       </MenuItem>
                     ))}
@@ -159,18 +174,24 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.status || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, status: value })
                       else setFilterDT({ ...filterDT, status: '' })
                     }}
                   >
-                    <MenuItem value='0'>Status</MenuItem>
+                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      Status
+                    </MenuItem>
                     {Object.keys(VerificationStatus).map(key => {
                       if (VerificationStatus[key] !== '0') {
                         return (
-                          <MenuItem key={key} value={VerificationStatus[key]}>
+                          <MenuItem
+                            key={key}
+                            value={VerificationStatus[key]}
+                            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                          >
                             {key}
                           </MenuItem>
                         )
@@ -198,10 +219,10 @@ const PenyusunanRktPage = () => {
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <MicrosoftExcel sx={{ color: 'white' }} />
+                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
                             Download Excel
                           </Typography>
                         </Grid>
@@ -210,7 +231,7 @@ const PenyusunanRktPage = () => {
                   )}
                 </Grid>
                 <Grid item>
-                  {ability.can('create', 'penyusunan-rkt') && (
+                  {ability.can('create', 'penyusunan-rkt') && configOpen && (
                     <Button
                       sx={{
                         backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 150%)`,
@@ -225,10 +246,10 @@ const PenyusunanRktPage = () => {
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <PlusCircleOutline sx={{ color: 'white' }} />
+                          <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
                             Tambah RKT
                           </Typography>
                         </Grid>
@@ -242,14 +263,23 @@ const PenyusunanRktPage = () => {
           <Box mt={7}>
             <CustomTable
               columns={[
-                { id: 'name', label: 'id', labelFromDataField: 'id', minWidth: 120, noWrap: true, maxWidth: 200 },
+                {
+                  id: 'name',
+                  label: 'id',
+                  labelFromDataField: 'id',
+                  minWidth: 120,
+                  noWrap: true,
+                  maxWidth: 200,
+                  fontSize: isMobile ? 10 : 13
+                },
                 {
                   id: 'usulan_anggaran',
                   label: 'Usulan Anggaran',
                   align: 'center',
                   transform: value =>
                     (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
-                  minWidth: 170
+                  minWidth: 150,
+                  fontSize: isMobile ? 10 : 13
                 },
                 {
                   id: 'user_submit.name',
@@ -257,30 +287,35 @@ const PenyusunanRktPage = () => {
                   minWidth: 100,
                   maxWidth: 200,
                   align: 'center',
-                  noWrap: true
+                  noWrap: true,
+                  fontSize: isMobile ? 10 : 13
                 },
-                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center' },
+                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center', fontSize: isMobile ? 10 : 13 },
                 {
                   id: 'status',
                   label: 'Status',
                   transform: (value, data) => {
                     if (ReverseVerificationStatus[value as string]) {
+                      if (value === VerificationStatus.Revisi && data.verification_role_target === auth.user?.role?.id) {
+                        return ReverseVerificationStatus[value as string]
+                      }
+
                       return ReverseVerificationStatus[value as string] + ' ' + (data.verification_role?.name || '')
                     }
                   },
                   isBadge: true,
                   badgeColor: value => VerificationStatusColor[value as string],
-                  badgeOnClick: ability.can('approve', 'penyusunan-rkt') ? handleApproveClick : undefined
+                  badgeOnClick:
+                    ability.can('approve', 'penyusunan-rkt') || ability.can('read', 'penyusunan-rkt')
+                      ? handleApproveClick
+                      : undefined,
+                  fontSize: isMobile ? 10 : isTabletAndBelow ? 11 : 13,
+                  minWidth: 150
                 },
                 {
                   id: 'action',
                   label: 'Aksi',
-                  content: {
-                    edit: ability.can('update', 'penyusunan-rkt'),
-                    delete: ability.can('delete', 'penyusunan-rkt'),
-                    detail: ability.can('read', 'penyusunan-rkt')
-                  },
-                  minWidth: 150
+                  minWidth: isMobile ? 150 : undefined
                 }
               ]}
               url={'penyusunan-rkt'}
@@ -292,6 +327,48 @@ const PenyusunanRktPage = () => {
               handleDeleteClick={handleDeleteClick}
               handleEditClick={handleEditClick}
               handleDetailClick={handleDetailClick}
+              paginationFontSize={isMobile ? 12 : undefined}
+              customIcon={data => {
+                console.log({
+                  ability: ability.can('update', 'penyusunan-rkt'),
+                  statusRevision: data.status === VerificationStatus.Revisi,
+                  roleTarget: data.verification_role_target === auth.user?.role?.id
+                })
+
+                return (
+                  <Grid container>
+                    {ability.can('read', 'penyusunan-rkt') && (
+                      <Grid item>
+                        <IconButton onClick={() => handleDetailClick(data)}>
+                          <FileEyeOutline color={'success'} fontSize={isMobile ? 'small' : 'inherit'} />
+                        </IconButton>
+                      </Grid>
+                    )}
+                    {(auth.user?.role?.id === 1 ||
+                      (ability.can('update', 'penyusunan-rkt') &&
+                        data.status === VerificationStatus.Revisi &&
+                        data.verification_role_target === auth.user?.role?.id)) &&
+                      data.status !== VerificationStatus.Selesai && (
+                        <Grid item>
+                          <IconButton onClick={() => handleEditClick(data)}>
+                            <PencilOutline color={'primary'} fontSize={isMobile ? 'small' : 'inherit'} />
+                          </IconButton>
+                        </Grid>
+                      )}
+                    {(auth.user?.role?.id === 1 ||
+                      (ability.can('delete', 'penyusunan-rkt') &&
+                        data.status === VerificationStatus.Revisi &&
+                        data.verification_role_target === auth.user?.role?.id)) &&
+                      data.status !== VerificationStatus.Selesai && (
+                        <Grid item>
+                          <IconButton onClick={() => handleDeleteClick(data)}>
+                            <DeleteOutline color={'error'} fontSize={isMobile ? 'small' : 'inherit'} />
+                          </IconButton>
+                        </Grid>
+                      )}
+                  </Grid>
+                )
+              }}
             />
           </Box>
           {showDetail && <PenyusunanRKTModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

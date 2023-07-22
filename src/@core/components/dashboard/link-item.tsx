@@ -31,13 +31,19 @@ export default function LinkItem(props: IProps) {
       container
     >
       <Grid item>
-        <ChartPie sx={{ color: active ? theme.palette.primary.main : theme.palette.grey['500'] }} />
+        <ChartPie
+          sx={{
+            color: active ? theme.palette.primary.main : theme.palette.grey['500'],
+            [theme.breakpoints.only('xs')]: { fontSize: 12 }
+          }}
+        />
       </Grid>
       <Grid
         paddingRight={3}
         marginTop={1}
         color={active ? theme.palette.primary.main : theme.palette.grey['500']}
         fontWeight={500}
+        sx={{ [theme.breakpoints.only('xs')]: { fontSize: 12 } }}
         item
       >
         {text}

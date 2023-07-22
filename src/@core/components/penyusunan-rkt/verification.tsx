@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useContext, useMemo, useState } from 'react'
 import Button from '@mui/material/Button'
 import VerificationModal from './verification-modal'
 import LoaderModal from '../modal/loader'
@@ -17,9 +17,11 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import dayjs from 'dayjs'
 import Divider from '@mui/material/Divider'
-import { ReverseVerificationStatus, VerificationStatusColor } from '../../../configs/enum'
+import { ReverseVerificationStatus, VerificationStatus, VerificationStatusColor } from '../../../configs/enum'
 import IconButton from '@mui/material/IconButton'
 import { Close } from 'mdi-material-ui'
+import { AbilityContext } from '../../layouts/components/acl/Can'
+import { useAuth } from '../../hooks/useAuth'
 
 interface IProps {
   data: Record<string, any>
@@ -35,6 +37,8 @@ export default function PenyusunanRKTVerification(props: IProps) {
   const [type, setType] = useState<'revisi' | 'tolak' | 'setujui'>('revisi')
 
   const theme = useTheme()
+  const ability = useContext(AbilityContext)
+  const auth = useAuth()
 
   const handleRevision = () => {
     setShowModal(true)
@@ -241,29 +245,33 @@ export default function PenyusunanRKTVerification(props: IProps) {
                 </Box>
               </Box>
             )}
-            <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
-              <Grid item>
-                <Button type={'button'} color={'warning'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleRevision}>
-                  <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
-                    Revisi
-                  </Typography>
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
-                  <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
-                    Tolak
-                  </Typography>
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
-                  <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
-                    Setujui
-                  </Typography>
-                </Button>
-              </Grid>
-            </Grid>
+            {data.status === VerificationStatus['Butuh Persetujuan'] &&
+              ability.can('approve', 'penyusunan-rkt') &&
+              data.verification_role_target === auth.user?.role?.id && (
+                <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
+                  <Grid item>
+                    <Button type={'button'} color={'warning'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleRevision}>
+                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                        Revisi
+                      </Typography>
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
+                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                        Tolak
+                      </Typography>
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
+                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                        Setujui
+                      </Typography>
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
           </DialogContent>
         </Dialog>
       )}

@@ -29,7 +29,7 @@ export default function CustomAutocomplete(props: IProps) {
         setLoading(true)
         const res = await apiGet(url, { [apiFieldKey]: req.input, limit: 2 })
 
-        setOptions(res.data?.data)
+        setOptions(res?.data?.data)
         setLoading(false)
       }, 1000),
     []

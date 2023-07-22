@@ -2,7 +2,8 @@
 import { ReactNode } from 'react'
 
 // ** MUI Imports
-import { SvgIconProps } from '@mui/material'
+import { SvgIconProps, useTheme } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface UserIconProps {
   iconProps?: SvgIconProps
@@ -13,15 +14,18 @@ const UserIcon = (props: UserIconProps) => {
   // ** Props
   const { icon, iconProps } = props
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
+
   const IconTag = icon
 
-  const styles = {
-    color: 'red',
-    fontSize: '2rem'
-  }
+  // const styles = {
+  //   color: 'red',
+  //   fontSize: '2rem'
+  // }
 
   // @ts-ignore
-  return <IconTag {...iconProps} style={{ ...styles }} />
+  return <IconTag {...iconProps} fontSize={isMobile ? 'small' : undefined} />
 }
 
 export default UserIcon

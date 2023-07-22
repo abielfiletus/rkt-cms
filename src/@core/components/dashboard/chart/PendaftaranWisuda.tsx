@@ -9,6 +9,7 @@ import { ClipboardOutline } from 'mdi-material-ui'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import ReactApexcharts from '../../react-apexcharts'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function PendaftaranWisudaChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -16,13 +17,14 @@ export default function PendaftaranWisudaChart() {
   const [total, setTotal] = useState<number>(0)
 
   const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.between(894, 1072))
 
   useEffect(() => {
     apiGet('/dashboard/mahasiswa-wisuda').then(async res => {
-      setData(res.data)
+      setData(res?.data)
 
       let count = 0
-      res.data?.data?.data?.map((item: number) => {
+      res?.data?.data?.data?.map((item: number) => {
         count += item
       })
 
@@ -35,7 +37,7 @@ export default function PendaftaranWisudaChart() {
   }, [])
 
   return (
-    <Grid item>
+    <Grid width={isDesktop ? 330 : 250} item>
       <Card sx={{ padding: 3 }} elevation={5}>
         <Grid justifyContent={'space-between'} columnSpacing={10} container>
           <Grid item>
@@ -73,7 +75,7 @@ export default function PendaftaranWisudaChart() {
           <ReactApexcharts
             type={'line'}
             height={170}
-            width={200}
+            width={isDesktop ? 300 : 220}
             series={[data?.data]}
             options={{
               chart: {

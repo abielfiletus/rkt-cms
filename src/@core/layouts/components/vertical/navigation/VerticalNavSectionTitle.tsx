@@ -8,6 +8,7 @@ import MuiListSubheader, { ListSubheaderProps } from '@mui/material/ListSubheade
 import { NavSectionTitle } from '../../../types'
 import CanViewNavSectionTitle from '../../acl/CanViewNavSectionTitle'
 import { Settings } from '../../../../context/settingsContext'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface Props {
   navHover: boolean
@@ -43,6 +44,7 @@ const VerticalNavSectionTitle = (props: Props) => {
 
   // ** Hook
   const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   // ** Vars
   const { navCollapsed } = settings
@@ -63,6 +65,7 @@ const VerticalNavSectionTitle = (props: Props) => {
       <ListSubheader
         className='nav-section-title'
         sx={{
+          marginTop: isMobile ? 0 : undefined,
           ...conditionalColors(),
           ...(navCollapsed && !navHover
             ? {

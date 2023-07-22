@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
 export default function CapaianModal(props: IModalProp) {
-  const { id, type, handleClose } = props
+  const { id, type, handleClose, additional } = props
 
   // state
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -36,10 +36,10 @@ export default function CapaianModal(props: IModalProp) {
           values.push({
             id_capaian_iku: item.id,
             iku_id: item.iku.id,
-            capaian: item[`capaian_${1}`] || '',
-            progress: item[`progress_${1}`] || '',
-            masalah: item[`masalah_${1}`] || '',
-            strategi: item[`strategi_${1}`] || ''
+            capaian: item[`capaian_${additional}`] || '',
+            progress: item[`progress_${additional}`] || '',
+            masalah: item[`masalah_${additional}`] || '',
+            strategi: item[`strategi_${additional}`] || ''
           })
         )
 
@@ -50,7 +50,7 @@ export default function CapaianModal(props: IModalProp) {
   }, [id])
 
   const formik = useFormik({
-    initialValues: { data: [{ id_capaian_iku: '', capaian: '', progress: '', masalah: '', strategi: '' }], tw_index: 1 },
+    initialValues: { data: [{ id_capaian_iku: '', capaian: '', progress: '', masalah: '', strategi: '' }], tw_index: additional },
     validationSchema: type === 'ubah' ? EditCapaianSchema : null,
     onSubmit: async values => {
       const baseUrl = '/capaian'
@@ -67,9 +67,6 @@ export default function CapaianModal(props: IModalProp) {
       }
     }
   })
-
-  // console.log(formik.values)
-  // console.log(formik.errors)
 
   return (
     <Dialog maxWidth={'md'} open={true} fullWidth>

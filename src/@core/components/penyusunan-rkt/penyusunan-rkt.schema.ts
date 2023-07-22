@@ -12,16 +12,16 @@ export const EditPenyusunanRKTSchema = yup.object({
     .of(
       yup.object({
         iku_id: yup.string().required(ValidationMessage.required('IKU')),
+        tw_1: yup.string().required(ValidationMessage.required('TW 1')),
+        tw_2: yup.string().required(ValidationMessage.required('TW 2')),
+        tw_3: yup.string().required(ValidationMessage.required('TW 3')),
+        tw_4: yup.string().required(ValidationMessage.required('TW 4')),
+        total: yup.string().required(ValidationMessage.required('Total')),
         aksi_data: yup
           .array()
           .of(
             yup.object({
-              rencana_aksi: yup.string().required(ValidationMessage.required('Rencana Aksi')),
-              tw_1: yup.string().required(ValidationMessage.required('TW 1')),
-              tw_2: yup.string().required(ValidationMessage.required('TW 2')),
-              tw_3: yup.string().required(ValidationMessage.required('TW 3')),
-              tw_4: yup.string().required(ValidationMessage.required('TW 4')),
-              total: yup.string().required(ValidationMessage.required('Total'))
+              rencana_aksi: yup.string().required(ValidationMessage.required('Rencana Aksi'))
             })
           )
           .required('Rencana Aksi')

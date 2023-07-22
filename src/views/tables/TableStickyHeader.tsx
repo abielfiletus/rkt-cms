@@ -34,6 +34,8 @@ interface Column {
   labelAlign?: 'right' | 'center' | 'left'
   align?: 'right' | 'center' | 'left'
   format?: (value: number) => string
+  fontSize?: number
+  iconSize?: 'inherit' | 'small' | 'medium' | 'large'
   content?: ColumnContent
   transform?: (value: string | number | boolean) => any
 }
@@ -50,6 +52,7 @@ interface IProps {
   initialized: boolean
   setInitialized: (data: boolean) => void
   sx?: SxProps<Theme>
+  paginationFontSize?: number
 }
 
 const TableStickyHeader = (props: IProps) => {
@@ -64,7 +67,8 @@ const TableStickyHeader = (props: IProps) => {
     setReFetch,
     setInitialized,
     initialized,
-    sx
+    sx,
+    paginationFontSize
   } = props
 
   // ** States
@@ -130,7 +134,11 @@ const TableStickyHeader = (props: IProps) => {
             <TableHead>
               <TableRow>
                 {columns?.map(column => (
-                  <TableCell key={column.label} align={column.labelAlign} sx={{ minWidth: column.minWidth }}>
+                  <TableCell
+                    key={column.label}
+                    align={column.labelAlign}
+                    sx={{ minWidth: column.minWidth, fontSize: column.fontSize + 'px !important', lineHeight: '1rem' }}
+                  >
                     {column.label}
                   </TableCell>
                 ))}
@@ -165,7 +173,7 @@ const TableStickyHeader = (props: IProps) => {
                       role='checkbox'
                       tabIndex={-1}
                       key={'row-' + i}
-                      sx={{ cursor: handleRowClick ? 'pointer' : 'inherit' }}
+                      sx={{ cursor: handleRowClick ? 'pointer' : 'inherit', fontSize: item.fontSize }}
                     >
                       {columns?.map(column => {
                         const split = column.id.split('.') as string[]
@@ -200,14 +208,14 @@ const TableStickyHeader = (props: IProps) => {
                               {showEdit && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleEditClick ? handleEditClick(item) : null)}>
-                                    <PencilOutline color={'primary'} />
+                                    <PencilOutline color={'primary'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
                               )}
                               {showDelete && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleDeleteClick ? handleDeleteClick(item) : null)}>
-                                    <DeleteOutline color={'error'} />
+                                    <DeleteOutline color={'error'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
                               )}
@@ -219,6 +227,7 @@ const TableStickyHeader = (props: IProps) => {
                             key={'table-' + item.id + '-' + column.label}
                             align={column.align}
                             onClick={handleRowClick ? () => handleRowClick(item) : undefined}
+                            sx={{ fontSize: column.fontSize }}
                           >
                             {column.format && typeof value === 'number'
                               ? column.format(value)
@@ -242,6 +251,10 @@ const TableStickyHeader = (props: IProps) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            '& p': { fontSize: paginationFontSize ? `${paginationFontSize}px !important` : 'inherit' },
+            '& div': { fontSize: paginationFontSize ? `${paginationFontSize}px !important` : 'inherit' }
+          }}
         />
       </Paper>
     </>

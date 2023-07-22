@@ -9,10 +9,12 @@ import UserModal from '../../@core/components/user/modal'
 import { useContext, useState } from 'react'
 import DeleteModal from '../../@core/components/modal/delete'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const UserPage = () => {
   const theme = useTheme()
   const ability = useContext(AbilityContext)
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   const [showDetail, setShowDetail] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
@@ -43,7 +45,7 @@ const UserPage = () => {
 
   return (
     <Box>
-      <Typography variant={'h6'} fontWeight={'bold'}>
+      <Typography variant={'h6'} fontWeight={'bold'} color={'primary'}>
         Data User
       </Typography>
       <Box textAlign={'right'} mt={3}>
@@ -59,10 +61,10 @@ const UserPage = () => {
           >
             <Grid alignItems={'center'} container>
               <Grid mt={1.2} item>
-                <PlusCircleOutline sx={{ color: 'white' }} />
+                <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
               </Grid>
               <Grid item ml={2}>
-                <Typography color={'white'} variant={'body2'} fontWeight={'bold'}>
+                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 'inherit'}>
                   Tambah User
                 </Typography>
               </Grid>
@@ -70,18 +72,20 @@ const UserPage = () => {
           </Button>
         )}
       </Box>
-      <Box mt={10}>
+      <Box mt={isMobile ? 5 : 10}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID User' },
-            { id: 'name', label: 'Name' },
-            { id: 'email', label: 'Email' },
-            { id: 'department.name', label: 'Bagian' },
-            { id: 'role.name', label: 'Akses' },
+            { id: 'id', label: 'ID User', fontSize: isMobile ? 10 : 13 },
+            { id: 'name', label: 'Name', fontSize: isMobile ? 10 : 13 },
+            { id: 'email', label: 'Email', fontSize: isMobile ? 10 : 13 },
+            { id: 'department.name', label: 'Bagian', fontSize: isMobile ? 10 : 13 },
+            { id: 'role.name', label: 'Akses', fontSize: isMobile ? 10 : 13 },
             {
               id: 'action',
               label: 'Aksi',
-              content: { edit: ability.can('update', 'user'), delete: ability.can('delete', 'user') }
+              content: { edit: ability.can('update', 'user'), delete: ability.can('delete', 'user') },
+              minWidth: 120,
+              iconSize: isMobile ? 'small' : 'inherit'
             }
           ]}
           url={'user'}
@@ -93,6 +97,7 @@ const UserPage = () => {
           setReFetch={setReFetchDT}
           initialized={initializedDT}
           setInitialized={setInitializedDT}
+          paginationFontSize={isMobile ? 12 : undefined}
         />
       </Box>
       {showDetail && <UserModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

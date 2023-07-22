@@ -45,3 +45,11 @@ export const CapaianStatusColor: Record<string, any> = {
   '1': 'info',
   '2': 'success'
 }
+
+export enum ConfigKey {
+  RKT = 'pengajuan-rkt',
+  TW1 = 'capaian-tw1',
+  TW2 = 'capaian-tw2',
+  TW3 = 'capaian-tw3',
+  TW4 = 'capaian-tw4'
+}

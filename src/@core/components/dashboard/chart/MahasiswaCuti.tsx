@@ -9,6 +9,7 @@ import { ClipboardOutline } from 'mdi-material-ui'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import ReactApexcharts from '../../react-apexcharts'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function MahasiswaCutiChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -16,6 +17,8 @@ export default function MahasiswaCutiChart() {
   const [total, setTotal] = useState<number>(0)
 
   const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.between(1072, 1172))
+  const isDesktop2 = useMediaQuery(theme.breakpoints.between(894, 1072))
 
   useEffect(() => {
     apiGet('/dashboard/mahasiswa-cuti').then(async res => {
@@ -35,7 +38,7 @@ export default function MahasiswaCutiChart() {
   }, [])
 
   return (
-    <Grid item>
+    <Grid width={isDesktop ? 200 : isDesktop2 ? 330 : 250} item>
       <Card sx={{ padding: 3 }} elevation={5}>
         <Grid justifyContent={'space-between'} columnSpacing={10} container>
           <Grid item>
@@ -73,7 +76,7 @@ export default function MahasiswaCutiChart() {
           <ReactApexcharts
             type={'line'}
             height={170}
-            width={200}
+            width={isDesktop ? 170 : isDesktop2 ? 300 : 220}
             series={[data?.data]}
             options={{
               chart: {

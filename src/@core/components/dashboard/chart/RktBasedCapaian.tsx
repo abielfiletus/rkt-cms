@@ -9,6 +9,7 @@ import { apiGet } from '../../../../util/api-fetch'
 import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function RktBasedCapaianChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -17,6 +18,7 @@ export default function RktBasedCapaianChart() {
   const [selectOption, setSelectOption] = useState<Array<number>>([])
 
   const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   useEffect(() => {
     const year = new Date().getFullYear()
@@ -47,7 +49,7 @@ export default function RktBasedCapaianChart() {
             RKT Berdasarkan Status Capaian
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid marginTop={isMobile ? 3 : 0} item>
           <FormControl>
             <InputLabel id='status-year'>Tahun</InputLabel>
             <Select

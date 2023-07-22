@@ -10,10 +10,12 @@ import { useContext, useState } from 'react'
 import DeleteModal from '../../@core/components/modal/delete'
 import IconButton from '@mui/material/IconButton'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const DocumentPage = () => {
   const theme = useTheme()
   const ability = useContext(AbilityContext)
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -54,10 +56,10 @@ const DocumentPage = () => {
           >
             <Grid alignItems={'center'} container>
               <Grid mt={1.2} item>
-                <PlusCircleOutline sx={{ color: 'white' }} />
+                <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'inherit'} />
               </Grid>
               <Grid item ml={2}>
-                <Typography color={'white'} variant={'body2'} fontWeight={'bold'}>
+                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 'inherit'}>
                   Tambah Dokumen
                 </Typography>
               </Grid>
@@ -65,12 +67,12 @@ const DocumentPage = () => {
           </Button>
         )}
       </Box>
-      <Box mt={10}>
+      <Box mt={isMobile ? 5 : 10}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID' },
-            { id: 'name', label: 'Nama Dokumen' },
-            { id: 'description', label: 'Keterangan Dokumen' },
+            { id: 'id', label: 'ID', fontSize: isMobile ? 10 : 13 },
+            { id: 'name', label: 'Nama Dokumen', fontSize: isMobile ? 10 : 13 },
+            { id: 'description', label: 'Keterangan Dokumen', fontSize: isMobile ? 10 : 13 },
             {
               id: 'file',
               label: 'File',
@@ -95,6 +97,7 @@ const DocumentPage = () => {
           setReFetch={setReFetchDT}
           initialized={initializedDT}
           setInitialized={setInitializedDT}
+          paginationFontSize={isMobile ? 12 : undefined}
         />
       </Box>
       {showEdit && (

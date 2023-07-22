@@ -12,16 +12,26 @@ import EPBDashboard from '../../@core/components/dashboard/epb'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material'
 import AkademikDashboard from '../../@core/components/dashboard/akademik'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const DashboardPage = () => {
   const [activeLink, setActiveLink] = useState<'epb' | 'akademik'>('epb')
 
   const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   return (
     <ApexChartWrapper>
       <Paper>
-        <Grid columnSpacing={10} padding={10} paddingY={5} container>
+        <Grid
+          columnSpacing={isMobile ? 0 : 10}
+          rowSpacing={3}
+          justifyContent={isMobile ? 'space-between' : 'inherit'}
+          padding={10}
+          paddingY={5}
+          sx={{ [theme.breakpoints.only('xs')]: { paddingX: 7, paddingY: 2 } }}
+          container
+        >
           <Grid item>
             <LinkItem
               text={'Dashboard E-PB'}
@@ -56,7 +66,7 @@ const DashboardPage = () => {
             position={'relative'}
             sx={{
               overflowX: 'hidden',
-              height: 'calc(100vh - 330px)',
+              height: `calc(100vh - 330px)`,
               '&::-webkit-scrollbar': { display: 'none' },
               msOverflowStyle: 'none',
               scrollbarWidth: 'none'

@@ -9,10 +9,12 @@ import IKUModal from '../../@core/components/indikator-kinerja-utama/modal'
 import { useContext, useMemo, useRef, useState } from 'react'
 import DeleteModal from '../../@core/components/modal/delete'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const IndikatorKinerjaUtamaPage = () => {
   const theme = useTheme()
   const ability = useContext(AbilityContext)
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   const nameRef = useRef<HTMLInputElement>()
   const nodRef = useRef<HTMLInputElement>()
@@ -65,7 +67,7 @@ const IndikatorKinerjaUtamaPage = () => {
               <OutlinedInput
                 placeholder={'Nama IKU...'}
                 size={'small'}
-                sx={{ backgroundColor: 'white', fontSize: 15, minWidth: 250 }}
+                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 15, minWidth: 250 }}
                 onKeyUp={() => {
                   if (idleTimer) clearTimeout(idleTimer)
 
@@ -80,7 +82,7 @@ const IndikatorKinerjaUtamaPage = () => {
               <OutlinedInput
                 placeholder={'No IKU...'}
                 size={'small'}
-                sx={{ backgroundColor: 'white', fontSize: 15, minWidth: 150 }}
+                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 15, minWidth: 150 }}
                 onKeyUp={() => {
                   if (idleTimer) clearTimeout(idleTimer)
 
@@ -111,10 +113,10 @@ const IndikatorKinerjaUtamaPage = () => {
                 >
                   <Grid alignItems={'center'} container>
                     <Grid mt={1.2} item>
-                      <MicrosoftExcel sx={{ color: 'white' }} />
+                      <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                     </Grid>
                     <Grid item ml={2}>
-                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
                         Download Excel
                       </Typography>
                     </Grid>
@@ -138,10 +140,10 @@ const IndikatorKinerjaUtamaPage = () => {
                 >
                   <Grid alignItems={'center'} container>
                     <Grid mt={1.2} item>
-                      <PlusCircleOutline sx={{ color: 'white' }} />
+                      <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                     </Grid>
                     <Grid item ml={2}>
-                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
                         Tambah IKU
                       </Typography>
                     </Grid>
@@ -155,14 +157,15 @@ const IndikatorKinerjaUtamaPage = () => {
       <Box mt={5}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID IKU', minWidth: 120 },
-            { id: 'no', label: 'Nomor IKU' },
-            { id: 'name', label: 'Nama IKU', minWidth: 160 },
+            { id: 'id', label: 'ID IKU', minWidth: 120, fontSize: isMobile ? 10 : 13 },
+            { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 13 },
+            { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 13 },
             {
               id: 'is_active',
               label: 'Status',
               transform: value => (value === true ? 'Aktif' : <Box color={theme.palette.grey['500']}>{'Tidak Aktif'}</Box>),
-              minWidth: 110
+              minWidth: 110,
+              fontSize: isMobile ? 10 : 13
             },
             {
               id: 'action',
@@ -171,7 +174,8 @@ const IndikatorKinerjaUtamaPage = () => {
                 edit: ability.can('update', 'indikator-kinerja-utama'),
                 delete: ability.can('delete', 'indikator-kinerja-utama')
               },
-              minWidth: 120
+              minWidth: 120,
+              fontSize: isMobile ? 10 : 13
             }
           ]}
           url={'indikator-kinerja-utama'}
@@ -184,6 +188,7 @@ const IndikatorKinerjaUtamaPage = () => {
           initialized={initializedDT}
           setInitialized={setInitializedDT}
           sx={{ fontWeight: 500, '& .MuiTableCell-body': { color: 'black' } }}
+          paginationFontSize={isMobile ? 12 : undefined}
         />
       </Box>
       {showDetail && <IKUModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

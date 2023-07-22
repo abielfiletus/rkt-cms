@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import { MicrosoftExcel } from 'mdi-material-ui'
+import { DeleteOutline, FileEyeOutline, MicrosoftExcel, PencilOutline } from 'mdi-material-ui'
 import { OutlinedInput, Select, useTheme } from '@mui/material'
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import MenuItem from '@mui/material/MenuItem'
@@ -15,6 +15,9 @@ import VerifikasiRKTModal from '../../@core/components/penyusunan-rkt/modal'
 import LoaderModal from '../../@core/components/modal/loader'
 import VerifikasiRKTVerification from '../../@core/components/penyusunan-rkt/verification'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import IconButton from '@mui/material/IconButton'
+import { useAuth } from '../../@core/hooks/useAuth'
 
 const VerifikasiRktPage = () => {
   // state
@@ -61,8 +64,10 @@ const VerifikasiRktPage = () => {
   // HTML ref
   const nameRef = useRef<HTMLInputElement>()
 
+  const auth = useAuth()
   const theme = useTheme()
   const ability = useContext(AbilityContext)
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   // handler
   const handleDetailClick = (data: Record<string, any>) => {
@@ -106,7 +111,7 @@ const VerifikasiRktPage = () => {
                   <OutlinedInput
                     placeholder={'Nama RKT...'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, minWidth: 250 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, minWidth: 250 }}
                     onKeyUp={() => {
                       if (idleTimer) clearTimeout(idleTimer)
 
@@ -121,16 +126,18 @@ const VerifikasiRktPage = () => {
                   <Select
                     value={filterDT.tahun || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, tahun: value })
                       else setFilterDT({ ...filterDT, tahun: '' })
                     }}
                   >
-                    <MenuItem value='0'>Tahun RKT</MenuItem>
+                    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
+                      Tahun RKT
+                    </MenuItem>
                     {yearFilter.map(item => (
-                      <MenuItem key={item} value={item}>
+                      <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} key={item} value={item}>
                         {item}
                       </MenuItem>
                     ))}
@@ -140,16 +147,18 @@ const VerifikasiRktPage = () => {
                   <Select
                     value={filterDT.submit_name || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, submit_name: value })
                       else setFilterDT({ ...filterDT, submit_name: '' })
                     }}
                   >
-                    <MenuItem value='0'>Pengusul</MenuItem>
+                    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
+                      Pengusul
+                    </MenuItem>
                     {submitFilter.map(item => (
-                      <MenuItem key={item} value={item}>
+                      <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} key={item} value={item}>
                         {item}
                       </MenuItem>
                     ))}
@@ -159,18 +168,24 @@ const VerifikasiRktPage = () => {
                   <Select
                     value={filterDT.status || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, status: value })
                       else setFilterDT({ ...filterDT, status: '' })
                     }}
                   >
-                    <MenuItem value='0'>Status</MenuItem>
+                    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
+                      Status
+                    </MenuItem>
                     {Object.keys(VerificationStatus).map(key => {
                       if (VerificationStatus[key] !== '0') {
                         return (
-                          <MenuItem key={key} value={VerificationStatus[key]}>
+                          <MenuItem
+                            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                            key={key}
+                            value={VerificationStatus[key]}
+                          >
                             {key}
                           </MenuItem>
                         )
@@ -198,10 +213,10 @@ const VerifikasiRktPage = () => {
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <MicrosoftExcel sx={{ color: 'white' }} />
+                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
                             Download Excel
                           </Typography>
                         </Grid>
@@ -215,14 +230,23 @@ const VerifikasiRktPage = () => {
           <Box mt={7}>
             <CustomTable
               columns={[
-                { id: 'name', label: 'id', labelFromDataField: 'id', minWidth: 120, noWrap: true, maxWidth: 200 },
+                {
+                  id: 'name',
+                  label: 'id',
+                  labelFromDataField: 'id',
+                  minWidth: 120,
+                  noWrap: true,
+                  maxWidth: 200,
+                  fontSize: isMobile ? 10 : undefined
+                },
                 {
                   id: 'usulan_anggaran',
                   label: 'Usulan Anggaran',
                   align: 'center',
                   transform: value =>
                     (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
-                  minWidth: 170
+                  minWidth: 150,
+                  fontSize: isMobile ? 10 : undefined
                 },
                 {
                   id: 'user_submit.name',
@@ -230,29 +254,33 @@ const VerifikasiRktPage = () => {
                   minWidth: 100,
                   maxWidth: 200,
                   align: 'center',
-                  noWrap: true
+                  noWrap: true,
+                  fontSize: isMobile ? 10 : undefined
                 },
-                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center' },
+                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center', fontSize: isMobile ? 10 : undefined },
                 {
                   id: 'status',
                   label: 'Status',
                   transform: (value, data) => {
                     if (ReverseVerificationStatus[value as string]) {
+                      if (value === VerificationStatus.Revisi && data.verification_role_target === auth.user?.role?.id) {
+                        return ReverseVerificationStatus[value as string]
+                      }
+
                       return ReverseVerificationStatus[value as string] + ' ' + (data.verification_role?.name || '')
                     }
                   },
                   isBadge: true,
                   badgeColor: value => VerificationStatusColor[value as string],
-                  badgeOnClick: ability.can('approve', 'penyusunan-rkt') ? handleApproveClick : undefined
+                  badgeOnClick: ability.can('approve', 'penyusunan-rkt') ? handleApproveClick : undefined,
+                  fontSize: isMobile ? 10 : undefined,
+                  minWidth: 150
                 },
                 {
                   id: 'action',
                   label: 'Aksi',
-                  content: {
-                    edit: ability.can('update', 'penyusunan-rkt'),
-                    detail: ability.can('read', 'penyusunan-rkt')
-                  },
-                  minWidth: 150
+                  minWidth: isMobile ? 150 : undefined,
+                  iconSize: isMobile ? 'small' : 'inherit'
                 }
               ]}
               url={'penyusunan-rkt'}
@@ -264,6 +292,48 @@ const VerifikasiRktPage = () => {
               handleDeleteClick={handleDeleteClick}
               handleEditClick={handleEditClick}
               handleDetailClick={handleDetailClick}
+              paginationFontSize={isMobile ? 12 : undefined}
+              customIcon={data => {
+                console.log({
+                  ability: ability.can('update', 'penyusunan-rkt'),
+                  statusRevision: data.status === VerificationStatus.Revisi,
+                  roleTarget: data.verification_role_target === auth.user?.role?.id
+                })
+
+                return (
+                  <Grid container>
+                    {ability.can('read', 'penyusunan-rkt') && (
+                      <Grid item>
+                        <IconButton onClick={() => handleDetailClick(data)}>
+                          <FileEyeOutline color={'success'} fontSize={isMobile ? 'small' : 'inherit'} />
+                        </IconButton>
+                      </Grid>
+                    )}
+                    {(auth.user?.role?.id === 1 ||
+                      (ability.can('update', 'penyusunan-rkt') &&
+                        data.status === VerificationStatus.Revisi &&
+                        data.verification_role_target === auth.user?.role?.id)) &&
+                      data.status !== VerificationStatus.Selesai && (
+                        <Grid item>
+                          <IconButton onClick={() => handleEditClick(data)}>
+                            <PencilOutline color={'primary'} fontSize={isMobile ? 'small' : 'inherit'} />
+                          </IconButton>
+                        </Grid>
+                      )}
+                    {(auth.user?.role?.id === 1 ||
+                      (ability.can('delete', 'penyusunan-rkt') &&
+                        data.status === VerificationStatus.Revisi &&
+                        data.verification_role_target === auth.user?.role?.id)) &&
+                      data.status !== VerificationStatus.Selesai && (
+                        <Grid item>
+                          <IconButton onClick={() => handleDeleteClick(data)}>
+                            <DeleteOutline color={'error'} fontSize={isMobile ? 'small' : 'inherit'} />
+                          </IconButton>
+                        </Grid>
+                      )}
+                  </Grid>
+                )
+              }}
             />
           </Box>
           {showDetail && <VerifikasiRKTModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

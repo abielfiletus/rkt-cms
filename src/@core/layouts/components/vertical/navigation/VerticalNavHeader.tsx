@@ -11,9 +11,6 @@ import { styled } from '@mui/material/styles'
 // ** Type Import
 import { Settings } from '../../../../context/settingsContext'
 
-// ** Configs
-import Image from 'next/image'
-
 interface Props {
   hidden: boolean
   settings: Settings
@@ -49,7 +46,7 @@ const VerticalNavHeader = (props: Props) => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <Image src={'/images/logos/logo.png'} width={152} height={52} alt={'logo'} />
+            <img src={'/images/logos/logo.png'} width={152} height={52} alt={'logo'} />
           </StyledLink>
         </Link>
       )}

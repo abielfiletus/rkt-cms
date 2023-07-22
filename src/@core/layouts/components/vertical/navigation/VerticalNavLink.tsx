@@ -27,6 +27,8 @@ import UserIcon from '../../../../../layouts/components/UserIcon'
 import { handleURLQueries } from '../../../utils'
 import CanViewNavLink from '../../acl/CanViewNavLink'
 import { NavLink } from '../../../../../layouts/types'
+import { useTheme } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface Props {
   item: NavLink
@@ -66,6 +68,8 @@ const MenuItemTextMetaWrapper = styled(Box)<BoxProps>({
 const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
   // ** Hooks
   const router = useRouter()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   const IconTag: ReactNode = item.icon
 
@@ -105,7 +109,11 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
             </ListItemIcon>
 
             <MenuItemTextMetaWrapper>
-              <Typography variant={'body2'} {...(themeConfig.menuTextTruncate && { noWrap: true })}>
+              <Typography
+                variant={'body2'}
+                {...(themeConfig.menuTextTruncate && { noWrap: true })}
+                fontSize={isMobile ? 11 : undefined}
+              >
                 {item.title}
               </Typography>
               {item.badgeContent ? (

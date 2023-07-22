@@ -10,7 +10,8 @@
     "start": "next start -p 3001",
     "export": "next export",
     "lint": "eslint --fix '../**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write '../**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier --write '../**/*.{js,jsx,ts,tsx}'",
+    "build:docker": "docker buildx build --pull --platform linux/amd64 -t index.docker.io/abielfiletus/epb:cms-v0.0.1 . && docker push abielfiletus/epb:cms-v0.0.1"
   },
   "license": "UNLICENSED",
   "dependencies": {

@@ -24,7 +24,7 @@ interface ColumnContent {
   detail?: boolean | ColumnActionValues
 }
 
-interface Column {
+export interface Column {
   id: string
   label: string
   additionalId?: string
@@ -39,6 +39,8 @@ interface Column {
   badgeColor?: (value: string | number) => 'primary' | 'secondary' | 'info' | 'warning' | 'success' | 'error'
   badgeOnClick?: (data: Record<string, any>) => any
   noWrap?: boolean
+  fontSize?: number
+  iconSize?: 'small' | 'medium' | 'large' | 'inherit'
 }
 
 interface IProps {
@@ -56,6 +58,7 @@ interface IProps {
   reFetch: boolean
   setReFetch: (data: boolean) => void
   setInitialized: (data: boolean) => void
+  paginationFontSize?: number
 }
 
 const valueFromFlattenArray = (keys: Array<string>, data: Record<string, any>) => {
@@ -87,7 +90,8 @@ const CustomTable = (props: IProps) => {
     reFetch,
     setReFetch,
     setInitialized,
-    initialized
+    initialized,
+    paginationFontSize
   } = props
 
   // ** States
@@ -204,7 +208,7 @@ const CustomTable = (props: IProps) => {
                             paddingX={5}
                             paddingY={2}
                             fontWeight={600}
-                            fontSize={12}
+                            fontSize={column.fontSize || 12}
                             onClick={() => (column.badgeOnClick ? column.badgeOnClick(item) : null)}
                             sx={{
                               '&:hover': {
@@ -229,14 +233,14 @@ const CustomTable = (props: IProps) => {
                       }
 
                       let label = (
-                        <Typography fontSize={13} fontWeight={600} color={theme.palette.grey[600]}>
+                        <Typography fontSize={column.fontSize || 13} fontWeight={600} color={theme.palette.grey[600]}>
                           {column.label}
                         </Typography>
                       )
 
                       if (column.labelFromDataField) {
                         label = (
-                          <Typography fontSize={13} color={'primary'} fontWeight={600}>
+                          <Typography fontSize={column.fontSize || 13} color={'primary'} fontWeight={600}>
                             #{valueFromFlattenArray(column.labelFromDataField.split('.') as Array<string>, item)}
                           </Typography>
                         )
@@ -244,28 +248,30 @@ const CustomTable = (props: IProps) => {
 
                       return column.id === 'action' ? (
                         <TableCell key={'table-' + item.id + '-' + column.label} align={column.align}>
-                          {customIcon && customIcon(item)}
+                          {customIcon && (
+                            <Box sx={{ minWidth: column.minWidth, maxWidth: column.maxWidth }}>{customIcon(item)}</Box>
+                          )}
                           {!customIcon && (
                             <Grid container>
                               {showDetail && handleDetailClick && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleDetailClick ? handleDetailClick(item) : null)}>
                                     {customIconDetail}
-                                    {!customIconDetail && <FileEyeOutline color={'success'} />}
+                                    {!customIconDetail && <FileEyeOutline color={'success'} fontSize={column.iconSize} />}
                                   </IconButton>
                                 </Grid>
                               )}
                               {showEdit && handleEditClick && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleEditClick ? handleEditClick(item) : null)}>
-                                    <PencilOutline color={'primary'} />
+                                    <PencilOutline color={'primary'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
                               )}
                               {showDelete && handleDeleteClick && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleDeleteClick ? handleDeleteClick(item) : null)}>
-                                    <DeleteOutline color={'error'} />
+                                    <DeleteOutline color={'error'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
                               )}
@@ -283,7 +289,7 @@ const CustomTable = (props: IProps) => {
                           {!column.isBadge && label}
                           {column.isBadge && value}
                           {!column.isBadge && (
-                            <Typography fontSize={13} color={'black'} fontWeight={500} noWrap={column.noWrap}>
+                            <Typography fontSize={column.fontSize || 13} color={'black'} fontWeight={500} noWrap={column.noWrap}>
                               {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : column.id === 'action'
@@ -308,6 +314,10 @@ const CustomTable = (props: IProps) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        sx={{
+          '& p': { fontSize: paginationFontSize ? `${paginationFontSize}px !important` : 'inherit' },
+          '& div': { fontSize: paginationFontSize ? `${paginationFontSize}px !important` : 'inherit' }
+        }}
       />
     </Paper>
   )

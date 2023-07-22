@@ -86,20 +86,12 @@ export const apiGet = async (
 
     const res = await axios.get(baseUrl + url, headerConfig)
 
-    if ([401, 403].includes(res.status)) await logoutUser()
+    if (res.status === 401) await logoutUser()
+    if (res.status === 403) await router.push('/permission-denied')
 
     return res.data
   } catch (err) {
-    // @ts-ignore
-    switch (err?.response?.status) {
-      case 401:
-      case 403:
-        await logoutUser()
-
-        return
-      default:
-        return err
-    }
+    await errorHandling(err)
   }
 }
 
@@ -116,6 +108,9 @@ export const apiDelete = async (url: string) => {
     // @ts-ignore
     switch (err?.response?.status) {
       case 401:
+        await router.push('/permission-denied')
+
+        return
       case 403:
         await logoutUser()
 
@@ -135,6 +130,10 @@ const errorHandling = async (err: any) => {
       break
     case 401:
       await logoutUser()
+
+      return
+    case 403:
+      await router.push('/permission-denied')
 
       return
     case 422:

@@ -4,8 +4,9 @@ import LoaderPage from '../../views/loader'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { CircularProgress, Switch } from '@mui/material'
+import { CircularProgress, Switch, useTheme } from '@mui/material'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 const PengaturanPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -13,6 +14,8 @@ const PengaturanPage = () => {
   const [data, setData] = useState<Array<Record<string, any>>>([])
 
   const ability = useContext(AbilityContext)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   useEffect(() => {
     apiGet('/config').then(res => {
@@ -60,9 +63,10 @@ const PengaturanPage = () => {
                   value='required'
                   label={item.name}
                   onChange={() => handleClickSlider(i)}
-                  control={<Switch />}
+                  control={<Switch size={isMobile ? 'small' : undefined} />}
                   checked={item.status}
                   disabled={item.isLoading || !hasPermission}
+                  sx={{ '& .MuiFormControlLabel-label': { fontSize: isMobile ? '10px !important' : 'inherit' } }}
                 />
                 {item.isLoading && <CircularProgress size={20} />}
               </Box>

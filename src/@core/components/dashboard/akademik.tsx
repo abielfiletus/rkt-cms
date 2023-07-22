@@ -6,11 +6,16 @@ import MahasiswaCutiChart from './chart/MahasiswaCuti'
 import MahasiswaDOChart from './chart/MahasiswaDO'
 import MahasiswaAktifXStatusChart from './chart/MahasiswaAktifXStatus'
 import MaBaAktifXStatusChart from './chart/MaBaAktifXStatus'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@mui/material'
 
 export default function AkademikDashboard() {
+  const theme = useTheme()
+  const isDesktopAndBelow = useMediaQuery(theme.breakpoints.down('lg'))
+
   return (
     <>
-      <Grid spacing={7} justifyContent={'space-between'} container>
+      <Grid spacing={7} justifyContent={isDesktopAndBelow ? 'center' : 'space-between'} container>
         <Grid item>
           <MahasiswaAktifChart />
         </Grid>
