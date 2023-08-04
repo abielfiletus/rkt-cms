@@ -24,18 +24,15 @@ export default function DetailCapaian(props: IModalProp) {
 
   // state
   const [isLoading, setIsLoading] = useState(true)
-  const [tw1Filled, setTw1Filled] = useState<boolean>(false)
-  const [tw2Filled, setTw2Filled] = useState<boolean>(false)
-  const [tw3Filled, setTw3Filled] = useState<boolean>(false)
-  const [tw4Filled, setTw4Filled] = useState<boolean>(false)
-  const [totalTw, setTotalTw] = useState<Array<any>>([])
+  const [checkedTw, setCheckedTw] = useState<Array<number>>([])
   const [tableData, setTableData] = useState<Array<JSX.Element>>([])
+  const [data, setData] = useState<Record<string, any>>()
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
-  const CapaianCell = (total: Array<string>, data: Record<string, any>) => {
-    return total.map(tw_index => (
+  const CapaianCell = (data: Record<string, any>) => {
+    return checkedTw.map(tw_index => (
       <Fragment key={tw_index}>
         <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 'inherit' }}>
           {data?.capaian?.[`capaian_${tw_index}`]}
@@ -58,107 +55,99 @@ export default function DetailCapaian(props: IModalProp) {
     ))
   }
 
+  const FetchTable = () => {
+    let table: Array<JSX.Element> = []
+    data?.rkt_x_iku?.forEach((item: Record<string, any>) => {
+      item.row_span = item.iku_x_aksi.length
+    })
+
+    if (data) {
+      const firstAksi: Array<JSX.Element> = []
+      let rowspanRkt = 0
+
+      data.rkt_x_iku.map((item: Record<string, any>, i: number) => {
+        let rowspanIku = 0
+        const aksiTable: Array<JSX.Element> = []
+
+        item.iku_x_aksi.map((aksi: Record<string, any>, j: number) => {
+          if (j > 0) {
+            aksiTable.push(
+              <TableRow>
+                <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>{aksi.rencana_aksi}</TableCell>
+              </TableRow>
+            )
+          }
+          rowspanIku++
+          rowspanRkt++
+        })
+
+        if (i > 0) {
+          table.push(
+            <TableRow>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
+                {item?.iku?.name}
+              </TableCell>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>
+                {item?.iku_x_aksi?.[0]?.rencana_aksi}
+              </TableCell>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
+                {data.target_perjanjian_kerja}
+              </TableCell>
+              {CapaianCell(item)}
+            </TableRow>,
+            ...aksiTable
+          )
+        } else {
+          firstAksi.push(...aksiTable)
+        }
+      })
+
+      const firstIku = data.rkt_x_iku[0]
+      const rowspanFirst = firstIku.iku_x_aksi.length
+      table = [
+        <TableRow key={'rkt-table'}>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
+            {data.id}
+          </TableCell>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
+            {data.name}
+          </TableCell>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
+            {firstIku.iku.name}
+          </TableCell>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>{firstIku.iku_x_aksi[0].rencana_aksi}</TableCell>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
+            {data.target_perjanjian_kerja}
+          </TableCell>
+          {CapaianCell(firstIku)}
+        </TableRow>,
+        ...firstAksi,
+        ...table
+      ]
+    }
+
+    setTableData(table)
+  }
+
+  useMemo(() => FetchTable(), [checkedTw])
+  useMemo(() => FetchTable(), [data])
+
   useMemo(() => {
     if (id) {
       apiGet('/capaian/detail-by-rkt/' + id).then(res => {
         setIsLoading(false)
-
-        let table: Array<JSX.Element> = []
-        let total: Array<string> = []
-        const firstCapaian = res.data?.rkt_x_iku?.[0]?.capaian
-        if (firstCapaian?.capaian_1) {
-          setTw1Filled(true)
-          total = ['1']
-        }
-        if (firstCapaian?.capaian_2) {
-          setTw2Filled(true)
-          total = ['1', '2']
-        }
-        if (firstCapaian?.capaian_3) {
-          setTw3Filled(true)
-          total = ['1', '2', '3']
-        }
-        if (firstCapaian?.capaian_4) {
-          setTw4Filled(true)
-          total = ['1', '2', '3', '4']
-        }
-
-        res?.data?.rkt_x_iku?.forEach((item: Record<string, any>) => {
-          item.row_span = item.iku_x_aksi.length
-        })
-
-        if (res?.data) {
-          const firstAksi: Array<JSX.Element> = []
-          let rowspanRkt = 0
-
-          res.data.rkt_x_iku.map((item: Record<string, any>, i: number) => {
-            let rowspanIku = 0
-            const aksiTable: Array<JSX.Element> = []
-
-            item.iku_x_aksi.map((aksi: Record<string, any>, j: number) => {
-              if (j > 0) {
-                aksiTable.push(
-                  <TableRow>
-                    <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>{aksi.rencana_aksi}</TableCell>
-                  </TableRow>
-                )
-              }
-              rowspanIku++
-              rowspanRkt++
-            })
-
-            if (i > 0) {
-              table.push(
-                <TableRow>
-                  <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
-                    {item?.iku?.name}
-                  </TableCell>
-                  <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>
-                    {item?.iku_x_aksi?.[0]?.rencana_aksi}
-                  </TableCell>
-                  <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
-                    {res.data.target_perjanjian_kerja}
-                  </TableCell>
-                  {CapaianCell(total, item)}
-                </TableRow>,
-                ...aksiTable
-              )
-            } else {
-              firstAksi.push(...aksiTable)
-            }
-          })
-
-          const firstIku = res.data.rkt_x_iku[0]
-          const rowspanFirst = firstIku.iku_x_aksi.length
-          table = [
-            <TableRow key={'rkt-table'}>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
-                {res.data.id}
-              </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
-                {res.data.name}
-              </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
-                {firstIku.iku.name}
-              </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>
-                {firstIku.iku_x_aksi[0].rencana_aksi}
-              </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
-                {res.data.target_perjanjian_kerja}
-              </TableCell>
-              {CapaianCell(total, firstIku)}
-            </TableRow>,
-            ...firstAksi,
-            ...table
-          ]
-        }
-
-        setTotalTw(total)
-        setTableData(table)
+        setData(res?.data)
       })
     }
   }, [id])
+
+  const handleTwClick = (index: number) => {
+    if (checkedTw.includes(index)) {
+      setCheckedTw(checkedTw.filter(val => val !== index))
+    } else {
+      setCheckedTw(val => [...val, index].sort())
+    }
+  }
 
   return (
     <Dialog maxWidth={'md'} open={true} fullWidth>
@@ -200,7 +189,8 @@ export default function DetailCapaian(props: IModalProp) {
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
-                checked={tw1Filled}
+                checked={checkedTw.includes(1)}
+                onClick={() => handleTwClick(1)}
                 disabled
               />
               <FormControlLabel
@@ -217,7 +207,8 @@ export default function DetailCapaian(props: IModalProp) {
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
-                checked={tw2Filled}
+                checked={checkedTw.includes(2)}
+                onClick={() => handleTwClick(2)}
                 disabled
               />
               <FormControlLabel
@@ -234,7 +225,8 @@ export default function DetailCapaian(props: IModalProp) {
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
-                checked={tw3Filled}
+                checked={checkedTw.includes(3)}
+                onClick={() => handleTwClick(3)}
                 disabled
               />
               <FormControlLabel
@@ -251,7 +243,8 @@ export default function DetailCapaian(props: IModalProp) {
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
-                checked={tw4Filled}
+                checked={checkedTw.includes(4)}
+                onClick={() => handleTwClick(4)}
                 disabled
               />
             </Box>
@@ -303,15 +296,22 @@ export default function DetailCapaian(props: IModalProp) {
                     <TableCell align={'center'} sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}>
                       Target Perjanjian
                     </TableCell>
-                    {totalTw.map(item => (
+                    {checkedTw.map(item => (
                       <Fragment key={item}>
-                        <TableCell align={'center'} sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}>
+                        <TableCell
+                          align={'center'}
+                          sx={{
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                          }}
+                        >
                           Target TW{item}
                         </TableCell>
                         <TableCell
                           align={'center'}
                           width={600}
-                          sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}
+                          sx={{
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                          }}
                         >
                           Analisa Progress Capaian TW{item}
                         </TableCell>
