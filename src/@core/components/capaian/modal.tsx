@@ -107,7 +107,7 @@ export default function CapaianModal(props: IModalProp) {
                           Periode
                         </Grid>
                         <Grid md={8} item>
-                          {data?.rkt?.target_perjanjian_kerja}
+                          Triwulan {additional}
                         </Grid>
                       </Grid>
                       <Grid container>

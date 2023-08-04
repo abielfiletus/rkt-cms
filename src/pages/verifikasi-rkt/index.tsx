@@ -164,35 +164,35 @@ const VerifikasiRktPage = () => {
                     ))}
                   </Select>
                 </Grid>
-                <Grid item>
-                  <Select
-                    value={filterDT.status || '0'}
-                    size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
-                    onChange={event => {
-                      const value = event.target.value
-                      if (value !== '0') setFilterDT({ ...filterDT, status: value })
-                      else setFilterDT({ ...filterDT, status: '' })
-                    }}
-                  >
-                    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
-                      Status
-                    </MenuItem>
-                    {Object.keys(VerificationStatus).map(key => {
-                      if (VerificationStatus[key] !== '0') {
-                        return (
-                          <MenuItem
-                            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
-                            key={key}
-                            value={VerificationStatus[key]}
-                          >
-                            {key}
-                          </MenuItem>
-                        )
-                      }
-                    })}
-                  </Select>
-                </Grid>
+                {/*<Grid item>*/}
+                {/*  <Select*/}
+                {/*    value={filterDT.status || '0'}*/}
+                {/*    size={'small'}*/}
+                {/*    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}*/}
+                {/*    onChange={event => {*/}
+                {/*      const value = event.target.value*/}
+                {/*      if (value !== '0') setFilterDT({ ...filterDT, status: value })*/}
+                {/*      else setFilterDT({ ...filterDT, status: '' })*/}
+                {/*    }}*/}
+                {/*  >*/}
+                {/*    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>*/}
+                {/*      Status*/}
+                {/*    </MenuItem>*/}
+                {/*    {Object.keys(VerificationStatus).map(key => {*/}
+                {/*      if (VerificationStatus[key] !== '0') {*/}
+                {/*        return (*/}
+                {/*          <MenuItem*/}
+                {/*            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}*/}
+                {/*            key={key}*/}
+                {/*            value={VerificationStatus[key]}*/}
+                {/*          >*/}
+                {/*            {key}*/}
+                {/*          </MenuItem>*/}
+                {/*        )*/}
+                {/*      }*/}
+                {/*    })}*/}
+                {/*  </Select>*/}
+                {/*</Grid>*/}
               </Grid>
             </Grid>
             <Grid item>
@@ -294,12 +294,6 @@ const VerifikasiRktPage = () => {
               handleDetailClick={handleDetailClick}
               paginationFontSize={isMobile ? 12 : undefined}
               customIcon={data => {
-                console.log({
-                  ability: ability.can('update', 'penyusunan-rkt'),
-                  statusRevision: data.status === VerificationStatus.Revisi,
-                  roleTarget: data.verification_role_target === auth.user?.role?.id
-                })
-
                 return (
                   <Grid container>
                     {ability.can('read', 'penyusunan-rkt') && (

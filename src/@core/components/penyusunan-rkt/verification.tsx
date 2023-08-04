@@ -211,7 +211,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                           {hist.user?.name}
                         </Typography>
                         <Typography fontSize={11} color={theme.palette.grey['500']} fontStyle={'italic'}>
-                          {hist.user?.role?.name} • {dayjs(hist.createdAt).format('d MMMM YYYY HH:mm')}
+                          {hist.user?.role?.name} • {dayjs(hist.createdAt).format('D MMMM YYYY HH:mm')}
                         </Typography>
                         <Divider />
                         <Grid container>

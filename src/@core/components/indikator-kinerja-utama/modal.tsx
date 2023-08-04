@@ -92,6 +92,7 @@ export default function IKUModal(props: IModalProp) {
                 id={'name'}
                 name={'name'}
                 readOnly={type === 'detail'}
+                rows={5}
                 multiline
                 fullWidth
               />

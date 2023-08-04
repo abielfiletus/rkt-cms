@@ -22,6 +22,7 @@ class CustomDocument extends Document {
           <link rel='shortcut icon' href='/images/favicon.png' />
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           <script src={'/js/pdf.worker.js'} />
+          <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover'></meta>
         </Head>
         <body>
           <Main />

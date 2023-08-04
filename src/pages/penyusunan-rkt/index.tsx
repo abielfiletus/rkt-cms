@@ -329,12 +329,6 @@ const PenyusunanRktPage = () => {
               handleDetailClick={handleDetailClick}
               paginationFontSize={isMobile ? 12 : undefined}
               customIcon={data => {
-                console.log({
-                  ability: ability.can('update', 'penyusunan-rkt'),
-                  statusRevision: data.status === VerificationStatus.Revisi,
-                  roleTarget: data.verification_role_target === auth.user?.role?.id
-                })
-
                 return (
                   <Grid container>
                     {ability.can('read', 'penyusunan-rkt') && (

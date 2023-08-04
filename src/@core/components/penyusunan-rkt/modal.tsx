@@ -340,7 +340,6 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   boxSx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
                   boxGrid={4}
                   contentGrid={8}
-                  contentSx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
                   content={
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
@@ -354,6 +353,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                     </LocalizationProvider>
                   }
                   contentSx={{
+                    [theme.breakpoints.only('xs')]: { fontSize: 11 },
                     '& .MuiInputBase-root': { borderRadius: '0', width: 120 },
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderTopColor: 'transparent !important',
@@ -500,6 +500,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                   defaultValue={defaultIkuOption[iku.iku_id]}
                                   disabled={type === 'detail'}
                                   sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
+                                  limit={15}
                                 />
                               }
                               errors={formik.errors}
@@ -767,6 +768,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                               Boolean(formik.errors['iku_data'][i]['aksi_data'][j]['rencana_aksi'])
                                             }
                                             disabled={type === 'detail'}
+                                            rows={5}
+                                            multiline
                                           />
                                         </FormControl>
                                       }

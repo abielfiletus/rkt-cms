@@ -12,10 +12,11 @@ interface IProps {
   valueFieldKey: string
   defaultValue: any
   disabled?: boolean
+  limit?: number
 }
 
 export default function CustomAutocomplete(props: IProps) {
-  const { url, onChange, apiFieldKey, valueFieldKey, labelFieldKey, defaultValue, disabled } = props
+  const { url, onChange, apiFieldKey, valueFieldKey, labelFieldKey, defaultValue, disabled, limit = 10 } = props
 
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -27,7 +28,7 @@ export default function CustomAutocomplete(props: IProps) {
     () =>
       throttle(async (req: Record<string, any>) => {
         setLoading(true)
-        const res = await apiGet(url, { [apiFieldKey]: req.input, limit: 2 })
+        const res = await apiGet(url, { [apiFieldKey]: req.input, limit })
 
         setOptions(res?.data?.data)
         setLoading(false)

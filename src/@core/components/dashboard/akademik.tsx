@@ -15,7 +15,7 @@ export default function AkademikDashboard() {
 
   return (
     <>
-      <Grid spacing={7} justifyContent={isDesktopAndBelow ? 'center' : 'space-between'} container>
+      <Grid spacing={7} paddingX={2} justifyContent={isDesktopAndBelow ? 'center' : 'space-between'} container>
         <Grid item>
           <MahasiswaAktifChart />
         </Grid>

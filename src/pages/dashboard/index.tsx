@@ -66,10 +66,7 @@ const DashboardPage = () => {
             position={'relative'}
             sx={{
               overflowX: 'hidden',
-              height: `calc(100vh - 330px)`,
-              '&::-webkit-scrollbar': { display: 'none' },
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none'
+              height: navigator?.userAgent?.includes('Mac') ? `calc(100vh - 250px)` : `calc(100vh - 330px)`
             }}
           >
             <Box sx={{ position: 'absolute', width: '100%', left: activeLink === 'epb' ? 0 : '-1500px' }}>

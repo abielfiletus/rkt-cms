@@ -26,7 +26,7 @@ const WindowWrapper = ({ children }: Props) => {
   )
 
   if (windowReadyFlag) {
-    return <>{children}</>
+    return <div className={navigator?.userAgent?.includes('Mac') ? 'resize_window' : ''}>{children}</div>
   } else {
     return null
   }

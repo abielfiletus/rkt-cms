@@ -101,7 +101,7 @@ const LoginPage = () => {
   })
 
   return (
-    <Grid container>
+    <Grid height={navigator?.userAgent?.includes('Mac') ? '111.1vh' : 'inherit'} overflow={'none'} container>
       <Grid item xs={12} md={6} style={{ background: 'linear-gradient(90deg, #409EC9 0%, #6769D7 100%)' }}>
         <Box position={'relative'} sx={{ height: '100vh', [theme.breakpoints.down('md')]: { height: '400px' } }}>
           <Box position={'absolute'} style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} textAlign={'center'}>
