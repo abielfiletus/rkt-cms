@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
-import { Fragment, useContext, useMemo, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import VerificationModal from './verification-modal'
 import LoaderModal from '../modal/loader'
@@ -22,19 +22,20 @@ import IconButton from '@mui/material/IconButton'
 import { Close } from 'mdi-material-ui'
 import { AbilityContext } from '../../layouts/components/acl/Can'
 import { useAuth } from '../../hooks/useAuth'
+import { toast } from 'react-toastify'
 
 interface IProps {
-  data: Record<string, any>
+  id: number
   handleClose: (hasData: boolean) => void
 }
 
 export default function PenyusunanRKTVerification(props: IProps) {
-  const { data, handleClose } = props
+  const { id, handleClose } = props
 
   const [loading, setLoading] = useState<boolean>(true)
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [history, setHistory] = useState<Array<Record<string, any>>>([])
   const [type, setType] = useState<'revisi' | 'tolak' | 'setujui'>('revisi')
+  const [data, setData] = useState<{ detail: Record<string, any>; history: Record<string, any>[] }>({ detail: {}, history: [] })
 
   const theme = useTheme()
   const ability = useContext(AbilityContext)
@@ -61,41 +62,48 @@ export default function PenyusunanRKTVerification(props: IProps) {
     if (hasData) handleClose(true)
   }
 
-  useMemo(() => {
-    if (data?.id) {
-      apiGet('/rkt-note-history/by-rkt/' + data.id).then(res => {
-        setHistory(res?.data)
-        setLoading(false)
-      })
+  const fetchData = async () => {
+    try {
+      const [rkt, history] = await Promise.all([apiGet('/penyusunan-rkt/' + id), apiGet('/rkt-note-history/by-rkt/' + id)])
+
+      setData({ detail: rkt?.data, history: history?.data })
+    } catch (err: any) {
+      toast.error(err.message)
+    } finally {
+      setLoading(false)
     }
-  }, [data])
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>
-      {loading && <LoaderModal />}
-      {!loading && (
-        <Dialog
-          open={true}
-          maxWidth={'md'}
-          onClose={(event, reason) => {
-            if (reason && reason == 'backdropClick') handleClose(false)
-          }}
-          fullWidth
-        >
-          <DialogTitle>
-            <Grid justifyContent={'space-between'} container>
-              <Grid item>
-                <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
-                  Verifikasi Penyusunan Usulan RKT
-                </Typography>
-              </Grid>
-              <Grid item>
-                <IconButton onClick={() => handleClose(false)}>
-                  <Close />
-                </IconButton>
-              </Grid>
+      <Dialog
+        open={true}
+        maxWidth={'md'}
+        onClose={(event, reason) => {
+          if (reason && reason == 'backdropClick') handleClose(false)
+        }}
+        fullWidth
+      >
+        <DialogTitle>
+          <Grid justifyContent={'space-between'} container>
+            <Grid item>
+              <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+                Verifikasi Penyusunan Usulan RKT
+              </Typography>
             </Grid>
-          </DialogTitle>
+            <Grid item>
+              <IconButton onClick={() => handleClose(false)}>
+                <Close />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </DialogTitle>
+        {loading && <LoaderModal />}
+        {!loading && (
           <DialogContent>
             <Box sx={{ fontSize: '13px !important' }}>
               <Grid container>
@@ -103,7 +111,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   Tahun Usulan
                 </Grid>
                 <Grid md={8} color={theme.palette.grey['600']} item>
-                  {data?.tahun}
+                  {data.detail?.tahun}
                 </Grid>
               </Grid>
               <Grid container>
@@ -111,7 +119,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   Pengusul
                 </Grid>
                 <Grid md={8} color={theme.palette.grey['600']} item>
-                  {data?.user_submit?.name}
+                  {data.detail?.user_submit?.name}
                 </Grid>
               </Grid>
               <Grid container>
@@ -119,7 +127,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   Nama Usulan Kegiatan
                 </Grid>
                 <Grid md={8} color={theme.palette.grey['600']} item>
-                  {data?.name}
+                  {data.detail?.name}
                 </Grid>
               </Grid>
               <Grid container>
@@ -127,7 +135,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   Usulan Anggaran
                 </Grid>
                 <Grid md={8} color={theme.palette.grey['600']} item>
-                  {data?.usulan_anggaran ? currencyFormatter.format(data.usulan_anggaran) : ''}
+                  {data.detail?.usulan_anggaran ? currencyFormatter.format(data.detail?.usulan_anggaran) : ''}
                 </Grid>
               </Grid>
               <Grid container>
@@ -135,7 +143,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   Terget Perjanjian Kerja
                 </Grid>
                 <Grid md={8} color={theme.palette.grey['600']} item>
-                  {data?.target_perjanjian_kerja}%
+                  {data.detail?.target_perjanjian_kerja}%
                 </Grid>
               </Grid>
               <Table
@@ -162,7 +170,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data?.rkt_x_iku?.map((rkt: Record<string, any>) => {
+                  {data.detail?.rkt_x_iku?.map((rkt: Record<string, any>) => {
                     const ikuAksi = [...new Set(rkt.iku_x_aksi)] as Array<Record<string, any>>
                     const firstAksi = ikuAksi.shift()
 
@@ -198,13 +206,13 @@ export default function PenyusunanRKTVerification(props: IProps) {
                 </TableBody>
               </Table>
             </Box>
-            {history?.length > 0 && (
+            {data.history?.length > 0 && (
               <Box marginTop={10}>
                 <Typography variant={'h6'} marginBottom={4}>
                   History Approval
                 </Typography>
                 <Box maxHeight={500} overflow={'auto'} padding={3}>
-                  {history.map((hist, i) => (
+                  {data.history.map((hist, i) => (
                     <Card key={hist.id} sx={{ marginTop: i > 0 ? 4 : 0, '& .MuiCardContent-root': { padding: 3 } }}>
                       <CardContent>
                         <Typography fontSize={13} fontWeight={500}>
@@ -245,9 +253,9 @@ export default function PenyusunanRKTVerification(props: IProps) {
                 </Box>
               </Box>
             )}
-            {data.status === VerificationStatus['Butuh Persetujuan'] &&
+            {data.detail?.status === VerificationStatus['Butuh Persetujuan'] &&
               ability.can('approve', 'penyusunan-rkt') &&
-              data.verification_role_target === auth.user?.role?.id && (
+              data.detail?.verification_role_target === auth.user?.role?.id && (
                 <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
                   <Grid item>
                     <Button type={'button'} color={'warning'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleRevision}>
@@ -256,13 +264,15 @@ export default function PenyusunanRKTVerification(props: IProps) {
                       </Typography>
                     </Button>
                   </Grid>
-                  <Grid item>
-                    <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
-                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
-                        Tolak
-                      </Typography>
-                    </Button>
-                  </Grid>
+                  {auth.user?.role?.id !== 2 && (
+                    <Grid item>
+                      <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
+                        <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                          Tolak
+                        </Typography>
+                      </Button>
+                    </Grid>
+                  )}
                   <Grid item>
                     <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
                       <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
@@ -273,9 +283,9 @@ export default function PenyusunanRKTVerification(props: IProps) {
                 </Grid>
               )}
           </DialogContent>
-        </Dialog>
-      )}
-      {showModal && <VerificationModal type={type} handleClose={handleModalClose} id={data?.id} />}
+        )}
+      </Dialog>
+      {showModal && <VerificationModal type={type} handleClose={handleModalClose} id={data.detail?.id} />}
     </>
   )
 }

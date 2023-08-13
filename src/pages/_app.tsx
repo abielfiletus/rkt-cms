@@ -82,7 +82,7 @@ const App = (props: ExtendedAppProps) => {
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`RKT Politeknik Negeri Ambol`}</title>
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
+        <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover'></meta>
       </Head>
 
       <AuthProvider>

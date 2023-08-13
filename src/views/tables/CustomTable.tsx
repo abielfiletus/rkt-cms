@@ -233,18 +233,31 @@ const CustomTable = (props: IProps) => {
                       }
 
                       let label = (
-                        <Typography fontSize={column.fontSize || 13} fontWeight={600} color={theme.palette.grey[600]}>
+                        <Typography
+                          title={column.label}
+                          fontSize={column.fontSize || 13}
+                          fontWeight={600}
+                          color={theme.palette.grey[600]}
+                        >
                           {column.label}
                         </Typography>
                       )
 
                       if (column.labelFromDataField) {
+                        const val = valueFromFlattenArray(column.labelFromDataField.split('.') as Array<string>, item)
                         label = (
-                          <Typography fontSize={column.fontSize || 13} color={'primary'} fontWeight={600}>
-                            #{valueFromFlattenArray(column.labelFromDataField.split('.') as Array<string>, item)}
+                          <Typography title={'#' + val} fontSize={column.fontSize || 13} color={'primary'} fontWeight={600}>
+                            #{val}
                           </Typography>
                         )
                       }
+
+                      const resCellVal =
+                        column.format && typeof value === 'number'
+                          ? column.format(value)
+                          : column.id === 'action'
+                          ? column.content
+                          : value
 
                       return column.id === 'action' ? (
                         <TableCell key={'table-' + item.id + '-' + column.label} align={column.align}>
@@ -255,7 +268,10 @@ const CustomTable = (props: IProps) => {
                             <Grid container>
                               {showDetail && handleDetailClick && (
                                 <Grid item>
-                                  <IconButton onClick={() => (handleDetailClick ? handleDetailClick(item) : null)}>
+                                  <IconButton
+                                    title={'Detail'}
+                                    onClick={() => (handleDetailClick ? handleDetailClick(item) : null)}
+                                  >
                                     {customIconDetail}
                                     {!customIconDetail && <FileEyeOutline color={'success'} fontSize={column.iconSize} />}
                                   </IconButton>
@@ -263,14 +279,17 @@ const CustomTable = (props: IProps) => {
                               )}
                               {showEdit && handleEditClick && (
                                 <Grid item>
-                                  <IconButton onClick={() => (handleEditClick ? handleEditClick(item) : null)}>
+                                  <IconButton title={'Ubah'} onClick={() => (handleEditClick ? handleEditClick(item) : null)}>
                                     <PencilOutline color={'primary'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
                               )}
                               {showDelete && handleDeleteClick && (
                                 <Grid item>
-                                  <IconButton onClick={() => (handleDeleteClick ? handleDeleteClick(item) : null)}>
+                                  <IconButton
+                                    title={'Hapus'}
+                                    onClick={() => (handleDeleteClick ? handleDeleteClick(item) : null)}
+                                  >
                                     <DeleteOutline color={'error'} fontSize={column.iconSize} />
                                   </IconButton>
                                 </Grid>
@@ -289,12 +308,14 @@ const CustomTable = (props: IProps) => {
                           {!column.isBadge && label}
                           {column.isBadge && value}
                           {!column.isBadge && (
-                            <Typography fontSize={column.fontSize || 13} color={'black'} fontWeight={500} noWrap={column.noWrap}>
-                              {column.format && typeof value === 'number'
-                                ? column.format(value)
-                                : column.id === 'action'
-                                ? column.content
-                                : value}
+                            <Typography
+                              fontSize={column.fontSize || 13}
+                              title={typeof resCellVal === 'string' ? resCellVal : ''}
+                              color={'black'}
+                              fontWeight={500}
+                              noWrap={column.noWrap}
+                            >
+                              {resCellVal}
                             </Typography>
                           )}
                         </TableCell>

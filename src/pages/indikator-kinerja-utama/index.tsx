@@ -10,6 +10,8 @@ import { useContext, useMemo, useRef, useState } from 'react'
 import DeleteModal from '../../@core/components/modal/delete'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { apiGet } from '../../util/api-fetch'
+import { toast } from 'react-toastify'
 
 const IndikatorKinerjaUtamaPage = () => {
   const theme = useTheme()
@@ -18,6 +20,7 @@ const IndikatorKinerjaUtamaPage = () => {
 
   const nameRef = useRef<HTMLInputElement>()
   const nodRef = useRef<HTMLInputElement>()
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -50,6 +53,26 @@ const IndikatorKinerjaUtamaPage = () => {
 
   const handleAddClick = () => {
     setShowAdd(true)
+  }
+  const handleDownloadClick = async () => {
+    setDownloadLoading(true)
+    try {
+      const download = await apiGet('/indikator-kinerja-utama/download', filterDT, { responseType: 'blob' })
+      const href = URL.createObjectURL(download)
+
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'Data Indikator Kinerja Utama.xlsx') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || 'Internal Server Error')
+    } finally {
+      setDownloadLoading(false)
+    }
   }
 
   let idleTimer: NodeJS.Timeout
@@ -109,7 +132,8 @@ const IndikatorKinerjaUtamaPage = () => {
                     height: 40
                   }}
                   size={'small'}
-                  onClick={handleAddClick}
+                  disabled={downloadLoading}
+                  onClick={handleDownloadClick}
                 >
                   <Grid alignItems={'center'} container>
                     <Grid mt={1.2} item>
@@ -117,7 +141,7 @@ const IndikatorKinerjaUtamaPage = () => {
                     </Grid>
                     <Grid item ml={2}>
                       <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
-                        Download Excel
+                        {downloadLoading ? 'Downloading...' : 'Download Excel'}
                       </Typography>
                     </Grid>
                   </Grid>

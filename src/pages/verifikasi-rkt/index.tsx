@@ -12,7 +12,6 @@ import { ReverseVerificationStatus, VerificationStatus, VerificationStatusColor 
 import CustomTable from '../../views/tables/CustomTable'
 import DeleteModal from '../../@core/components/modal/delete'
 import VerifikasiRKTModal from '../../@core/components/penyusunan-rkt/modal'
-import LoaderModal from '../../@core/components/modal/loader'
 import VerifikasiRKTVerification from '../../@core/components/penyusunan-rkt/verification'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -22,7 +21,6 @@ import { useAuth } from '../../@core/hooks/useAuth'
 const VerifikasiRktPage = () => {
   // state
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [modalLoading, setModalLoading] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showAdd, setShowAdd] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
@@ -50,16 +48,6 @@ const VerifikasiRktPage = () => {
     setQueryParams({ ...queryParams, ...filterDT })
     setReFetchDT(true)
   }, [filterDT])
-
-  useMemo(() => {
-    if (id) {
-      setModalLoading(true)
-      apiGet(baseUrl + '/' + id).then(res => {
-        setModalLoading(false)
-        setData(res?.data)
-      })
-    }
-  }, [id])
 
   // HTML ref
   const nameRef = useRef<HTMLInputElement>()
@@ -97,7 +85,6 @@ const VerifikasiRktPage = () => {
   return (
     <>
       {isLoading && <LoaderPage />}
-      {modalLoading && <LoaderModal />}
       {!isLoading && (
         <Box>
           <Typography variant={'h6'} fontWeight={'bold'} color={'primary'}>
@@ -330,10 +317,10 @@ const VerifikasiRktPage = () => {
               }}
             />
           </Box>
-          {showDetail && <VerifikasiRKTModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}
+          {showDetail && <VerifikasiRKTModal id={id} type={'detail'} handleClose={() => setShowDetail(false)} />}
           {showApproval && (
             <VerifikasiRKTVerification
-              data={data}
+              id={id as number}
               handleClose={(hasData: boolean) => {
                 setShowApproval(false)
                 if (hasData) setReFetchDT(true)
@@ -342,7 +329,7 @@ const VerifikasiRktPage = () => {
           )}
           {showEdit && (
             <VerifikasiRKTModal
-              data={data}
+              id={id}
               type={'ubah'}
               handleClose={(hasData: boolean) => {
                 setShowEdit(false)

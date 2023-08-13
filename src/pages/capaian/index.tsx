@@ -8,12 +8,13 @@ import LoaderPage from '../../views/loader'
 import { apiGet } from '../../util/api-fetch'
 import { CapaianStatus, CapaianStatusColor, ConfigKey, ReverseCapaianStatus } from '../../configs/enum'
 import CustomTable, { Column } from '../../views/tables/CustomTable'
-import LoaderModal from '../../@core/components/modal/loader'
 import PenyusunanRKTVerification from '../../@core/components/penyusunan-rkt/verification'
 import CapaianModal from '../../@core/components/capaian/modal'
 import DetailCapaian from '../../@core/components/capaian/detail'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import IconButton from '@mui/material/IconButton'
+import { FileEyeOutline } from 'mdi-material-ui'
 
 interface IPropTwButton {
   tw_index: number
@@ -24,13 +25,11 @@ interface IPropTwButton {
 const CapaianPage = () => {
   // state
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [modalLoading, setModalLoading] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
   const [showApproval, setShowApproval] = useState<boolean>(false)
   const [showInputTw, setShowInputTw] = useState<boolean>(false)
   const [reFetchDT, setReFetchDT] = useState<boolean>(false)
   const [initializedDT, setInitializedDT] = useState<boolean>(false)
-  const [data, setData] = useState<Record<string, any>>({})
   const [filterDT, setFilterDT] = useState({ tahun: '', submit_name: '', name: '', status: '' })
   const [queryParams, setQueryParams] = useState<Record<string, any>>({ sort_field: 'id', sort_dir: 'ASC' })
   const [submitFilter, setSubmitFilter] = useState<Array<string>>([])
@@ -42,8 +41,6 @@ const CapaianPage = () => {
   const theme = useTheme()
   const ability = useContext(AbilityContext)
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
-
-  const baseUrl = '/capaian'
 
   const fetchConfiguration = async () => {
     const [tw1, tw2, tw3, tw4] = await Promise.all([
@@ -139,16 +136,6 @@ const CapaianPage = () => {
     setReFetchDT(true)
   }, [filterDT])
 
-  useMemo(() => {
-    if (id) {
-      setModalLoading(true)
-      apiGet(baseUrl + '/' + id).then(res => {
-        setModalLoading(false)
-        setData(res?.data)
-      })
-    }
-  }, [id])
-
   // HTML ref
   const nameRef = useRef<HTMLInputElement>()
 
@@ -186,7 +173,6 @@ const CapaianPage = () => {
   return (
     <>
       {isLoading && <LoaderPage />}
-      {modalLoading && <LoaderModal />}
       {!isLoading && (
         <Box>
           <Typography variant={'h6'} fontWeight={'bold'} color={'primary'}>
@@ -291,12 +277,29 @@ const CapaianPage = () => {
               setInitialized={setInitializedDT}
               queryParams={queryParams}
               handleDetailClick={handleDetailClick}
+              customIcon={data => {
+                return (
+                  <Grid container>
+                    <Grid item>
+                      <IconButton
+                        title={'Detail'}
+                        onClick={() => {
+                          setId(data.rkt_id)
+                          setShowDetail(true)
+                        }}
+                      >
+                        <FileEyeOutline color={'success'} fontSize={isMobile ? 'small' : 'inherit'} />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                )
+              }}
             />
           </Box>
-          {showDetail && <DetailCapaian data={data} type={'detail'} handleClose={() => setShowDetail(false)} id={id} />}
+          {showDetail && <DetailCapaian type={'detail'} handleClose={() => setShowDetail(false)} id={id} />}
           {showApproval && (
             <PenyusunanRKTVerification
-              data={data}
+              id={id as number}
               handleClose={(hasData: boolean) => {
                 setShowApproval(false)
                 if (hasData) setReFetchDT(true)
@@ -305,7 +308,6 @@ const CapaianPage = () => {
           )}
           {showInputTw && (
             <CapaianModal
-              data={data}
               id={id}
               type={'ubah'}
               additional={twIndex}

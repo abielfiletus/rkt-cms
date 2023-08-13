@@ -17,10 +17,12 @@ import DraftPerjanjianKerja from '../../@core/components/perjanjian-kerja/draft'
 import VerificationPerjanjianKerja from '../../@core/components/perjanjian-kerja/verification'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { toast } from 'react-toastify'
 
 const PerjanjianKerjaPage = () => {
   // state
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
   const [showDraft, setShowDraft] = useState<boolean>(false)
   const [showVerification, setShowVerification] = useState<boolean>(false)
@@ -30,64 +32,12 @@ const PerjanjianKerjaPage = () => {
   const [queryParams, setQueryParams] = useState<Record<string, any>>({ sort_field: 'id', sort_dir: 'ASC', join: 'rkt' })
   const [anggaranFilter, setAnggaranFilter] = useState<Array<string>>([])
   const [yearFilter, setYearFilter] = useState<Array<string>>([])
-  const [columns, setColumns] = useState<Array<Column>>([])
   const [id, setId] = useState<number>(0)
 
   useEffect(() => {
     apiGet('/perjanjian-kerja/filter').then(res => {
       setYearFilter(res?.data?.tahun)
       setAnggaranFilter(res?.data?.anggaran)
-
-      const column: Array<Column> = [
-        {
-          id: 'rkt.name',
-          label: 'id',
-          labelFromDataField: 'id',
-          minWidth: 120,
-          noWrap: true,
-          maxWidth: 200,
-          fontSize: isMobile ? 11 : undefined
-        },
-        {
-          id: 'rkt.usulan_anggaran',
-          label: 'Usulan Anggaran',
-          align: 'center',
-          transform: value => (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
-          minWidth: 150,
-          fontSize: isMobile ? 11 : undefined
-        },
-        {
-          id: 'rkt.tahun',
-          label: 'Tahun Pengajuan',
-          align: 'center',
-          fontSize: isMobile ? 11 : undefined,
-          minWidth: 100
-        },
-        {
-          id: 'status',
-          label: 'Status',
-          transform: value => {
-            let status = ReverseVerificationStatus[value as string] || '-'
-            if (value === '0') status += ' Admin'
-
-            return status
-          },
-          isBadge: true,
-          badgeColor: value => VerificationStatusColor[value as string],
-          fontSize: isMobile ? 11 : undefined,
-          minWidth: 200
-        }
-      ]
-
-      if (
-        ability.can('create', 'perjanjian-kerja') ||
-        ability.can('update', 'perjanjian-kerja') ||
-        ability.can('approve', 'perjanjian-kerja')
-      ) {
-        column.push({ id: 'action', label: 'Aksi', minWidth: 120, fontSize: isMobile ? 11 : undefined })
-      }
-
-      setColumns(column)
 
       setIsLoading(false)
     })
@@ -105,6 +55,48 @@ const PerjanjianKerjaPage = () => {
   const ability = useContext(AbilityContext)
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
+  const column: Array<Column> = [
+    {
+      id: 'rkt.name',
+      label: 'id',
+      labelFromDataField: 'id',
+      minWidth: 120,
+      noWrap: true,
+      maxWidth: 200,
+      fontSize: isMobile ? 11 : undefined
+    },
+    {
+      id: 'rkt.usulan_anggaran',
+      label: 'Usulan Anggaran',
+      align: 'center',
+      transform: value => (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
+      minWidth: 150,
+      fontSize: isMobile ? 11 : undefined
+    },
+    {
+      id: 'rkt.tahun',
+      label: 'Tahun Pengajuan',
+      align: 'center',
+      fontSize: isMobile ? 11 : undefined,
+      minWidth: 100
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      transform: value => {
+        let status = ReverseVerificationStatus[value as string] || '-'
+        if (value === '0') status += ' Koordinator'
+
+        return status
+      },
+      isBadge: true,
+      badgeColor: value => VerificationStatusColor[value as string],
+      fontSize: isMobile ? 11 : undefined,
+      minWidth: 200
+    },
+    { id: 'action', label: 'Aksi', minWidth: 120, fontSize: isMobile ? 11 : undefined }
+  ]
+
   // handler
   const handleDetailClick = (pk: Record<string, any>) => {
     setShowDetail(true)
@@ -117,6 +109,26 @@ const PerjanjianKerjaPage = () => {
   const handleDraftClick = (pk: Record<string, any>) => {
     setId(pk.rkt_id)
     setShowDraft(true)
+  }
+  const handleDownloadClick = async () => {
+    setDownloadLoading(true)
+    try {
+      const download = await apiGet('/perjanjian-kerja/download', filterDT, { responseType: 'blob' })
+      const href = URL.createObjectURL(download)
+
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'Data Perjanjian Kerja.xlsx') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || 'Internal Server Error')
+    } finally {
+      setDownloadLoading(false)
+    }
   }
 
   let idleTimer: NodeJS.Timeout
@@ -234,6 +246,8 @@ const PerjanjianKerjaPage = () => {
                         boxShadow: 4,
                         height: 40
                       }}
+                      disabled={downloadLoading}
+                      onClick={handleDownloadClick}
                       size={'small'}
                     >
                       <Grid alignItems={'center'} container>
@@ -242,7 +256,7 @@ const PerjanjianKerjaPage = () => {
                         </Grid>
                         <Grid item ml={2}>
                           <Typography color={'white'} fontSize={isMobile ? 11 : 12} fontWeight={'bold'}>
-                            Download Excel
+                            {downloadLoading ? 'Downloading...' : 'Download Excel'}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -254,7 +268,7 @@ const PerjanjianKerjaPage = () => {
           </Grid>
           <Box mt={7}>
             <CustomTable
-              columns={columns}
+              columns={column}
               url={'perjanjian-kerja'}
               initialized={initializedDT}
               reFetch={reFetchDT}
@@ -264,21 +278,23 @@ const PerjanjianKerjaPage = () => {
               customIcon={data => (
                 <Grid container>
                   <Grid item>
-                    {(ability.can('create', 'perjanjian-kerja') || ability.can('update', 'perjanjian-kerja')) && (
-                      <IconButton title={'Download Draft'} onClick={() => handleDraftClick(data)}>
-                        <CloudDownload />
-                      </IconButton>
-                    )}
+                    {(ability.can('create', 'perjanjian-kerja') || ability.can('update', 'perjanjian-kerja')) &&
+                      ['2', '5'].includes(data.status) && (
+                        <IconButton title={'Download Draft'} onClick={() => handleDraftClick(data)}>
+                          <CloudDownload />
+                        </IconButton>
+                      )}
                   </Grid>
                   <Grid item>
-                    {(ability.can('create', 'perjanjian-kerja') || ability.can('update', 'perjanjian-kerja')) && (
-                      <IconButton title={'Upload Perjanjian Kerja'} onClick={() => handleDetailClick(data)}>
-                        <CloudUpload />
-                      </IconButton>
-                    )}
+                    {(ability.can('create', 'perjanjian-kerja') || ability.can('update', 'perjanjian-kerja')) &&
+                      ['2', '5'].includes(data.status) && (
+                        <IconButton title={'Upload Perjanjian Kerja'} onClick={() => handleDetailClick(data)}>
+                          <CloudUpload />
+                        </IconButton>
+                      )}
                   </Grid>
                   <Grid item>
-                    {ability.can('approve', 'perjanjian-kerja') && (
+                    {ability.can('approve', 'perjanjian-kerja') && data.status === '0' && (
                       <IconButton title={'Verifikasi'} onClick={() => handleVerificationClick(data)}>
                         <ReceiptTextCheck />
                       </IconButton>

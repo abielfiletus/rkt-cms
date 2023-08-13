@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid'
 import VerificationModal from './verification-modal'
 import IconButton from '@mui/material/IconButton'
 import { Close } from 'mdi-material-ui'
+import { blobToBase64 } from '../../../util/functions'
 
 interface IProps {
   id: number
@@ -21,12 +22,18 @@ export default function VerificationPerjanjianKerja(props: IProps) {
   const [data, setData] = useState<Record<string, any>>({})
   const [showModal, setShowModal] = useState<boolean>(false)
   const [type, setType] = useState<'revisi' | 'tolak' | 'setujui'>('revisi')
+  const [pdf, setPdf] = useState<string>('')
 
   useMemo(() => {
     if (id) {
-      apiGet('/perjanjian-kerja/' + id).then(res => {
-        setIsLoading(false)
+      apiGet('/perjanjian-kerja/' + id).then(async res => {
+        const getFile = await fetch(process.env.NEXT_PUBLIC_BE_URL + '/' + res.data.perjanjian_kerja)
+        const blob = await getFile.blob()
+        const file = (await blobToBase64(blob)) as string
+
         setData(res.data)
+        setPdf(file)
+        setIsLoading(false)
       })
     }
   }, [id])
@@ -73,12 +80,7 @@ export default function VerificationPerjanjianKerja(props: IProps) {
               </Grid>
             </DialogTitle>
             <DialogContent>
-              <iframe
-                src={process.env.NEXT_PUBLIC_BE_URL + '/' + data.perjanjian_kerja + '#toolbar=0'}
-                frameBorder='1'
-                width={'100%'}
-                height={'600px'}
-              />
+              {pdf && <iframe src={pdf + '#toolbar=0'} frameBorder='1' width={'100%'} height={'600px'} />}
             </DialogContent>
             <DialogActions>
               <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
@@ -89,13 +91,13 @@ export default function VerificationPerjanjianKerja(props: IProps) {
                     </Typography>
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
-                    <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
-                      Tolak
-                    </Typography>
-                  </Button>
-                </Grid>
+                {/*<Grid item>*/}
+                {/*  <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>*/}
+                {/*    <Typography color={'white'} fontSize={12} fontWeight={'bold'}>*/}
+                {/*      Tolak*/}
+                {/*    </Typography>*/}
+                {/*  </Button>*/}
+                {/*</Grid>*/}
                 <Grid item>
                   <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
                     <Typography color={'white'} fontSize={12} fontWeight={'bold'}>

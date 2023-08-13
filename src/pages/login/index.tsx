@@ -38,6 +38,7 @@ const LoginPage = () => {
     nip: '',
     showPassword: false
   })
+  const [loading, setLoading] = useState<boolean>(false)
 
   const theme = useTheme()
   const router = useRouter()
@@ -64,39 +65,11 @@ const LoginPage = () => {
     },
     validationSchema: LoginSchema,
     onSubmit: async values => {
+      setLoading(true)
       auth.login(values, err => {
         formik.setErrors(err)
+        setLoading(false)
       })
-      // const fetch = await apiPost('/user/login', values)
-      //
-      // if (fetch.code === 422) {
-      //   formik.setErrors(fetch.error)
-      // } else {
-      //   window.localStorage.setItem('access', fetch.data.token)
-      //   window.localStorage.setItem('name', fetch.data.name)
-      //   window.localStorage.setItem('nip', fetch.data.nip)
-      //   window.localStorage.setItem('id', fetch.data.id)
-      //   window.localStorage.setItem('email', fetch.data.email)
-      //   window.localStorage.setItem('prodi', JSON.stringify(fetch.data.prodi))
-      //   window.localStorage.setItem('role', JSON.stringify(fetch.data.role))
-      //   window.localStorage.setItem('department', JSON.stringify(fetch.data.department))
-      //   window.localStorage.setItem('avatar', process.env.NEXT_PUBLIC_BE_URL + '/' + fetch.data.avatar)
-      //
-      //   auth.setUser(fetch.data)
-      //
-      //   const permissions = await apiGet(authConfig.permissionsEndpoint)
-      //   auth.setAcl(permissions?.data)
-      //   console.log(permissions?.data)
-      //
-      //   let redirectURL = '/'
-      //
-      //   if (permissions?.data?.length) redirectURL = permissions?.data[0].subject
-      //   if (returnUrl && returnUrl !== '/') redirectURL = returnUrl as string
-      //
-      //   toast.success('Berhasil Masuk')
-      //
-      //   await router.replace(redirectURL as string)
-      // }
     }
   })
 
@@ -231,9 +204,10 @@ const LoginPage = () => {
                     fontWeight: 'bold'
                   }}
                   type={'submit'}
+                  disabled={loading}
                   fullWidth
                 >
-                  Masuk Aplikasi
+                  {loading ? 'Loading...' : 'Masuk Aplikasi'}
                 </Button>
               </Box>
             </form>

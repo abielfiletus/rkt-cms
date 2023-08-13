@@ -26,3 +26,7 @@ input[readonly] {
   background-color: #F5F5F5;
   border-radius: inherit;
 }
+
+.resize_window {
+  /*zoom: 0.9*/
+}

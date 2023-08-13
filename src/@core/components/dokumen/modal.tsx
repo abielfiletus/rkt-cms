@@ -118,7 +118,7 @@ export default function DocumentModal(props: IModalProp) {
               Upload berkas pendukung <span style={{ color: theme.palette.error.main }}>*</span>
             </Typography>
             <Typography variant={'caption'} fontStyle={'italic'}>
-              {'*File dalam bentuk JPG/JPEG < 1 MB'}
+              {'*File dalam bentuk PDF < 1 MB'}
             </Typography>
             <FileInput
               name={'file'}
@@ -126,7 +126,7 @@ export default function DocumentModal(props: IModalProp) {
               handleChange={handleChangeFile}
               disabled={type === 'detail'}
               errorMessage={formik.errors.file as string}
-              mimeAccept={'.png,.jpg,.jpeg'}
+              mimeAccept={'.pdf'}
               value={file}
               paddingTopError={'7px'}
               sx={{ marginLeft: '0 !important' }}

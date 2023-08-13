@@ -60,17 +60,17 @@ const navigation = (): VerticalNavItemsType => {
       action: ['create', 'read', 'update', 'delete']
     },
     {
-      title: 'Capaian',
-      icon: TextBoxCheckOutline,
-      path: '/capaian',
-      subject: 'capaian',
-      action: ['create', 'read', 'update', 'delete']
-    },
-    {
       title: 'Perjanjian Kerja',
       path: '/perjanjian-kerja',
       icon: GoogleCirclesExtended,
       subject: 'perjanjian-kerja',
+      action: ['create', 'read', 'update', 'delete']
+    },
+    {
+      title: 'Capaian',
+      icon: TextBoxCheckOutline,
+      path: '/capaian',
+      subject: 'capaian',
       action: ['create', 'read', 'update', 'delete']
     },
     {

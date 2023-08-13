@@ -24,14 +24,18 @@ export default function CustomAutocomplete(props: IProps) {
   const [value, setValue] = useState<string>(defaultValue || '')
   const [inputValue, setInputValue] = useState<string>('')
 
+  console.log({ options, value })
+
   const fetch = useMemo(
     () =>
       throttle(async (req: Record<string, any>) => {
-        setLoading(true)
-        const res = await apiGet(url, { [apiFieldKey]: req.input, limit })
+        if (!disabled) {
+          setLoading(true)
+          const res = await apiGet(url, { [apiFieldKey]: req.input, limit })
 
-        setOptions(res?.data?.data)
-        setLoading(false)
+          setOptions(res?.data?.data)
+          setLoading(false)
+        }
       }, 1000),
     []
   )

@@ -30,6 +30,7 @@ export default function PerjanjianKerjaModal(props: IModalProp) {
         setData(res.data)
 
         if (res.data?.perjanjian_kerja) {
+          console.log('emgn disin ?')
           formik.setValues({ id: res.data.id, perjanjian_kerja: '' })
           setFiles(baseUrl + '/' + res.data.perjanjian_kerja, setPK).then(() => setIsLoading(false))
         }
@@ -132,7 +133,7 @@ export default function PerjanjianKerjaModal(props: IModalProp) {
         <>
           <DialogTitle>
             <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
-              {type} Penyusunan Usulan RKT
+              Form Upload Berkas PK
             </Typography>
           </DialogTitle>
           <DialogContent>

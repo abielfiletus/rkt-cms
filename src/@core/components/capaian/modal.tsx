@@ -44,7 +44,7 @@ export default function CapaianModal(props: IModalProp) {
         )
 
         setRktIkuHash(mapRkt)
-        formik.setValues({ data: values, tw_index: 1 })
+        formik.setValues({ data: values, tw_index: additional })
       })
     }
   }, [id])
@@ -115,7 +115,7 @@ export default function CapaianModal(props: IModalProp) {
                           Target Yang Diajukan
                         </Grid>
                         <Grid md={8} item>
-                          {rktIku?.tw_1}
+                          {rktIku?.[`tw_${additional}`]}
                         </Grid>
                       </Grid>
                       <Grid container>

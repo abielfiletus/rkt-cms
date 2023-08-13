@@ -12,17 +12,17 @@ import { ConfigKey, ReverseVerificationStatus, VerificationStatus, VerificationS
 import CustomTable from '../../views/tables/CustomTable'
 import DeleteModal from '../../@core/components/modal/delete'
 import PenyusunanRKTModal from '../../@core/components/penyusunan-rkt/modal'
-import LoaderModal from '../../@core/components/modal/loader'
 import PenyusunanRKTVerification from '../../@core/components/penyusunan-rkt/verification'
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import IconButton from '@mui/material/IconButton'
 import { useAuth } from '../../@core/hooks/useAuth'
+import { toast } from 'react-toastify'
 
 const PenyusunanRktPage = () => {
   // state
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [modalLoading, setModalLoading] = useState<boolean>(false)
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
   const [showEdit, setShowEdit] = useState<boolean>(false)
   const [showAdd, setShowAdd] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
@@ -58,11 +58,11 @@ const PenyusunanRktPage = () => {
 
   useMemo(() => {
     if (id) {
-      setModalLoading(true)
-      apiGet(baseUrl + '/' + id).then(res => {
-        setModalLoading(false)
-        setData(res?.data)
-      })
+      // setModalLoading(true)
+      // apiGet(baseUrl + '/' + id).then(res => {
+      //   setModalLoading(false)
+      //   setData(res?.data)
+      // })
     }
   }, [id])
 
@@ -97,13 +97,32 @@ const PenyusunanRktPage = () => {
     setData(data)
   }
   const handleAddClick = () => setShowAdd(true)
+  const handleDownloadClick = async () => {
+    setDownloadLoading(true)
+    try {
+      const download = await apiGet(baseUrl + '/download', filterDT, { responseType: 'blob' })
+      const href = URL.createObjectURL(download)
+
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'Data Penyusunan RKT.xlsx') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || 'Internal Server Error')
+    } finally {
+      setDownloadLoading(false)
+    }
+  }
 
   let idleTimer: NodeJS.Timeout
 
   return (
     <>
       {isLoading && <LoaderPage />}
-      {modalLoading && <LoaderModal />}
       {!isLoading && (
         <Box>
           <Typography variant={'h6'} fontWeight={'bold'} color={'primary'}>
@@ -215,7 +234,8 @@ const PenyusunanRktPage = () => {
                         height: 40
                       }}
                       size={'small'}
-                      onClick={handleAddClick}
+                      disabled={downloadLoading}
+                      onClick={handleDownloadClick}
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
@@ -223,7 +243,7 @@ const PenyusunanRktPage = () => {
                         </Grid>
                         <Grid item ml={2}>
                           <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
-                            Download Excel
+                            {downloadLoading ? 'Downloading...' : 'Download Excel'}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -333,7 +353,7 @@ const PenyusunanRktPage = () => {
                   <Grid container>
                     {ability.can('read', 'penyusunan-rkt') && (
                       <Grid item>
-                        <IconButton onClick={() => handleDetailClick(data)}>
+                        <IconButton title={'Detail'} onClick={() => handleDetailClick(data)}>
                           <FileEyeOutline color={'success'} fontSize={isMobile ? 'small' : 'inherit'} />
                         </IconButton>
                       </Grid>
@@ -344,7 +364,7 @@ const PenyusunanRktPage = () => {
                         data.verification_role_target === auth.user?.role?.id)) &&
                       data.status !== VerificationStatus.Selesai && (
                         <Grid item>
-                          <IconButton onClick={() => handleEditClick(data)}>
+                          <IconButton title={'Ubah'} onClick={() => handleEditClick(data)}>
                             <PencilOutline color={'primary'} fontSize={isMobile ? 'small' : 'inherit'} />
                           </IconButton>
                         </Grid>
@@ -355,7 +375,7 @@ const PenyusunanRktPage = () => {
                         data.verification_role_target === auth.user?.role?.id)) &&
                       data.status !== VerificationStatus.Selesai && (
                         <Grid item>
-                          <IconButton onClick={() => handleDeleteClick(data)}>
+                          <IconButton title={'Hapus'} onClick={() => handleDeleteClick(data)}>
                             <DeleteOutline color={'error'} fontSize={isMobile ? 'small' : 'inherit'} />
                           </IconButton>
                         </Grid>
@@ -365,10 +385,10 @@ const PenyusunanRktPage = () => {
               }}
             />
           </Box>
-          {showDetail && <PenyusunanRKTModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}
+          {showDetail && <PenyusunanRKTModal id={id} type={'detail'} handleClose={() => setShowDetail(false)} />}
           {showApproval && (
             <PenyusunanRKTVerification
-              data={data}
+              id={id as number}
               handleClose={(hasData: boolean) => {
                 setShowApproval(false)
                 if (hasData) setReFetchDT(true)
@@ -377,7 +397,7 @@ const PenyusunanRktPage = () => {
           )}
           {showEdit && (
             <PenyusunanRKTModal
-              data={data}
+              id={id}
               type={'ubah'}
               handleClose={(hasData: boolean) => {
                 setShowEdit(false)

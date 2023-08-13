@@ -28,7 +28,7 @@ import CustomAutocomplete from '../../../views/form-layouts/custom-autocomplete'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 export default function PenyusunanRKTModal(props: IModalProp) {
-  const { data, type, handleClose } = props
+  const { id, type, handleClose } = props
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
@@ -40,6 +40,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
   const [referensiHarga, setReferensiHarga] = useState('')
   const [attachment, setAttachment] = useState('')
   const [defaultIkuOption, setDefaultIkuOption] = useState({})
+  const [data, setData] = useState<Record<string, any>>({})
   const baseUrl = process.env.NEXT_PUBLIC_BE_URL
 
   const formatIkuData = async (iku_data: Array<Record<string, any>>) => {
@@ -99,8 +100,13 @@ export default function PenyusunanRKTModal(props: IModalProp) {
 
         const hashing = {}
         getOptions.data?.map(item => (hashing[item.id] = item))
+        console.log({ hashing })
         setDefaultIkuOption(hashing)
       }
+      console.log({ isLoading })
+
+      setData(data)
+      setIsLoading(false)
 
       if (data.kak) {
         const fileUrl = baseUrl + '/' + data.kak
@@ -126,14 +132,14 @@ export default function PenyusunanRKTModal(props: IModalProp) {
         if (split[split.length - 1] === 'pdf') await setFiles(fileUrl, setAttachment)
         else setAttachment(fileUrl)
       }
-
-      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    if (data) formatData(data)
-  }, [data])
+    if (id) {
+      apiGet('/penyusunan-rkt/' + id).then(res => formatData(res.data))
+    }
+  }, [id])
 
   const userProdi = JSON.parse(window.localStorage.getItem('prodi') || '{}')
   const userId = window.localStorage.getItem('id')
@@ -349,6 +355,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                         format={'YYYY'}
                         value={formik.values.tahun}
                         sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
+                        onChange={value => formik.setFieldValue('tahun', value)}
                       />
                     </LocalizationProvider>
                   }
