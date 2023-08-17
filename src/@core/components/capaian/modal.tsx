@@ -56,8 +56,8 @@ export default function CapaianModal(props: IModalProp) {
       const baseUrl = '/capaian'
       let fetch
 
-      if (type === 'ubah') fetch = await apiPatch(baseUrl + '/' + data?.id, values, {}, false, false)
-      else fetch = await apiPost(baseUrl, values, {}, false)
+      if (type === 'ubah') fetch = await apiPatch(baseUrl + '/' + data?.id, values, {})
+      else fetch = await apiPost(baseUrl, values, {})
 
       if (fetch.code === 422) {
         formik.setErrors(fetch.error)
