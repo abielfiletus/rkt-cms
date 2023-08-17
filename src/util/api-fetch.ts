@@ -21,14 +21,15 @@ export const apiPost = async (
   url: string,
   body: Record<string, any>,
   headerConfig: AxiosRequestConfig<Record<string, any>> = {},
-  useToken = true
+  useToken = true,
+  multipart = true
 ) => {
   try {
     if (useToken) {
       const token = window.localStorage.getItem('access')
       headerConfig.headers = { ...headerConfig.headers, ...{} }
       headerConfig.headers.Authorization = 'Bearer ' + token
-      headerConfig.headers['Content-Type'] = 'multipart/form-data'
+      if (multipart) headerConfig.headers['Content-Type'] = 'multipart/form-data'
     }
 
     const res = await axios.post(baseUrl + url, body, headerConfig)
