@@ -108,14 +108,19 @@ const CustomTable = (props: IProps) => {
 
   useEffect(() => {
     if (!initialized || reFetch || fetchTable) {
+      setLoadingDT(true)
       let reqUrl = baseUrl
-      if (queryParams) reqUrl += '?' + new URLSearchParams(queryParams)
+      if (queryParams)
+        reqUrl += '?' + new URLSearchParams({ ...queryParams, page, limit: rowsPerPage, sort_field: 'id' } as Record<string, any>)
 
-      apiGet(reqUrl).then(res => {
-        setData(res?.data?.data)
-        setCount(res?.data?.recordsFiltered || 0)
-        setLoadingDT(false)
-      })
+      apiGet(reqUrl)
+        .then(res => {
+          setData(res?.data?.data)
+          setCount(res?.data?.recordsFiltered || 0)
+        })
+        .finally(() => {
+          setLoadingDT(false)
+        })
 
       if (reFetch) setReFetch(false)
       if (!initialized) setInitialized(true)
