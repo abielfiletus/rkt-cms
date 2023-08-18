@@ -100,13 +100,14 @@ const CustomTable = (props: IProps) => {
   const [data, setData] = useState<Array<Record<string, any>>>([])
   const [loadingDT, setLoadingDT] = useState<boolean>(true)
   const [count, setCount] = useState<number>(0)
+  const [fetchTable, setFetchTable] = useState<boolean>(false)
 
   const theme = useTheme()
 
   const baseUrl = '/' + url
 
   useEffect(() => {
-    if (!initialized || reFetch) {
+    if (!initialized || reFetch || fetchTable) {
       let reqUrl = baseUrl
       if (queryParams) reqUrl += '?' + new URLSearchParams(queryParams)
 
@@ -123,11 +124,13 @@ const CustomTable = (props: IProps) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
+    setFetchTable(true)
   }
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
+    setFetchTable(true)
   }
 
   const validateShowActionButton = (columnContent: boolean | ColumnActionValues | undefined, rowValues: Record<string, any>) => {
