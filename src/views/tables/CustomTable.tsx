@@ -111,7 +111,9 @@ const CustomTable = (props: IProps) => {
       setLoadingDT(true)
       let reqUrl = baseUrl
       if (queryParams)
-        reqUrl += '?' + new URLSearchParams({ ...queryParams, page, limit: rowsPerPage, sort_field: 'id' } as Record<string, any>)
+        reqUrl +=
+          '?' +
+          new URLSearchParams({ ...queryParams, page: page + 1, limit: rowsPerPage, sort_field: 'id' } as Record<string, any>)
 
       apiGet(reqUrl)
         .then(res => {
