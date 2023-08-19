@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import { IModalProp } from '../../../configs/modalConfig'
-import { apiGet } from '../../../util/api-fetch'
+import { apiGet, apiPost } from '../../../util/api-fetch'
 import Grid from '@mui/material/Grid'
 import { Close, FilePdfBox } from 'mdi-material-ui'
 import IconButton from '@mui/material/IconButton'
@@ -18,12 +18,14 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import Button from '@mui/material/Button'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { toast } from 'react-toastify'
 
 export default function DetailCapaian(props: IModalProp) {
   const { id, handleClose } = props
 
   // state
   const [isLoading, setIsLoading] = useState(true)
+  const [downloadLoading, setDownloadLoading] = useState(false)
   const [checkedTw, setCheckedTw] = useState<Array<number>>([])
   const [tableData, setTableData] = useState<Array<JSX.Element>>([])
   const [data, setData] = useState<Record<string, any>>()
@@ -47,7 +49,7 @@ export default function DetailCapaian(props: IModalProp) {
           </Typography>
           <Typography fontSize={isMobile ? 10 : 14}>{data?.capaian?.[`masalah_${tw_index}`] || '-'}</Typography>
           <Typography fontSize={isMobile ? 10 : 14} fontWeight={500} marginBottom={1} marginTop={4}>
-            Strategi / Tindak Lanjut
+            Strategi / Tindak Lanjut :
           </Typography>
           <Typography fontSize={isMobile ? 10 : 14}>{data?.capaian?.[`strategi_${tw_index}`] || '-'}</Typography>
         </TableCell>
@@ -146,6 +148,27 @@ export default function DetailCapaian(props: IModalProp) {
       setCheckedTw(checkedTw.filter(val => val !== index))
     } else {
       setCheckedTw(val => [...val, index].sort())
+    }
+  }
+
+  const handleDownload = async () => {
+    if (data) {
+      setDownloadLoading(true)
+      try {
+        const res = await apiPost('/capaian/download-draft', { rkt_id: data.id, tw_checked: checkedTw })
+
+        const link = document.createElement('a')
+        link.href = res.file
+        link.setAttribute('download', res.recommendation_filename)
+
+        document.body.appendChild(link)
+        link.click()
+        link.parentNode?.removeChild(link)
+      } catch (err) {
+        toast.error('Gagal mendownload file')
+      } finally {
+        setDownloadLoading(false)
+      }
     }
   }
 
@@ -325,13 +348,13 @@ export default function DetailCapaian(props: IModalProp) {
           </DialogContent>
           <DialogActions>
             <Box marginTop={5}>
-              <Button color={'secondary'} variant={'contained'}>
+              <Button color={'secondary'} variant={'contained'} onClick={handleDownload} disabled={downloadLoading}>
                 <Grid paddingTop={1} columnSpacing={2} container>
                   <Grid item>
                     <FilePdfBox fontSize={isMobile ? 'small' : 'medium'} />
                   </Grid>
                   <Grid fontSize={isMobile ? 10 : 'inherit'} item>
-                    Download
+                    {downloadLoading ? 'Downloading...' : 'Download'}
                   </Grid>
                 </Grid>
               </Button>
