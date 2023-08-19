@@ -164,8 +164,8 @@ export default function DetailCapaian(props: IModalProp) {
         )
 
         const link = document.createElement('a')
-        link.href = res.file
-        link.setAttribute('download', res.recommendation_filename)
+        link.href = res.data?.file
+        link.setAttribute('download', res.data?.recommendation_filename)
 
         document.body.appendChild(link)
         link.click()
