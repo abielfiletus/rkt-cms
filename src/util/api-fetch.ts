@@ -128,7 +128,7 @@ const errorHandling = async (err: any) => {
     case 400:
       // @ts-ignore
       toast.warning(err.response.data.error || err.response.data.msg)
-      break
+      throw err
     case 401:
       await logoutUser()
 
@@ -137,6 +137,8 @@ const errorHandling = async (err: any) => {
       await router.push('/permission-denied')
 
       return
+    case 404:
+      throw err
     case 422:
       // @ts-ignore
       Object.keys(err.response.data.error).map(key => {
