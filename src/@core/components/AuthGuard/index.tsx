@@ -31,7 +31,7 @@ const AuthGuard = (props: AuthGuardProps) => {
         auth.setUser(null)
         auth.setAcl(null)
 
-        if (router.asPath !== '/') {
+        if (!['/', '/permission-denied'].includes(router.asPath)) {
           router.replace({
             pathname: '/login',
             query: { returnUrl: router.asPath }

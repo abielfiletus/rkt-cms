@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import { Dialog, DialogActions, DialogContent, DialogTitle, Box } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogTitle, Box, useTheme } from '@mui/material'
 import { IModalProp } from '../../../configs/modalConfig'
 import { apiGet, apiPatch, apiPost } from '../../../util/api-fetch'
 import { useFormik } from 'formik'
@@ -21,6 +21,7 @@ export default function PerjanjianKerjaModal(props: IModalProp) {
   const [pk, setPK] = useState('')
   const [data, setData] = useState<Record<string, any>>({})
 
+  const theme = useTheme()
   const baseUrl = process.env.NEXT_PUBLIC_BE_URL
 
   useMemo(() => {
@@ -30,7 +31,6 @@ export default function PerjanjianKerjaModal(props: IModalProp) {
         setData(res.data)
 
         if (res.data?.perjanjian_kerja) {
-          console.log('emgn disin ?')
           formik.setValues({ id: res.data.id, perjanjian_kerja: '' })
           setFiles(baseUrl + '/' + res.data.perjanjian_kerja, setPK).then(() => setIsLoading(false))
         }
@@ -137,6 +137,20 @@ export default function PerjanjianKerjaModal(props: IModalProp) {
             </Typography>
           </DialogTitle>
           <DialogContent>
+            {data?.notes && (
+              <Grid columnSpacing={2} container>
+                <Grid item>
+                  <Typography variant={'body2'} fontWeight={'bold'} color={theme.palette.error.main}>
+                    Note Revisi:
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant={'body2'} color={theme.palette.error.main}>
+                    {data?.notes}
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
             <form onSubmit={formik.handleSubmit} noValidate>
               <Box textAlign={'center'}>
                 <FileInput
