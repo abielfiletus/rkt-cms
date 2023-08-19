@@ -155,7 +155,13 @@ export default function DetailCapaian(props: IModalProp) {
     if (data) {
       setDownloadLoading(true)
       try {
-        const res = await apiPost('/capaian/download-pdf', { rkt_id: data.id, tw_checked: checkedTw })
+        const res = await apiPost(
+          '/capaian/download-pdf',
+          { rkt_id: data.id, tw_checked: checkedTw.map(index => '' + index) },
+          {},
+          true,
+          false
+        )
 
         const link = document.createElement('a')
         link.href = res.file
