@@ -163,13 +163,17 @@ export default function DetailCapaian(props: IModalProp) {
           false
         )
 
-        const link = document.createElement('a')
-        link.href = res.data?.file
-        link.setAttribute('download', res.data?.recommendation_filename)
+        if (res.data) {
+          const link = document.createElement('a')
+          link.href = 'data:application/pdf;base64,' + res.data?.file
+          link.setAttribute('download', res.data?.recommendation_filename)
 
-        document.body.appendChild(link)
-        link.click()
-        link.parentNode?.removeChild(link)
+          document.body.appendChild(link)
+          link.click()
+          link.parentNode?.removeChild(link)
+        } else {
+          throw 'Download error'
+        }
       } catch (err) {
         toast.error('Gagal mendownload file')
       } finally {
