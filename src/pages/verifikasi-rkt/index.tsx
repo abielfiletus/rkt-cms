@@ -17,6 +17,7 @@ import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import IconButton from '@mui/material/IconButton'
 import { useAuth } from '../../@core/hooks/useAuth'
+import { MenuBadgeContext } from '../../@core/context/MenuBadgeContext'
 
 const VerifikasiRktPage = () => {
   // state
@@ -34,6 +35,7 @@ const VerifikasiRktPage = () => {
   const [submitFilter, setSubmitFilter] = useState<Array<string>>([])
   const [yearFilter, setYearFilter] = useState<Array<string>>([])
   const [id, setId] = useState<number>()
+  const menuBadgeContext = useContext(MenuBadgeContext)
   const baseUrl = '/penyusunan-rkt'
 
   useEffect(() => {
@@ -79,6 +81,11 @@ const VerifikasiRktPage = () => {
     setData(data)
   }
   const handleAddClick = () => setShowAdd(true)
+  const handleCloseVerification = async () => {
+    const res = await apiGet('/penyusunan-rkt/outstanding-summary')
+    menuBadgeContext.setVerifyRkt(res?.data)
+    setReFetchDT(true)
+  }
 
   let idleTimer: NodeJS.Timeout
 
@@ -151,35 +158,6 @@ const VerifikasiRktPage = () => {
                     ))}
                   </Select>
                 </Grid>
-                {/*<Grid item>*/}
-                {/*  <Select*/}
-                {/*    value={filterDT.status || '0'}*/}
-                {/*    size={'small'}*/}
-                {/*    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}*/}
-                {/*    onChange={event => {*/}
-                {/*      const value = event.target.value*/}
-                {/*      if (value !== '0') setFilterDT({ ...filterDT, status: value })*/}
-                {/*      else setFilterDT({ ...filterDT, status: '' })*/}
-                {/*    }}*/}
-                {/*  >*/}
-                {/*    <MenuItem sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>*/}
-                {/*      Status*/}
-                {/*    </MenuItem>*/}
-                {/*    {Object.keys(VerificationStatus).map(key => {*/}
-                {/*      if (VerificationStatus[key] !== '0') {*/}
-                {/*        return (*/}
-                {/*          <MenuItem*/}
-                {/*            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}*/}
-                {/*            key={key}*/}
-                {/*            value={VerificationStatus[key]}*/}
-                {/*          >*/}
-                {/*            {key}*/}
-                {/*          </MenuItem>*/}
-                {/*        )*/}
-                {/*      }*/}
-                {/*    })}*/}
-                {/*  </Select>*/}
-                {/*</Grid>*/}
               </Grid>
             </Grid>
             <Grid item>
@@ -321,9 +299,9 @@ const VerifikasiRktPage = () => {
           {showApproval && (
             <VerifikasiRKTVerification
               id={id as number}
-              handleClose={(hasData: boolean) => {
+              handleClose={async (hasData: boolean) => {
                 setShowApproval(false)
-                if (hasData) setReFetchDT(true)
+                if (hasData) await handleCloseVerification()
               }}
             />
           )}
@@ -331,18 +309,18 @@ const VerifikasiRktPage = () => {
             <VerifikasiRKTModal
               id={id}
               type={'ubah'}
-              handleClose={(hasData: boolean) => {
+              handleClose={async (hasData: boolean) => {
                 setShowEdit(false)
-                if (hasData) setReFetchDT(true)
+                if (hasData) await handleCloseVerification()
               }}
             />
           )}
           {showAdd && (
             <VerifikasiRKTModal
               type={'tambah'}
-              handleClose={(hasData: boolean) => {
+              handleClose={async (hasData: boolean) => {
                 setShowAdd(false)
-                if (hasData) setReFetchDT(true)
+                if (hasData) await handleCloseVerification()
               }}
             />
           )}

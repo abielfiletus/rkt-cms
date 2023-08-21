@@ -8,15 +8,10 @@ import TextBoxPlusOutline from 'mdi-material-ui/TextBoxPlusOutline'
 import TextBoxCheckOutline from 'mdi-material-ui/TextBoxCheckOutline'
 import FileArrowUpDownOutline from 'mdi-material-ui/FileArrowUpDownOutline'
 import { Cogs, TextBoxMultipleOutline } from 'mdi-material-ui'
-import { apiGet } from '../../util/api-fetch'
+import { useMenuBadge } from '../../@core/hooks/useMenuBadge'
 
-const navigation = async (): Promise<VerticalNavItemsType> => {
-  const counter = { verify_rkt: 0 }
-  try {
-    const res = await apiGet('/penyusunan-rkt/outstanding-summary')
-
-    counter['verify_rkt'] = res.data
-  } catch (err) {}
+const Navigation = (): VerticalNavItemsType => {
+  const badge = useMenuBadge()
 
   return [
     {
@@ -43,7 +38,7 @@ const navigation = async (): Promise<VerticalNavItemsType> => {
       subject: 'penyusunan-rkt',
       action: 'approve',
       badgeColor: 'error',
-      badgeContent: counter.verify_rkt > 0 ? counter.verify_rkt + '' : undefined
+      badgeContent: badge.verify_rkt > 0 ? badge.verify_rkt + '' : undefined
     },
     {
       sectionTitle: 'Master Data',
@@ -67,7 +62,7 @@ const navigation = async (): Promise<VerticalNavItemsType> => {
       icon: TextBoxPlusOutline,
       path: '/penyusunan-rkt',
       subject: 'penyusunan-rkt',
-      action: ['create', 'read', 'update', 'delete']
+      action: ['create', 'update', 'delete']
     },
     {
       title: 'Perjanjian Kerja',
@@ -112,4 +107,4 @@ const navigation = async (): Promise<VerticalNavItemsType> => {
   ]
 }
 
-export default navigation
+export default Navigation

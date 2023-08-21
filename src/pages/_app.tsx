@@ -38,6 +38,7 @@ import AuthGuard from '../@core/components/AuthGuard'
 import AclGuard from '../@core/components/AclGuard'
 import { defaultACLObj } from '../configs/acl'
 import { AuthProvider } from '../@core/context/AuthContext'
+import { MenuBadgeProvider } from '../@core/context/MenuBadgeContext'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -85,27 +86,29 @@ const App = (props: ExtendedAppProps) => {
         <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover'></meta>
       </Head>
 
-      <AuthProvider>
-        <SettingsProvider>
-          <SettingsConsumer>
-            {({ settings }) => {
-              // @ts-ignore
-              return (
-                <ThemeComponent settings={settings}>
-                  <WindowWrapper>
-                    <AuthGuard fallback={<Spinner />}>
-                      <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
-                        {/* @ts-ignore */}
-                        {getLayout(<Component {...pageProps} />)}
-                      </AclGuard>
-                    </AuthGuard>
-                  </WindowWrapper>
-                </ThemeComponent>
-              )
-            }}
-          </SettingsConsumer>
-        </SettingsProvider>
-      </AuthProvider>
+      <MenuBadgeProvider>
+        <AuthProvider>
+          <SettingsProvider>
+            <SettingsConsumer>
+              {({ settings }) => {
+                // @ts-ignore
+                return (
+                  <ThemeComponent settings={settings}>
+                    <WindowWrapper>
+                      <AuthGuard fallback={<Spinner />}>
+                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
+                          {/* @ts-ignore */}
+                          {getLayout(<Component {...pageProps} />)}
+                        </AclGuard>
+                      </AuthGuard>
+                    </WindowWrapper>
+                  </ThemeComponent>
+                )
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </AuthProvider>
+      </MenuBadgeProvider>
     </CacheProvider>
   )
 }

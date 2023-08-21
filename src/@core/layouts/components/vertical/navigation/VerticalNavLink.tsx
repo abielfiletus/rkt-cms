@@ -122,6 +122,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
                   color={item.badgeColor || 'primary'}
                   sx={{
                     height: 20,
+                    minWidth: 20,
                     fontWeight: 500,
                     marginLeft: 1.25,
                     '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' }

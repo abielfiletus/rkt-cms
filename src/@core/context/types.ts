@@ -27,3 +27,8 @@ export type AuthValuesType = {
   setAcl: (value: any) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
 }
+
+export type MenuBadgeType = {
+  verify_rkt: number
+  setVerifyRkt: (value: number) => void
+}

@@ -772,8 +772,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                               formik.touched['iku_data'][i]['aksi_data'][j]['rencana_aksi'] &&
                                               Boolean(formik.errors['iku_data'][i]['aksi_data'][j]['rencana_aksi'])
                                             }
-                                            style={{
-                                              [theme.breakpoints.only('xs')]: { fontSize: 11 }
+                                            inputProps={{
+                                              style: { fontSize: 13, [theme.breakpoints.only('xs')]: { fontSize: 11 } }
                                             }}
                                             disabled={type === 'detail'}
                                             rows={5}
@@ -1079,13 +1079,19 @@ export default function PenyusunanRKTModal(props: IModalProp) {
             <Grid spacing={2} justifyContent={'right'} marginTop={2} container>
               {type !== 'detail' && (
                 <Grid item>
-                  <Button onClick={formik.handleSubmit} color={'primary'} variant={'contained'}>
-                    SIMPAN
+                  <Button onClick={formik.handleSubmit} color={'primary'} variant={'contained'} disabled={formik.isSubmitting}>
+                    {formik.isSubmitting ? 'MENGIRIM...' : 'SIMPAN'}
                   </Button>
                 </Grid>
               )}
               <Grid item>
-                <Button type={'button'} variant={'contained'} onClick={() => handleClose(false)} color={'secondary'}>
+                <Button
+                  type={'button'}
+                  variant={'contained'}
+                  onClick={() => handleClose(false)}
+                  color={'secondary'}
+                  disabled={formik.isSubmitting}
+                >
                   BATAL
                 </Button>
               </Grid>
