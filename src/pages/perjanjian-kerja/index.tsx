@@ -18,12 +18,14 @@ import VerificationPerjanjianKerja from '../../@core/components/perjanjian-kerja
 import { AbilityContext } from '../../@core/layouts/components/acl/Can'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { toast } from 'react-toastify'
+import DetailPerjanjianKerja from '../../@core/components/perjanjian-kerja/detail'
 
 const PerjanjianKerjaPage = () => {
   // state
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
   const [showDetail, setShowDetail] = useState<boolean>(false)
+  const [showUpload, setShowUpload] = useState<boolean>(false)
   const [showDraft, setShowDraft] = useState<boolean>(false)
   const [showVerification, setShowVerification] = useState<boolean>(false)
   const [reFetchDT, setReFetchDT] = useState<boolean>(false)
@@ -54,6 +56,44 @@ const PerjanjianKerjaPage = () => {
   const theme = useTheme()
   const ability = useContext(AbilityContext)
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
+
+  // handler
+  const handleUploadClick = (pk: Record<string, any>) => {
+    setShowUpload(true)
+    setId(pk.id)
+  }
+  const handleVerificationClick = (pk: Record<string, any>) => {
+    setShowVerification(true)
+    setId(pk.id)
+  }
+  const handleDraftClick = (pk: Record<string, any>) => {
+    setId(pk.rkt_id)
+    setShowDraft(true)
+  }
+  const handleDownloadClick = async () => {
+    setDownloadLoading(true)
+    try {
+      const download = await apiGet('/perjanjian-kerja/download', filterDT, { responseType: 'blob' })
+      const href = URL.createObjectURL(download)
+
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'Data Perjanjian Kerja.xlsx') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || 'Internal Server Error')
+    } finally {
+      setDownloadLoading(false)
+    }
+  }
+  const handleDetailClick = (id: number) => {
+    setShowDetail(true)
+    setId(id)
+  }
 
   const column: Array<Column> = [
     {
@@ -91,45 +131,14 @@ const PerjanjianKerjaPage = () => {
       },
       isBadge: true,
       badgeColor: value => VerificationStatusColor[value as string],
+      badgeOnClick: data => {
+        if (data.status === '4') handleDetailClick(data.id)
+      },
       fontSize: isMobile ? 11 : undefined,
       minWidth: 200
     },
     { id: 'action', label: 'Aksi', minWidth: 120, fontSize: isMobile ? 11 : undefined }
   ]
-
-  // handler
-  const handleDetailClick = (pk: Record<string, any>) => {
-    setShowDetail(true)
-    setId(pk.id)
-  }
-  const handleVerificationClick = (pk: Record<string, any>) => {
-    setShowVerification(true)
-    setId(pk.id)
-  }
-  const handleDraftClick = (pk: Record<string, any>) => {
-    setId(pk.rkt_id)
-    setShowDraft(true)
-  }
-  const handleDownloadClick = async () => {
-    setDownloadLoading(true)
-    try {
-      const download = await apiGet('/perjanjian-kerja/download', filterDT, { responseType: 'blob' })
-      const href = URL.createObjectURL(download)
-
-      const link = document.createElement('a')
-      link.href = href
-      link.setAttribute('download', 'Data Perjanjian Kerja.xlsx') //or any other extension
-      document.body.appendChild(link)
-      link.click()
-
-      document.body.removeChild(link)
-      URL.revokeObjectURL(href)
-    } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Internal Server Error')
-    } finally {
-      setDownloadLoading(false)
-    }
-  }
 
   let idleTimer: NodeJS.Timeout
 
@@ -288,7 +297,7 @@ const PerjanjianKerjaPage = () => {
                   <Grid item>
                     {(ability.can('create', 'perjanjian-kerja') || ability.can('update', 'perjanjian-kerja')) &&
                       ['2', '5'].includes(data.status) && (
-                        <IconButton title={'Upload Perjanjian Kerja'} onClick={() => handleDetailClick(data)}>
+                        <IconButton title={'Upload Perjanjian Kerja'} onClick={() => handleUploadClick(data)}>
                           <CloudUpload />
                         </IconButton>
                       )}
@@ -305,17 +314,18 @@ const PerjanjianKerjaPage = () => {
               paginationFontSize={isMobile ? 12 : undefined}
             />
           </Box>
-          {showDetail && (
+          {showUpload && (
             <PerjanjianKerjaModal
               type={'ubah'}
               handleClose={hasData => {
-                setShowDetail(false)
+                setShowUpload(false)
                 if (hasData) setReFetchDT(true)
               }}
               id={id}
             />
           )}
           {showDraft && <DraftPerjanjianKerja id={id} handleClose={setShowDraft} />}
+          {showDetail && <DetailPerjanjianKerja id={id} handleClose={() => setShowDetail(false)} />}
           {showVerification && (
             <VerificationPerjanjianKerja
               id={id}

@@ -433,7 +433,7 @@ const PenyusunanRktPage = () => {
 }
 
 PenyusunanRktPage.acl = {
-  action: ['approve', 'create', 'update', 'read'],
+  action: ['create', 'update'],
   subject: 'penyusunan-rkt'
 }
 

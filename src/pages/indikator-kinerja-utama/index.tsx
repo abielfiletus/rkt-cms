@@ -181,7 +181,6 @@ const IndikatorKinerjaUtamaPage = () => {
       <Box mt={5}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID IKU', minWidth: 120, fontSize: isMobile ? 10 : 13 },
             { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 13 },
             { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 13 },
             {

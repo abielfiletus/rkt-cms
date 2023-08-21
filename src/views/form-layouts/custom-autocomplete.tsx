@@ -8,7 +8,7 @@ interface IProps {
   url: string
   apiFieldKey: string
   onChange: (value: any) => any
-  labelFieldKey: string
+  labelFieldKey: string | Array<string>
   valueFieldKey: string
   defaultValue: any
   disabled?: boolean
@@ -23,8 +23,6 @@ export default function CustomAutocomplete(props: IProps) {
   const [options, setOptions] = useState<Array<Record<string, any>>>([])
   const [value, setValue] = useState<string>(defaultValue || '')
   const [inputValue, setInputValue] = useState<string>('')
-
-  console.log({ options, value })
 
   const fetch = useMemo(
     () =>
@@ -53,7 +51,13 @@ export default function CustomAutocomplete(props: IProps) {
       defaultValue={(value as any) || null}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      getOptionLabel={option => option[labelFieldKey] || ''}
+      getOptionLabel={option => {
+        let val = ''
+        if (typeof labelFieldKey === 'object') val = labelFieldKey.map(key => option[key]).join(' ')
+        if (typeof labelFieldKey === 'string' && option[labelFieldKey]) val = option[labelFieldKey]
+
+        return val
+      }}
       disabled={disabled}
       isOptionEqualToValue={(option, value) => {
         if (typeof value === 'string') return option[valueFieldKey] === value

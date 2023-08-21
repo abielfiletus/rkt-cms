@@ -8,8 +8,16 @@ import TextBoxPlusOutline from 'mdi-material-ui/TextBoxPlusOutline'
 import TextBoxCheckOutline from 'mdi-material-ui/TextBoxCheckOutline'
 import FileArrowUpDownOutline from 'mdi-material-ui/FileArrowUpDownOutline'
 import { Cogs, TextBoxMultipleOutline } from 'mdi-material-ui'
+import { apiGet } from '../../util/api-fetch'
 
-const navigation = (): VerticalNavItemsType => {
+const navigation = async (): Promise<VerticalNavItemsType> => {
+  const counter = { verify_rkt: 0 }
+  try {
+    const res = await apiGet('/penyusunan-rkt/outstanding-summary')
+
+    counter['verify_rkt'] = res.data
+  } catch (err) {}
+
   return [
     {
       sectionTitle: 'Laporan',
@@ -33,7 +41,9 @@ const navigation = (): VerticalNavItemsType => {
       icon: TextBoxSearchOutline,
       path: '/verifikasi-rkt',
       subject: 'penyusunan-rkt',
-      action: 'approve'
+      action: 'approve',
+      badgeColor: 'error',
+      badgeContent: counter.verify_rkt > 0 ? counter.verify_rkt + '' : undefined
     },
     {
       sectionTitle: 'Master Data',

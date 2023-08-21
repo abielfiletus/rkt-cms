@@ -100,10 +100,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
 
         const hashing = {}
         getOptions.data?.map(item => (hashing[item.id] = item))
-        console.log({ hashing })
         setDefaultIkuOption(hashing)
       }
-      console.log({ isLoading })
 
       setData(data)
       setIsLoading(false)
@@ -502,7 +500,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                   onChange={value => {
                                     formik.setFieldValue(`iku_data.${i}.iku_id`, value)
                                   }}
-                                  labelFieldKey={'name'}
+                                  labelFieldKey={['no', 'name']}
                                   valueFieldKey={'id'}
                                   defaultValue={defaultIkuOption[iku.iku_id]}
                                   disabled={type === 'detail'}
@@ -774,6 +772,9 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                               formik.touched['iku_data'][i]['aksi_data'][j]['rencana_aksi'] &&
                                               Boolean(formik.errors['iku_data'][i]['aksi_data'][j]['rencana_aksi'])
                                             }
+                                            style={{
+                                              [theme.breakpoints.only('xs')]: { fontSize: 11 }
+                                            }}
                                             disabled={type === 'detail'}
                                             rows={5}
                                             multiline
