@@ -337,7 +337,7 @@ export default function DetailCapaian(props: IModalProp) {
                             [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
                           }}
                         >
-                          Target TW{item}
+                          Capaian Target TW{item}
                         </TableCell>
                         <TableCell
                           align={'center'}

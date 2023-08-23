@@ -43,7 +43,7 @@ export const ReverseCapaianStatus: Record<string, any> = {
 export const CapaianStatusColor: Record<string, any> = {
   '0': 'error',
   '1': 'info',
-  '2': 'success'
+  '2': 'rgb(22, 193, 80)'
 }
 
 export enum ConfigKey {
