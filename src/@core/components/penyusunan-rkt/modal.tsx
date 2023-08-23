@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 import Button from '@mui/material/Button'
 import { AddPenyusunanRKTSchema, EditPenyusunanRKTSchema } from './penyusunan-rkt.schema'
 import dayjs from 'dayjs'
-import { Close, PlusCircleOutline, TextBoxPlusOutline } from 'mdi-material-ui'
+import { Close, MicrosoftExcel, PlusCircleOutline, TextBoxPlusOutline } from 'mdi-material-ui'
 import { useEffect, useState } from 'react'
 import LoaderModal from '../modal/loader'
 import FileInput from '../file-input'
@@ -26,6 +26,7 @@ import FormRow from '../../../views/form-layouts/form-row'
 import InputAdornment from '@mui/material/InputAdornment'
 import CustomAutocomplete from '../../../views/form-layouts/custom-autocomplete'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import IconButton from '@mui/material/IconButton'
 
 export default function PenyusunanRKTModal(props: IModalProp) {
   const { id, type, handleClose } = props
@@ -1071,6 +1072,28 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                       url={formik.values.pendukung}
                     />
                   </Grid>
+                  {data?.excel_rab && (
+                    <Grid item>
+                      <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                        Excel RAB
+                      </Typography>
+                      <Box
+                        width={100}
+                        height={100}
+                        border={1}
+                        borderColor={theme.palette.grey['400']}
+                        borderRadius={1}
+                        mt={5}
+                        boxShadow={theme.shadows['3']}
+                        onClick={() => window.open(baseUrl + '/' + data?.excel_rab, '_blank')}
+                        sx={{ cursor: 'pointer' }}
+                        pt={7}
+                        pl={7}
+                      >
+                        <MicrosoftExcel fontSize={'large'} color={'success'} />
+                      </Box>
+                    </Grid>
+                  )}
                 </Grid>
               </Box>
             </form>

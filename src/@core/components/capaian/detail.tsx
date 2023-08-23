@@ -37,6 +37,9 @@ export default function DetailCapaian(props: IModalProp) {
     return checkedTw.map(tw_index => (
       <Fragment key={tw_index}>
         <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 'inherit' }}>
+          {data?.[`tw_${tw_index}`]}
+        </TableCell>
+        <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 'inherit' }}>
           {data?.capaian?.[`capaian_${tw_index}`]}
         </TableCell>
         <TableCell rowSpan={data.row_span} valign={'top'}>
@@ -331,6 +334,14 @@ export default function DetailCapaian(props: IModalProp) {
                     </TableCell>
                     {checkedTw.map(item => (
                       <Fragment key={item}>
+                        <TableCell
+                          align={'center'}
+                          sx={{
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                          }}
+                        >
+                          Target Diajukan TW{item}
+                        </TableCell>
                         <TableCell
                           align={'center'}
                           sx={{
