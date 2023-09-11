@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useEffect, useState } from 'react'
-import { CircularProgress, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material'
 import { apiGet } from '../../../../util/api-fetch'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import ReactApexcharts from '../../react-apexcharts'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import ChartLoader from '../loader'
 
 export default function MahasiswaCutiChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -18,7 +19,6 @@ export default function MahasiswaCutiChart() {
 
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.between(1072, 1172))
-  const isDesktop2 = useMediaQuery(theme.breakpoints.between(894, 1072))
 
   useEffect(() => {
     apiGet('/dashboard/mahasiswa-cuti').then(async res => {
@@ -38,48 +38,38 @@ export default function MahasiswaCutiChart() {
   }, [])
 
   return (
-    <Grid width={isDesktop ? 200 : isDesktop2 ? 330 : 250} item>
+    <Grid width={isDesktop ? 180 : 190} item>
       <Card sx={{ padding: 3 }} elevation={5}>
-        <Grid justifyContent={'space-between'} columnSpacing={10} container>
+        <Grid justifyContent={'space-between'} columnSpacing={5} container>
           <Grid item>
-            <Grid columnSpacing={2} container>
+            <Grid columnSpacing={1} container>
               <Grid item>
-                <ClipboardOutline fontSize={'small'} />
+                <ClipboardOutline fontSize={'8px'} />
               </Grid>
               <Grid item>
-                <Typography fontSize={13} marginTop={0.25}>
+                <Typography fontSize={10} marginTop={0.25}>
                   Cuti
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
-            <Typography fontWeight={'bold'} fontSize={13}>
+            <Typography fontWeight={'bold'} fontSize={10}>
               {total}
             </Typography>
           </Grid>
         </Grid>
-        <Divider />
-        {isLoading && (
-          <Grid justifyContent={'center'} marginTop={3} columnSpacing={2} container>
-            <Grid item>
-              <CircularProgress size={15} />
-            </Grid>
-            <Grid item>
-              <Typography pt={0.25} fontSize={14}>
-                Memuat Data...
-              </Typography>
-            </Grid>
-          </Grid>
-        )}
+        <Divider style={{ marginTop: 1, marginBottom: 1 }} />
+        {isLoading && <ChartLoader />}
         {!isLoading && (
           <ReactApexcharts
             type={'line'}
-            height={170}
-            width={isDesktop ? 170 : isDesktop2 ? 300 : 220}
+            height={150}
+            width={isDesktop ? 170 : 180}
             series={[data?.data]}
             options={{
               chart: {
+                offsetX: -15,
                 parentHeightOffset: 0,
                 toolbar: { show: false },
                 zoom: false
@@ -87,7 +77,7 @@ export default function MahasiswaCutiChart() {
               legend: { position: 'top', horizontalAlign: 'left' },
               colors: [theme.palette.success.main],
               stroke: {
-                width: 3,
+                width: 2,
                 curve: 'smooth',
                 lineCap: 'round'
               },
@@ -96,12 +86,15 @@ export default function MahasiswaCutiChart() {
                 axisBorder: { show: false },
                 categories: data?.legends,
                 labels: {
-                  style: { colors: theme.palette.text.primary }
-                }
+                  style: { colors: theme.palette.primary.main, fontSize: 8 }
+                },
+                offsetY: -8,
+                tooltip: { enabled: false }
               },
               yaxis: {
                 labels: {
-                  formatter: (value: number) => Math.round(value) + ''
+                  formatter: (value: number) => Math.round(value) + '',
+                  style: { fontSize: 8 }
                 }
               },
               states: {
@@ -111,6 +104,9 @@ export default function MahasiswaCutiChart() {
                 active: {
                   filter: { type: 'none' }
                 }
+              },
+              tooltip: {
+                style: { fontSize: '8px' }
               }
             }}
           />

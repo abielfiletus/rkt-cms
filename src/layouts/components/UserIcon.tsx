@@ -25,7 +25,7 @@ const UserIcon = (props: UserIconProps) => {
   // }
 
   // @ts-ignore
-  return <IconTag {...iconProps} fontSize={isMobile ? 'small' : undefined} />
+  return <IconTag {...iconProps} fontSize={isMobile ? 'small' : '12px'} />
 }
 
 export default UserIcon

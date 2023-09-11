@@ -74,15 +74,16 @@ const LoginPage = () => {
   })
 
   return (
-    <Grid height={navigator?.userAgent?.includes('Mac') ? '111.1vh' : 'inherit'} overflow={'none'} container>
+    <Grid height={navigator?.userAgent?.includes('Windows') ? '111.1vh' : 'inherit'} overflow={'none'} container>
       <Grid item xs={12} md={6} style={{ background: 'linear-gradient(90deg, #409EC9 0%, #6769D7 100%)' }}>
         <Box position={'relative'} sx={{ height: '100vh', [theme.breakpoints.down('md')]: { height: '400px' } }}>
           <Box position={'absolute'} style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} textAlign={'center'}>
             <Box
               sx={{
-                [theme.breakpoints.up('md')]: { width: '280px', height: '370px', marginLeft: 0 },
-                [theme.breakpoints.up('sm')]: { width: '200px', height: '300px', marginLeft: '2rem' },
-                [theme.breakpoints.down('sm')]: { width: '210px', height: '250px', marginLeft: 'auto', marginRight: 'auto' }
+                [theme.breakpoints.up('sm')]: { width: '200px', height: '300px' },
+                [theme.breakpoints.down('sm')]: { width: '210px', height: '250px' },
+                marginLeft: 'auto',
+                marginRight: 'auto'
               }}
             >
               <img src='/images/pages/login-backdrop.png' alt={'backdrop'} width={'100%'} height={'100%'} />
@@ -91,6 +92,7 @@ const LoginPage = () => {
               color={'white'}
               fontWeight={'bold'}
               marginTop={2}
+              variant={'body2'}
               sx={{ [theme.breakpoints.down('sm')]: { fontSize: 13 } }}
             >
               Performance Based Budgeting
@@ -104,7 +106,8 @@ const LoginPage = () => {
             position={'absolute'}
             sx={{
               [theme.breakpoints.up('sm')]: { left: '50%', top: '50%', transform: 'translate(-50%, -50%)' },
-              padding: '15px'
+              padding: '15px',
+              '& form .MuiTypography-body2': { fontSize: 10 }
             }}
             textAlign={'center'}
             width={'100%'}
@@ -113,8 +116,7 @@ const LoginPage = () => {
               sx={{
                 marginLeft: 'auto',
                 marginRight: 'auto',
-                [theme.breakpoints.up('md')]: { width: '300px', height: '100px' },
-                [theme.breakpoints.up('sm')]: { width: '210px', height: '80px' },
+                [theme.breakpoints.up('sm')]: { width: '210px', height: '73px' },
                 [theme.breakpoints.down('sm')]: { width: '100px', height: '40px' }
               }}
             >
@@ -124,7 +126,7 @@ const LoginPage = () => {
               variant={'h5'}
               color={'#273B98'}
               fontWeight={'bold'}
-              sx={{ [theme.breakpoints.down('md')]: { fontSize: 17 }, [theme.breakpoints.down('sm')]: { fontSize: 13 } }}
+              sx={{ [theme.breakpoints.down('md')]: { fontSize: 15 }, [theme.breakpoints.down('sm')]: { fontSize: 13 } }}
             >
               Aplikasi Rancangan Anggaran Berbasis Kinerja
             </Typography>
@@ -132,15 +134,16 @@ const LoginPage = () => {
               <Box textAlign={'left'}>
                 <OutlinedInput
                   placeholder={'NIP'}
-                  startAdornment={<EmailOpenOutline color={'secondary'} style={{ marginRight: '10px' }} />}
+                  startAdornment={<EmailOpenOutline color={'secondary'} style={{ marginRight: '10px' }} fontSize={'small'} />}
                   style={{
                     background: '#F6F6F6',
                     borderRadius: '30px',
                     borderBottom: 'none'
                   }}
                   sx={{
-                    [theme.breakpoints.up('sm')]: { marginTop: '3rem', height: '60px' },
-                    [theme.breakpoints.down('md')]: { marginTop: '2rem', height: '45px' }
+                    [theme.breakpoints.up('sm')]: { marginTop: '3rem', height: '40px' },
+                    [theme.breakpoints.down('md')]: { marginTop: '2rem', height: '40px' },
+                    fontSize: 12
                   }}
                   id='nip'
                   name='nip'
@@ -156,7 +159,7 @@ const LoginPage = () => {
                 <OutlinedInput
                   placeholder={'Password'}
                   type={values.showPassword ? 'text' : 'password'}
-                  startAdornment={<LockOpen color={'secondary'} style={{ marginRight: '10px' }} />}
+                  startAdornment={<LockOpen color={'secondary'} style={{ marginRight: '10px' }} fontSize={'small'} />}
                   endAdornment={
                     <InputAdornment position='end'>
                       <IconButton
@@ -164,15 +167,13 @@ const LoginPage = () => {
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
                         aria-label='toggle password visibility'
+                        size={'small'}
                       >
-                        {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                        {values.showPassword ? <EyeOutline fontSize={'small'} /> : <EyeOffOutline fontSize={'small'} />}
                       </IconButton>
                     </InputAdornment>
                   }
-                  sx={{
-                    [theme.breakpoints.up('sm')]: { height: '60px' },
-                    [theme.breakpoints.down('md')]: { height: '45px' }
-                  }}
+                  sx={{ height: '40px', fontSize: 12 }}
                   style={{
                     background: '#F6F6F6',
                     borderRadius: '30px',
@@ -192,10 +193,7 @@ const LoginPage = () => {
               </Box>
               <Box>
                 <Button
-                  sx={{
-                    [theme.breakpoints.up('sm')]: { height: '60px' },
-                    [theme.breakpoints.down('md')]: { height: '45px' }
-                  }}
+                  sx={{ height: '40px', fontSize: 12 }}
                   style={{
                     background: 'linear-gradient(90deg, #419CC9 0%, #6669D6 99.93%)',
                     borderRadius: '30px',
@@ -218,7 +216,7 @@ const LoginPage = () => {
             bottom={20}
             left={'50%'}
             style={{ transform: 'translateX(-50%)' }}
-            variant={'body2'}
+            fontSize={11}
           >
             Politeknik Negeri Ambon
           </Typography>

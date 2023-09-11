@@ -24,11 +24,13 @@ const Typography = (theme: Theme) => {
       color: theme.palette.text.primary
     },
     h5: {
+      fontSize: '17px',
       fontWeight: 500,
       letterSpacing: 0,
       color: theme.palette.text.primary
     },
     h6: {
+      fontSize: '16px',
       letterSpacing: '0.15px',
       color: theme.palette.text.primary
     },
@@ -41,10 +43,12 @@ const Typography = (theme: Theme) => {
       color: theme.palette.text.secondary
     },
     body1: {
+      fontSize: '14px',
       letterSpacing: '0.15px',
       color: theme.palette.text.primary
     },
     body2: {
+      fontSize: '13px',
       lineHeight: 1.5,
       letterSpacing: '0.15px',
       color: theme.palette.text.secondary

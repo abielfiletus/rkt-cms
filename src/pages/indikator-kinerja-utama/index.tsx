@@ -83,14 +83,14 @@ const IndikatorKinerjaUtamaPage = () => {
         Daftar IKU
       </Typography>
       <Typography variant={'body2'}>Daftar Indikator Kinerja Utama</Typography>
-      <Grid justifyContent={'space-between'} mt={10} container>
+      <Grid justifyContent={'space-between'} mt={8} container>
         <Grid item>
           <Grid spacing={3} container>
             <Grid item>
               <OutlinedInput
                 placeholder={'Nama IKU...'}
                 size={'small'}
-                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 15, minWidth: 250 }}
+                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 250 }}
                 onKeyUp={() => {
                   if (idleTimer) clearTimeout(idleTimer)
 
@@ -105,7 +105,7 @@ const IndikatorKinerjaUtamaPage = () => {
               <OutlinedInput
                 placeholder={'No IKU...'}
                 size={'small'}
-                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 15, minWidth: 150 }}
+                sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 150 }}
                 onKeyUp={() => {
                   if (idleTimer) clearTimeout(idleTimer)
 
@@ -140,7 +140,7 @@ const IndikatorKinerjaUtamaPage = () => {
                       <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
                     </Grid>
                     <Grid item ml={2}>
-                      <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
                         {downloadLoading ? 'Downloading...' : 'Download Excel'}
                       </Typography>
                     </Grid>
@@ -178,17 +178,17 @@ const IndikatorKinerjaUtamaPage = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Box mt={5}>
+      <Box mt={3}>
         <TableStickyHeader
           columns={[
-            { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 13 },
-            { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 13 },
+            { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 10 },
+            { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 10 },
             {
               id: 'is_active',
               label: 'Status',
               transform: value => (value === true ? 'Aktif' : <Box color={theme.palette.grey['500']}>{'Tidak Aktif'}</Box>),
               minWidth: 110,
-              fontSize: isMobile ? 10 : 13
+              fontSize: isMobile ? 10 : 10
             },
             {
               id: 'action',
@@ -198,7 +198,7 @@ const IndikatorKinerjaUtamaPage = () => {
                 delete: ability.can('delete', 'indikator-kinerja-utama')
               },
               minWidth: 120,
-              fontSize: isMobile ? 10 : 13
+              fontSize: isMobile ? 10 : 10
             }
           ]}
           url={'indikator-kinerja-utama'}
@@ -211,7 +211,7 @@ const IndikatorKinerjaUtamaPage = () => {
           initialized={initializedDT}
           setInitialized={setInitializedDT}
           sx={{ fontWeight: 500, '& .MuiTableCell-body': { color: 'black' } }}
-          paginationFontSize={isMobile ? 12 : undefined}
+          paginationFontSize={11}
         />
       </Box>
       {showDetail && <IKUModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

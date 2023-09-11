@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
-import { CircularProgress, Select, useTheme } from '@mui/material'
+import { Select, useTheme } from '@mui/material'
 import ReactApexcharts from '../../react-apexcharts'
 import { useEffect, useMemo, useState } from 'react'
 import { apiGet } from '../../../../util/api-fetch'
@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import ChartLoader from '../loader'
 
 export default function MaBaAktifXStatusChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -45,26 +46,28 @@ export default function MaBaAktifXStatusChart() {
     <>
       <Grid columnSpacing={3} container>
         <Grid item>
-          <Typography fontSize={17} fontWeight={500} color={'black'}>
+          <Typography fontSize={12.5} fontWeight={500} color={'black'}>
             CAMABA Prodi vs Status
           </Typography>
         </Grid>
         <Grid marginTop={isMobile ? 3 : 0} item>
           <FormControl>
-            <InputLabel id='status-year'>Tahun</InputLabel>
+            <InputLabel id='status-year' sx={{ fontSize: 11, paddingTop: 1 }}>
+              Tahun
+            </InputLabel>
             <Select
               value={selectedYear}
               label={'Tahun'}
               labelId={'status-year'}
               size={'small'}
-              sx={{ fontSize: 13 }}
+              sx={{ fontSize: 10 }}
               onChange={event => {
                 setIsLoading(true)
                 setSelectedYear(event.target.value)
               }}
             >
               {selectOption.map(year => (
-                <MenuItem key={year} value={year}>
+                <MenuItem sx={{ fontSize: 10, paddingTop: 1, paddingBottom: 1 }} key={year} value={year}>
                   {year}
                 </MenuItem>
               ))}
@@ -72,22 +75,11 @@ export default function MaBaAktifXStatusChart() {
           </FormControl>
         </Grid>
       </Grid>
-      {isLoading && (
-        <Grid justifyContent={'center'} marginTop={3} columnSpacing={2} container>
-          <Grid item>
-            <CircularProgress size={15} />
-          </Grid>
-          <Grid item>
-            <Typography pt={0.25} fontSize={14}>
-              Memuat Data...
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
+      {isLoading && <ChartLoader />}
       {!isLoading && (
         <ReactApexcharts
           type={'bar'}
-          height={400}
+          height={250}
           series={data?.data}
           options={{
             chart: {
@@ -96,24 +88,31 @@ export default function MaBaAktifXStatusChart() {
               toolbar: { show: false },
               zoom: false
             },
-            legend: { position: 'top', horizontalAlign: 'left' },
-            colors: [theme.palette.error.main, theme.palette.success.main],
+            legend: {
+              position: 'top',
+              horizontalAlign: 'left',
+              fontSize: '10px',
+              markers: { height: '7px', width: '7px' }
+            },
             stroke: {
               width: 1,
               curve: 'smooth',
               lineCap: 'round'
             },
+            colors: [theme.palette.error.main, theme.palette.success.main],
             xaxis: {
               axisTicks: { show: false },
               axisBorder: { show: false },
               categories: data?.legends,
               labels: {
-                style: { colors: theme.palette.text.disabled }
-              }
+                style: { colors: theme.palette.text.disabled, fontSize: 9 }
+              },
+              tooltip: { enabled: false }
             },
             yaxis: {
               labels: {
-                formatter: (value: number) => Math.round(value) + ''
+                formatter: (value: number) => Math.round(value) + '',
+                style: { fontSize: 9 }
               }
             },
             states: {
@@ -123,6 +122,12 @@ export default function MaBaAktifXStatusChart() {
               active: {
                 filter: { type: 'none' }
               }
+            },
+            dataLabels: {
+              style: { fontSize: '9px' }
+            },
+            tooltip: {
+              style: { fontSize: '9px' }
             }
           }}
         />

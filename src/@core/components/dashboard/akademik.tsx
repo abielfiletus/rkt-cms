@@ -11,11 +11,18 @@ import { useTheme } from '@mui/material'
 
 export default function AkademikDashboard() {
   const theme = useTheme()
-  const isDesktopAndBelow = useMediaQuery(theme.breakpoints.down('lg'))
+  const isDesktopAndBelow = useMediaQuery(theme.breakpoints.down('md'))
+  const isDesktop = useMediaQuery(theme.breakpoints.down(920))
 
   return (
     <>
-      <Grid spacing={7} paddingX={2} justifyContent={isDesktopAndBelow ? 'center' : 'space-between'} container>
+      <Grid
+        spacing={isDesktop ? 4 : 0}
+        paddingRight={4}
+        paddingLeft={2}
+        justifyContent={isDesktopAndBelow ? 'center' : 'space-between'}
+        container
+      >
         <Grid item>
           <MahasiswaAktifChart />
         </Grid>
@@ -29,10 +36,10 @@ export default function AkademikDashboard() {
           <MahasiswaDOChart />
         </Grid>
       </Grid>
-      <Box mt={15}>
+      <Box mt={5}>
         <MahasiswaAktifXStatusChart />
       </Box>
-      <Box mt={15}>
+      <Box mt={5}>
         <MaBaAktifXStatusChart />
       </Box>
     </>

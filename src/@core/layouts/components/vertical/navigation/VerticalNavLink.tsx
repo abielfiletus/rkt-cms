@@ -109,11 +109,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
             </ListItemIcon>
 
             <MenuItemTextMetaWrapper>
-              <Typography
-                variant={'body2'}
-                {...(themeConfig.menuTextTruncate && { noWrap: true })}
-                fontSize={isMobile ? 11 : undefined}
-              >
+              <Typography variant={'body2'} {...(themeConfig.menuTextTruncate && { noWrap: true })} fontSize={isMobile ? 11 : 12}>
                 {item.title}
               </Typography>
               {item.badgeContent ? (

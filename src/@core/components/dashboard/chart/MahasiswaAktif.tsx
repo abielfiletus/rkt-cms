@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useEffect, useState } from 'react'
-import { CircularProgress, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material'
 import { apiGet } from '../../../../util/api-fetch'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import ReactApexcharts from '../../react-apexcharts'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import ChartLoader from '../loader'
 
 export default function MahasiswaAktifChart() {
   const [data, setData] = useState<Record<string, any>>({})
@@ -17,7 +18,7 @@ export default function MahasiswaAktifChart() {
   const [total, setTotal] = useState<number>(0)
 
   const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.between(894, 1072))
+  const isDesktop = useMediaQuery(theme.breakpoints.between(1072, 1172))
 
   useEffect(() => {
     apiGet('/dashboard/mahasiswa-aktif').then(async res => {
@@ -37,48 +38,38 @@ export default function MahasiswaAktifChart() {
   }, [])
 
   return (
-    <Grid width={isDesktop ? 330 : 250} item>
+    <Grid width={isDesktop ? 180 : 190} item>
       <Card sx={{ padding: 3 }} elevation={5}>
-        <Grid justifyContent={'space-between'} columnSpacing={10} container>
+        <Grid justifyContent={'space-between'} columnSpacing={5} container>
           <Grid item>
-            <Grid columnSpacing={2} container>
+            <Grid columnSpacing={1} container>
               <Grid item>
-                <StarOutline fontSize={'small'} />
+                <StarOutline fontSize={'10px'} />
               </Grid>
               <Grid item>
-                <Typography fontSize={13} marginTop={0.25}>
+                <Typography fontSize={10} marginTop={0.25}>
                   Mahasiswa Aktif
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
-            <Typography fontWeight={'bold'} fontSize={13}>
+            <Typography fontWeight={'bold'} fontSize={10}>
               {total}
             </Typography>
           </Grid>
         </Grid>
-        <Divider />
-        {isLoading && (
-          <Grid justifyContent={'center'} marginTop={3} columnSpacing={2} container>
-            <Grid item>
-              <CircularProgress size={15} />
-            </Grid>
-            <Grid item>
-              <Typography pt={0.25} fontSize={14}>
-                Memuat Data...
-              </Typography>
-            </Grid>
-          </Grid>
-        )}
+        <Divider style={{ marginTop: 1, marginBottom: 1 }} />
+        {isLoading && <ChartLoader />}
         {!isLoading && (
           <ReactApexcharts
             type={'line'}
-            height={170}
-            width={isDesktop ? 300 : 220}
+            height={150}
+            width={isDesktop ? 280 : 180}
             series={[data?.data]}
             options={{
               chart: {
+                offsetX: -15,
                 parentHeightOffset: 0,
                 toolbar: { show: false },
                 zoom: false
@@ -86,7 +77,7 @@ export default function MahasiswaAktifChart() {
               legend: { position: 'top', horizontalAlign: 'left' },
               colors: [theme.palette.primary.main],
               stroke: {
-                width: 3,
+                width: 2,
                 curve: 'smooth',
                 lineCap: 'round'
               },
@@ -95,12 +86,15 @@ export default function MahasiswaAktifChart() {
                 axisBorder: { show: false },
                 categories: data?.legends,
                 labels: {
-                  style: { colors: theme.palette.primary.main }
-                }
+                  style: { colors: theme.palette.primary.main, fontSize: 8 }
+                },
+                offsetY: -8,
+                tooltip: { enabled: false }
               },
               yaxis: {
                 labels: {
-                  formatter: (value: number) => Math.round(value) + ''
+                  formatter: (value: number) => Math.round(value) + '',
+                  style: { fontSize: 8 }
                 }
               },
               states: {
@@ -110,6 +104,9 @@ export default function MahasiswaAktifChart() {
                 active: {
                   filter: { type: 'none' }
                 }
+              },
+              tooltip: {
+                style: { fontSize: '8px' }
               }
             }}
           />

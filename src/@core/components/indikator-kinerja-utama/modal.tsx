@@ -58,8 +58,8 @@ export default function IKUModal(props: IModalProp) {
         <Typography
           fontWeight={'bold'}
           textTransform={'capitalize'}
-          fontSize={23}
-          sx={{ [theme.breakpoints.only('xs')]: { fontSize: 18 } }}
+          fontSize={14}
+          sx={{ [theme.breakpoints.only('xs')]: { fontSize: 12 } }}
         >
           {type} Indikator Kinerja Utama (IKU)
         </Typography>
@@ -68,7 +68,9 @@ export default function IKUModal(props: IModalProp) {
         <form autoComplete='off' onSubmit={formik.handleSubmit} noValidate>
           <Grid spacing={5} sx={{ [theme.breakpoints.only('xs')]: { padding: 5 } }} padding={10} container>
             <FormControl margin={'dense'} fullWidth>
-              <InputLabel id={'visi'}>Nomor IKU*</InputLabel>
+              <InputLabel id={'visi'} style={{ fontSize: 12, paddingTop: 3 }}>
+                Nomor IKU*
+              </InputLabel>
               <OutlinedInput
                 label={'Nomor IKU*'}
                 value={formik.values.no}
@@ -77,13 +79,17 @@ export default function IKUModal(props: IModalProp) {
                 id={'no'}
                 name={'no'}
                 readOnly={type === 'detail'}
+                sx={{ fontSize: 12 }}
+                size={'small'}
                 multiline
                 fullWidth
               />
               {formik.touched.no && formik.errors.no && <ErrorMessage message={formik.errors.no as string} />}
             </FormControl>
             <FormControl margin={'dense'} fullWidth>
-              <InputLabel id={'misi'}>Nama IKU*</InputLabel>
+              <InputLabel id={'misi'} style={{ fontSize: 12, paddingTop: 3 }}>
+                Nama IKU*
+              </InputLabel>
               <OutlinedInput
                 label={'Nama IKU*'}
                 value={formik.values.name}
@@ -92,6 +98,7 @@ export default function IKUModal(props: IModalProp) {
                 id={'name'}
                 name={'name'}
                 readOnly={type === 'detail'}
+                sx={{ fontSize: 12 }}
                 rows={5}
                 multiline
                 fullWidth
@@ -101,17 +108,21 @@ export default function IKUModal(props: IModalProp) {
             {(type === 'ubah' || type === 'detail') && (
               <Grid spacing={10} alignItems={'center'} container>
                 <Grid item>
-                  <Typography fontWeight={'bold'}>Status</Typography>
+                  <Typography fontWeight={'bold'} fontSize={11}>
+                    Status
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <FormControlLabel
                     control={
                       <Switch
+                        size={'small'}
                         checked={formik.values.is_active || false}
                         inputProps={{ 'aria-label': 'controlled' }}
                         onChange={() => formik.setFieldValue('is_active', !formik.values.is_active)}
                       />
                     }
+                    sx={{ '& .MuiFormControlLabel-label': { fontSize: 12 } }}
                     label='Aktif'
                     disabled={type === 'detail'}
                   />

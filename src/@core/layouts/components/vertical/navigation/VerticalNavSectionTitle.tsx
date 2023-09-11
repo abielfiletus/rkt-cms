@@ -30,7 +30,7 @@ const ListSubheader = styled((props: ListSubheaderProps) => <MuiListSubheader co
 }))
 
 const TypographyHeaderText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontSize: '0.75rem',
+  fontSize: '12px',
   lineHeight: 'normal',
   letterSpacing: '0.21px',
   textTransform: 'uppercase',

@@ -24,11 +24,10 @@ const DashboardPage = () => {
     <ApexChartWrapper>
       <Paper>
         <Grid
-          columnSpacing={isMobile ? 0 : 10}
-          rowSpacing={3}
+          columnSpacing={isMobile ? 0 : 3}
           justifyContent={isMobile ? 'space-between' : 'inherit'}
-          padding={10}
-          paddingY={5}
+          paddingTop={2}
+          paddingX={5}
           sx={{ [theme.breakpoints.only('xs')]: { paddingX: 7, paddingY: 2 } }}
           container
         >
@@ -49,32 +48,27 @@ const DashboardPage = () => {
         </Grid>
         <Divider />
         <Box paddingY={2} paddingX={5}>
-          <Typography fontWeight={500} color={'black'} fontSize={20}>
+          <Typography fontWeight={500} color={'black'} fontSize={13.5}>
             Dashboard {activeLink === 'epb' ? 'Anggaran Berbasis Kinerja' : 'Akademik'}
           </Typography>
-          <Grid columnSpacing={2} mb={10} container>
+          <Grid columnSpacing={2} mb={3} container>
             <Grid item>
-              <Typography color={theme.palette.primary.main} fontSize={13} fontWeight={'bold'}>
+              <Typography color={theme.palette.primary.main} fontSize={10.5} fontWeight={'bold'}>
                 Grafik Data &nbsp;/
               </Typography>
             </Grid>
             <Grid item>
-              <Typography fontSize={13}>{activeLink === 'epb' ? 'E-PB' : 'Akademik'}</Typography>
+              <Typography fontSize={10.5}>{activeLink === 'epb' ? 'E-PB' : 'Akademik'}</Typography>
             </Grid>
           </Grid>
           <Box
             position={'relative'}
             sx={{
               overflowX: 'hidden',
-              height: navigator?.userAgent?.includes('Mac') ? `calc(100vh - 250px)` : `calc(100vh - 330px)`
+              height: 'calc(100vh - 235px)'
             }}
           >
-            <Box sx={{ position: 'absolute', width: '100%', left: activeLink === 'epb' ? 0 : '-1500px' }}>
-              <EPBDashboard />
-            </Box>
-            <Box sx={{ position: 'absolute', width: '100%', right: activeLink === 'akademik' ? 0 : '-1500px' }}>
-              <AkademikDashboard />
-            </Box>
+            {activeLink === 'epb' ? <EPBDashboard /> : <AkademikDashboard />}
           </Box>
         </Box>
       </Paper>

@@ -9,10 +9,10 @@ export default function EPBDashboard() {
       <Box>
         <JumlahRktChart />
       </Box>
-      <Box mt={15}>
+      <Box mt={5}>
         <RktBasedStatusChart />
       </Box>
-      <Box mt={15}>
+      <Box mt={5}>
         <RktBasedCapaianChart />
       </Box>
     </>

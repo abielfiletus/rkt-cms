@@ -137,7 +137,13 @@ const TableStickyHeader = (props: IProps) => {
                   <TableCell
                     key={column.label}
                     align={column.labelAlign}
-                    sx={{ minWidth: column.minWidth, fontSize: column.fontSize + 'px !important', lineHeight: '1rem' }}
+                    sx={{
+                      minWidth: column.minWidth,
+                      fontSize: column.fontSize + 'px !important',
+                      lineHeight: '1rem',
+                      paddingTop: 3,
+                      paddingBottom: 3
+                    }}
                   >
                     {column.label}
                   </TableCell>
@@ -227,6 +233,7 @@ const TableStickyHeader = (props: IProps) => {
                             key={'table-' + item.id + '-' + column.label}
                             align={column.align}
                             onClick={handleRowClick ? () => handleRowClick(item) : undefined}
+                            style={{ paddingTop: 3, paddingBottom: 3 }}
                             sx={{ fontSize: column.fontSize }}
                           >
                             {column.format && typeof value === 'number'
