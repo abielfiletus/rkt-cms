@@ -15,10 +15,11 @@ interface IProps {
   contentGrid?: number
   errors: Record<string, any>
   formikField: string
+  alignLabel?: 'start' | 'end' | 'center'
 }
 
 export default function FormRow(props: IProps) {
-  const { id, label, content, contentSx, errors, formikField, boxSx, boxGrid, contentGrid } = props
+  const { id, label, content, contentSx, errors, formikField, boxSx, boxGrid, contentGrid, alignLabel } = props
 
   const theme = useTheme()
 
@@ -29,9 +30,9 @@ export default function FormRow(props: IProps) {
   })
 
   return (
-    <Grid marginTop={3} columnSpacing={2} alignItems={'end'} container>
+    <Grid marginTop={2} columnSpacing={2} alignItems={alignLabel || 'end'} container>
       <Grid xs={boxGrid || 4} item>
-        <Box marginTop={2} fontWeight={500} id={id} sx={boxSx}>
+        <Box marginTop={0.7} fontWeight={500} id={id} sx={boxSx}>
           {label} <span style={{ color: theme.palette.error.main }}>*</span>
         </Box>
       </Grid>

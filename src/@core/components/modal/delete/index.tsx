@@ -35,9 +35,9 @@ export default function DeleteModal(props: IProps) {
       <DialogContent sx={{ textAlign: 'center' }}>
         <Box>
           <Typography fontWeight={700}>Hapus {modalTitle}</Typography>
-          <Image src={'/images/pages/delete.jpeg'} width={170} height={200} />
+          <Image src={'/images/pages/delete.jpeg'} width={160} height={190} />
           <Typography variant={'body2'}>Apakah anda yakin ingin menghapus ?</Typography>
-          <Typography marginTop={5} sx={{ whiteSpace: 'pre-wrap' }}>
+          <Typography marginTop={5} variant={'body2'} fontWeight={500} sx={{ whiteSpace: 'pre-wrap' }}>
             {title}
           </Typography>
           {subTitle && (
@@ -48,12 +48,12 @@ export default function DeleteModal(props: IProps) {
         </Box>
         <Grid justifyContent={'right'} marginTop={5} container>
           <Grid item>
-            <Button color={'error'} onClick={handleDelete}>
+            <Button color={'error'} onClick={handleDelete} size={'small'} sx={{ fontSize: 12 }}>
               Hapus
             </Button>
           </Grid>
           <Grid item>
-            <Button onClick={() => handleClose(false)} color={'secondary'}>
+            <Button onClick={() => handleClose(false)} color={'secondary'} size={'small'} sx={{ fontSize: 12 }}>
               Batal
             </Button>
           </Grid>

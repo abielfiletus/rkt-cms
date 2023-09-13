@@ -26,7 +26,8 @@ const DashboardPage = () => {
         <Grid
           columnSpacing={isMobile ? 0 : 3}
           justifyContent={isMobile ? 'space-between' : 'inherit'}
-          paddingTop={2}
+          paddingTop={3}
+          paddingBottom={1}
           paddingX={5}
           sx={{ [theme.breakpoints.only('xs')]: { paddingX: 7, paddingY: 2 } }}
           container

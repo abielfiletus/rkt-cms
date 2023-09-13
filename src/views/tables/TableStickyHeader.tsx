@@ -214,14 +214,14 @@ const TableStickyHeader = (props: IProps) => {
                               {showEdit && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleEditClick ? handleEditClick(item) : null)}>
-                                    <PencilOutline color={'primary'} fontSize={column.iconSize} />
+                                    <PencilOutline color={'primary'} fontSize={'small'} />
                                   </IconButton>
                                 </Grid>
                               )}
                               {showDelete && (
                                 <Grid item>
                                   <IconButton onClick={() => (handleDeleteClick ? handleDeleteClick(item) : null)}>
-                                    <DeleteOutline color={'error'} fontSize={column.iconSize} />
+                                    <DeleteOutline color={'error'} fontSize={'small'} />
                                   </IconButton>
                                 </Grid>
                               )}

@@ -12,6 +12,7 @@ import Button from '@mui/material/Button'
 import ErrorMessage from '../error-message'
 import { AddRencanaStrategisSchema, EditRencanaStrategisSchema } from './indikator-kinerja-utama.schema'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import CustomInputLabel from '../../../views/form-layouts/custom-input-label'
 
 export default function IKUModal(props: IModalProp) {
   const { data, type, handleClose } = props
@@ -58,8 +59,8 @@ export default function IKUModal(props: IModalProp) {
         <Typography
           fontWeight={'bold'}
           textTransform={'capitalize'}
-          fontSize={14}
-          sx={{ [theme.breakpoints.only('xs')]: { fontSize: 12 } }}
+          fontSize={15}
+          sx={{ [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
         >
           {type} Indikator Kinerja Utama (IKU)
         </Typography>
@@ -68,9 +69,7 @@ export default function IKUModal(props: IModalProp) {
         <form autoComplete='off' onSubmit={formik.handleSubmit} noValidate>
           <Grid spacing={5} sx={{ [theme.breakpoints.only('xs')]: { padding: 5 } }} padding={10} container>
             <FormControl margin={'dense'} fullWidth>
-              <InputLabel id={'visi'} style={{ fontSize: 12, paddingTop: 3 }}>
-                Nomor IKU*
-              </InputLabel>
+              <CustomInputLabel id={'visi'} label={'Nomor IKU*'} />
               <OutlinedInput
                 label={'Nomor IKU*'}
                 value={formik.values.no}
@@ -132,11 +131,11 @@ export default function IKUModal(props: IModalProp) {
           </Grid>
           <Box textAlign={'right'}>
             {type !== 'detail' && (
-              <Button type={'submit'} color={'primary'}>
+              <Button type={'submit'} color={'primary'} size={'small'} sx={{ fontSize: 12 }}>
                 SIMPAN
               </Button>
             )}
-            <Button type={'button'} onClick={() => handleClose(false)} color={'secondary'}>
+            <Button type={'button'} onClick={() => handleClose(false)} color={'secondary'} size={'small'} sx={{ fontSize: 12 }}>
               BATAL
             </Button>
           </Box>

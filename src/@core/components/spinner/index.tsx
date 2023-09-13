@@ -14,8 +14,8 @@ const FallbackSpinner = ({ sx }: { sx?: BoxProps['sx'] }) => {
         ...sx
       }}
     >
-      <img src={'/images/logos/logo.png'} width={220} height={80} alt={'logo'} />
-      <CircularProgress disableShrink sx={{ mt: 3 }} />
+      <img src={'/images/logos/logo.png'} width={140} height={50} alt={'logo'} />
+      <CircularProgress disableShrink sx={{ mt: 3 }} size={23} />
     </Box>
   )
 }

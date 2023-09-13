@@ -129,7 +129,7 @@ const IndikatorKinerjaUtamaPage = () => {
                     verticalAlign: 'center',
                     alignItems: 'center',
                     boxShadow: 4,
-                    height: 40
+                    height: 35
                   }}
                   size={'small'}
                   disabled={downloadLoading}
@@ -137,7 +137,7 @@ const IndikatorKinerjaUtamaPage = () => {
                 >
                   <Grid alignItems={'center'} container>
                     <Grid mt={1.2} item>
-                      <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                      <MicrosoftExcel sx={{ color: 'white' }} fontSize={'small'} />
                     </Grid>
                     <Grid item ml={2}>
                       <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
@@ -157,17 +157,17 @@ const IndikatorKinerjaUtamaPage = () => {
                     verticalAlign: 'center',
                     alignItems: 'center',
                     boxShadow: 5,
-                    height: 40
+                    height: 35
                   }}
                   size={'small'}
                   onClick={handleAddClick}
                 >
                   <Grid alignItems={'center'} container>
-                    <Grid mt={1.2} item>
-                      <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                    <Grid mt={1.4} item>
+                      <PlusCircleOutline sx={{ color: 'white' }} fontSize={'small'} />
                     </Grid>
                     <Grid item ml={2}>
-                      <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
                         Tambah IKU
                       </Typography>
                     </Grid>
@@ -181,14 +181,14 @@ const IndikatorKinerjaUtamaPage = () => {
       <Box mt={3}>
         <TableStickyHeader
           columns={[
-            { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 10 },
-            { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 10 },
+            { id: 'no', label: 'Nomor IKU', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'name', label: 'Nama IKU', minWidth: 160, fontSize: isMobile ? 10 : 11.5 },
             {
               id: 'is_active',
               label: 'Status',
               transform: value => (value === true ? 'Aktif' : <Box color={theme.palette.grey['500']}>{'Tidak Aktif'}</Box>),
               minWidth: 110,
-              fontSize: isMobile ? 10 : 10
+              fontSize: isMobile ? 10 : 11.5
             },
             {
               id: 'action',
@@ -198,7 +198,7 @@ const IndikatorKinerjaUtamaPage = () => {
                 delete: ability.can('delete', 'indikator-kinerja-utama')
               },
               minWidth: 120,
-              fontSize: isMobile ? 10 : 10
+              fontSize: isMobile ? 10 : 11.5
             }
           ]}
           url={'indikator-kinerja-utama'}
@@ -211,7 +211,7 @@ const IndikatorKinerjaUtamaPage = () => {
           initialized={initializedDT}
           setInitialized={setInitializedDT}
           sx={{ fontWeight: 500, '& .MuiTableCell-body': { color: 'black' } }}
-          paginationFontSize={11}
+          paginationFontSize={11.5}
         />
       </Box>
       {showDetail && <IKUModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

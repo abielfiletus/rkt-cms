@@ -10,8 +10,8 @@ const LoaderPage = () => {
   return (
     <Box height={'100vh'} width={'100vw'} position={'absolute'} top={0} left={0} zIndex={2000} bgcolor={theme.palette.grey['50']}>
       <Box position={'absolute'} sx={{ left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} textAlign={'center'}>
-        <CircularProgress color={'primary'} />
-        <Typography>Memuat...</Typography>
+        <CircularProgress color={'primary'} size={20} />
+        <Typography fontSize={13}>Memuat...</Typography>
       </Box>
     </Box>
   )

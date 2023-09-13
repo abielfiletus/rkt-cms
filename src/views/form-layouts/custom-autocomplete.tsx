@@ -3,6 +3,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Autocomplete, CircularProgress } from '@mui/material'
 import { apiGet } from '../../util/api-fetch'
 import throttle from 'lodash.throttle'
+import Typography from '@mui/material/Typography'
 
 interface IProps {
   url: string
@@ -71,6 +72,12 @@ export default function CustomAutocomplete(props: IProps) {
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue)
       }}
+      ListboxProps={{ sx: { fontSize: 11.5 } }}
+      noOptionsText={
+        <Typography fontSize={11.5} variant={'body2'}>
+          Tidak ada pilihan
+        </Typography>
+      }
       renderInput={params => (
         <TextField
           {...params}

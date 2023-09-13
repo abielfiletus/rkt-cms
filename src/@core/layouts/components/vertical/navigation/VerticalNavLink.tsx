@@ -94,6 +94,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
             }}
             sx={{
               pl: 5.5,
+              py: 1.7,
               ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' })
             }}
             title={item.title}
@@ -109,7 +110,11 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
             </ListItemIcon>
 
             <MenuItemTextMetaWrapper>
-              <Typography variant={'body2'} {...(themeConfig.menuTextTruncate && { noWrap: true })} fontSize={isMobile ? 11 : 12}>
+              <Typography
+                variant={'body2'}
+                {...(themeConfig.menuTextTruncate && { noWrap: true })}
+                fontSize={isMobile ? 11 : 12.5}
+              >
                 {item.title}
               </Typography>
               {item.badgeContent ? (
@@ -117,11 +122,12 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
                   label={item.badgeContent}
                   color={item.badgeColor || 'primary'}
                   sx={{
-                    height: 20,
-                    minWidth: 20,
-                    fontWeight: 500,
-                    marginLeft: 1.25,
-                    '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' }
+                    height: 17,
+                    minWidth: 17,
+                    fontWeight: 600,
+                    fontSize: 9,
+                    borderRadius: 0.5,
+                    '& .MuiChip-label': { px: '5px', textTransform: 'capitalize' }
                   }}
                 />
               ) : null}

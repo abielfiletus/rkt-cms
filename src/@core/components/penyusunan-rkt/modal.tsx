@@ -26,7 +26,6 @@ import FormRow from '../../../views/form-layouts/form-row'
 import InputAdornment from '@mui/material/InputAdornment'
 import CustomAutocomplete from '../../../views/form-layouts/custom-autocomplete'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import IconButton from '@mui/material/IconButton'
 
 export default function PenyusunanRKTModal(props: IModalProp) {
   const { id, type, handleClose } = props
@@ -306,16 +305,16 @@ export default function PenyusunanRKTModal(props: IModalProp) {
           <DialogTitle>
             <Typography
               fontWeight={'bold'}
-              fontSize={23}
+              fontSize={15}
               textTransform={'capitalize'}
-              sx={{ [theme.breakpoints.only('xs')]: { fontSize: 18 } }}
+              sx={{ [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
             >
               {type} Penyusunan Usulan RKT
             </Typography>
           </DialogTitle>
           <DialogContent>
             <form onSubmit={formik.handleSubmit} noValidate>
-              <Box sx={{ fontSize: '13px !important', '& input': { fontSize: '13px !important' } }}>
+              <Box sx={{ fontSize: '11.5px !important', '& input': { fontSize: '11.5px !important' } }}>
                 <FormRow
                   id={'jurusan-pengusul'}
                   label={'Jurusan Pengusul'}
@@ -328,9 +327,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   content={
                     <Typography
                       color={theme.palette.grey['500']}
-                      fontSize={13}
+                      fontSize={11.5}
                       marginTop={2}
-                      mb={2}
                       sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
                     >
                       {userProdi.name}
@@ -366,7 +364,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                       borderLeftColor: 'transparent !important',
                       borderRightColor: 'transparent !important'
                     },
-                    '& input': { padding: 2, paddingLeft: 0 }
+                    '& input': { padding: 1, paddingLeft: 0 },
+                    '& .MuiButtonBase-root svg': { width: '20px', height: '20px' }
                   }}
                 />
                 <FormRow
@@ -459,21 +458,20 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                     type={'button'}
                     color={'info'}
                     variant={'contained'}
-                    sx={{ borderRadius: 30, height: 35, marginBottom: 1 }}
+                    sx={{ borderRadius: 30, height: 30, marginBottom: 1 }}
                     onClick={handleAddIku}
                     disabled={type === 'detail'}
                   >
                     <Grid alignItems={'center'} container>
                       <Grid mt={1.2} item>
                         <TextBoxPlusOutline
-                          sx={{ color: 'white', [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
-                          fontSize={'small'}
+                          sx={{ color: 'white', fontSize: 15, [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
                         />
                       </Grid>
                       <Grid item ml={2}>
                         <Typography
                           color={'white'}
-                          fontSize={12}
+                          fontSize={11}
                           fontWeight={'bold'}
                           sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}
                         >
@@ -484,7 +482,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   </Button>
                   {formik.values.iku_data.map((iku, i) => {
                     return (
-                      <Box marginTop={2} key={i}>
+                      <Box key={i} sx={{ fontSize: '11.5px !important', '& input': { fontSize: '11.5px !important' } }}>
                         <Grid pl={1} columnSpacing={3} container>
                           <Grid sm={10} xs={12} item>
                             <FormRow
@@ -505,7 +503,6 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                   valueFieldKey={'id'}
                                   defaultValue={defaultIkuOption[iku.iku_id]}
                                   disabled={type === 'detail'}
-                                  sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
                                   limit={15}
                                 />
                               }
@@ -524,12 +521,12 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                               >
                                 <Grid alignItems={'center'} container>
                                   <Grid md={1} mt={1.2} item>
-                                    <Close sx={{ color: 'white' }} fontSize={'13'} />
+                                    <Close sx={{ color: 'white' }} fontSize={'13px'} />
                                   </Grid>
-                                  <Grid item ml={2}>
+                                  <Grid item ml={3}>
                                     <Typography
                                       color={'white'}
-                                      fontSize={isMobile ? 11 : 12}
+                                      fontSize={10}
                                       fontWeight={'bold'}
                                       onClick={() => handleRemoveIku(i)}
                                     >
@@ -753,6 +750,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                       boxGrid={isMobile ? 12 : 4}
                                       contentGrid={isMobile ? 12 : 8}
                                       contentSx={{ [theme.breakpoints.only('xs')]: { fontSize: 11 } }}
+                                      alignLabel={'start'}
                                       content={
                                         <FormControl fullWidth>
                                           <TextField
@@ -790,16 +788,16 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                         type={'button'}
                                         color={'error'}
                                         variant={'contained'}
-                                        sx={{ borderRadius: 30, height: 30, marginTop: 2, fontSize: isMobile ? 11 : 13 }}
+                                        sx={{ borderRadius: 30, height: 30, marginTop: 2, fontSize: 13 }}
                                         onClick={() => handleRemoveIkuAksi(i, j)}
                                         disabled={type === 'detail'}
                                       >
                                         <Grid alignItems={'center'} container>
                                           <Grid mt={1.2} item>
-                                            <Close sx={{ color: 'white' }} fontSize={isMobile ? '11' : '13'} />
+                                            <Close sx={{ color: 'white' }} fontSize={'10px'} />
                                           </Grid>
                                           <Grid item ml={2}>
-                                            <Typography color={'white'} fontSize={isMobile ? 11 : 12} fontWeight={'bold'}>
+                                            <Typography color={'white'} fontSize={10} fontWeight={'bold'}>
                                               Hapus
                                             </Typography>
                                           </Grid>
@@ -823,7 +821,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                                 height: 35,
                                 marginBottom: 2,
                                 bgcolor: '#65eb92',
-                                fontSize: isMobile ? 11 : 14,
+                                fontSize: 10,
                                 marginTop: 4,
                                 ':hover': { bgcolor: '#65eb92' }
                               }}
@@ -832,10 +830,10 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                             >
                               <Grid alignItems={'center'} container>
                                 <Grid mt={1.2} item>
-                                  <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                                  <PlusCircleOutline sx={{ color: 'white' }} fontSize={'small'} />
                                 </Grid>
                                 <Grid item ml={2}>
-                                  <Typography color={'white'} fontSize={isMobile ? 11 : 12} fontWeight={'bold'}>
+                                  <Typography color={'white'} fontSize={10} fontWeight={'bold'}>
                                     Tambah Rencana Aksi
                                   </Typography>
                                 </Grid>
@@ -848,22 +846,22 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   })}
                 </Box>
               </Box>
-              <Box sx={{ fontSize: '13px !important', marginTop: 5, '& input': { fontSize: '13px !important' } }}>
+              <Box sx={{ fontSize: '11.5px !important', marginTop: 5, '& input': { fontSize: '11.5px !important' } }}>
                 <Box border={'1px solid #3e495473'} borderRadius={'5px'} padding={2}>
                   <Button
                     type={'button'}
                     color={'warning'}
                     variant={'contained'}
-                    sx={{ borderRadius: 30, height: 40, marginBottom: 2 }}
+                    sx={{ borderRadius: 30, height: 30, marginBottom: 2 }}
                     onClick={handleAddRab}
                     disabled={type === 'detail'}
                   >
                     <Grid alignItems={'center'} container>
                       <Grid mt={1.2} item>
-                        <TextBoxPlusOutline sx={{ color: 'white' }} fontSize={'small'} />
+                        <TextBoxPlusOutline sx={{ color: 'white' }} fontSize={'15px'} />
                       </Grid>
                       <Grid item ml={2}>
-                        <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
+                        <Typography color={'white'} fontSize={11} fontWeight={'bold'}>
                           Tambah RAB
                         </Typography>
                       </Grid>
@@ -974,10 +972,10 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                               >
                                 <Grid alignItems={'center'} container>
                                   <Grid mt={1.2} item>
-                                    <Close sx={{ color: 'white' }} fontSize={'small'} />
+                                    <Close sx={{ color: 'white' }} fontSize={'13px'} />
                                   </Grid>
                                   <Grid item ml={2}>
-                                    <Typography color={'white'} fontSize={isMobile ? 11 : 12} fontWeight={'bold'}>
+                                    <Typography color={'white'} fontSize={10} fontWeight={'bold'}>
                                       Hapus
                                     </Typography>
                                   </Grid>
@@ -992,16 +990,16 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                 </Box>
               </Box>
               <Box marginTop={5}>
-                <Typography lineHeight={0.5} fontWeight={500} fontSize={isMobile ? 11 : 14}>
+                <Typography lineHeight={0.5} fontWeight={500} fontSize={11.5}>
                   UPLOAD FILE PENDUKUNG
                 </Typography>
-                <Typography fontStyle={'italic'} color={theme.palette.error.main} fontSize={isMobile ? 9 : 11}>
+                <Typography fontStyle={'italic'} color={theme.palette.error.main} fontSize={9.5}>
                   *Upload file dalam format PDF
                 </Typography>
 
                 <Grid spacing={3} columnSpacing={6} marginTop={2} container>
                   <Grid item>
-                    <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                    <Typography fontSize={isMobile ? 11 : 12} textAlign={'center'} fontWeight={500}>
                       Surat Usulan <span style={{ color: theme.palette.error.main }}>*</span>
                     </Typography>
                     <FileInput
@@ -1019,7 +1017,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                     />
                   </Grid>
                   <Grid item>
-                    <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                    <Typography fontSize={isMobile ? 11 : 12} textAlign={'center'} fontWeight={500}>
                       KAK <span style={{ color: theme.palette.error.main }}>*</span>
                     </Typography>
                     <FileInput
@@ -1037,7 +1035,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                     />
                   </Grid>
                   <Grid item>
-                    <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                    <Typography fontSize={isMobile ? 11 : 12} textAlign={'center'} fontWeight={500}>
                       Referensi Harga <span style={{ color: theme.palette.error.main }}>*</span>
                     </Typography>
                     <FileInput
@@ -1055,7 +1053,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                     />
                   </Grid>
                   <Grid item>
-                    <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                    <Typography fontSize={isMobile ? 11 : 12} textAlign={'center'} fontWeight={500}>
                       Pendukung Lain <span style={{ color: theme.palette.error.main }}>*</span>
                     </Typography>
                     <FileInput
@@ -1074,7 +1072,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   </Grid>
                   {data?.excel_rab && (
                     <Grid item>
-                      <Typography fontSize={isMobile ? 11 : 13} textAlign={'center'} fontWeight={500}>
+                      <Typography fontSize={isMobile ? 11 : 12} textAlign={'center'} fontWeight={500}>
                         Excel RAB
                       </Typography>
                       <Box
@@ -1102,7 +1100,14 @@ export default function PenyusunanRKTModal(props: IModalProp) {
             <Grid spacing={2} justifyContent={'right'} marginTop={2} container>
               {type !== 'detail' && (
                 <Grid item>
-                  <Button onClick={formik.handleSubmit} color={'primary'} variant={'contained'} disabled={formik.isSubmitting}>
+                  <Button
+                    onClick={formik.handleSubmit}
+                    color={'primary'}
+                    variant={'contained'}
+                    disabled={formik.isSubmitting}
+                    sx={{ fontSize: 12 }}
+                    size={'small'}
+                  >
                     {formik.isSubmitting ? 'MENGIRIM...' : 'SIMPAN'}
                   </Button>
                 </Grid>
@@ -1114,6 +1119,8 @@ export default function PenyusunanRKTModal(props: IModalProp) {
                   onClick={() => handleClose(false)}
                   color={'secondary'}
                   disabled={formik.isSubmitting}
+                  sx={{ fontSize: 12 }}
+                  size={'small'}
                 >
                   BATAL
                 </Button>
