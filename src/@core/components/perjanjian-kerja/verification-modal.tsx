@@ -53,7 +53,7 @@ export default function VerificationModal(props: IProps) {
   return (
     <Dialog open={true} maxWidth={'sm'} fullWidth>
       <DialogTitle>
-        <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+        <Typography fontWeight={'bold'} fontSize={16} textTransform={'capitalize'}>
           Form Verifikasi {type} Pengajuan PK
         </Typography>
       </DialogTitle>
@@ -67,7 +67,7 @@ export default function VerificationModal(props: IProps) {
         <form onSubmit={formik.handleSubmit}>
           {type === 'revisi' && (
             <>
-              <Typography fontWeight={500}>
+              <Typography fontWeight={500} variant={'body2'}>
                 Jelaskan perubahan yang ingin dilakukan<span style={{ color: theme.palette.error.main }}>*</span>
               </Typography>
               <FormControl fullWidth>
@@ -78,6 +78,7 @@ export default function VerificationModal(props: IProps) {
                   error={formik.touched.notes && Boolean(formik.errors.notes)}
                   placeholder={'Isikan bagian apa saja yang masih harus diperbaiki'}
                   rows={3}
+                  sx={{ fontSize: 11.5 }}
                   multiline
                 />
                 <ErrorMessage message={formik.errors.notes as string} />
@@ -95,6 +96,7 @@ export default function VerificationModal(props: IProps) {
                   error={formik.touched.notes && Boolean(formik.errors.notes)}
                   placeholder={'Wajib isi alasan pengajuan RKT ditolak'}
                   rows={3}
+                  sx={{ fontSize: 11.5 }}
                   multiline
                 />
                 <ErrorMessage message={formik.errors.notes as string} />
@@ -117,7 +119,7 @@ export default function VerificationModal(props: IProps) {
                 type={'button'}
                 color={'secondary'}
                 variant={'contained'}
-                sx={{ paddingX: 7 }}
+                sx={{ paddingX: 7, textTransform: 'none' }}
                 onClick={handleCancel}
                 disabled={loading}
               >

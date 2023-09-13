@@ -91,7 +91,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
         <DialogTitle>
           <Grid justifyContent={'space-between'} container>
             <Grid item>
-              <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+              <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
                 Verifikasi Penyusunan Usulan RKT
               </Typography>
             </Grid>
@@ -105,7 +105,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
         {loading && <LoaderModal />}
         {!loading && (
           <DialogContent>
-            <Box sx={{ fontSize: '13px !important' }}>
+            <Box sx={{ fontSize: '11.5px !important' }}>
               <Grid container>
                 <Grid md={4} fontWeight={600} item>
                   Tahun Usulan
@@ -148,13 +148,13 @@ export default function PenyusunanRKTVerification(props: IProps) {
               </Grid>
               <Table
                 sx={{
-                  marginTop: 10,
+                  marginTop: 3,
                   '& .MuiTableCell-root': {
                     borderColor: theme.palette.grey['300'],
                     borderWidth: 1,
                     borderStyle: 'solid',
                     padding: '0.5rem !important',
-                    fontSize: '12px !important'
+                    fontSize: '11.5px !important'
                   }
                 }}
               >
@@ -208,41 +208,41 @@ export default function PenyusunanRKTVerification(props: IProps) {
             </Box>
             {data.history?.length > 0 && (
               <Box marginTop={10}>
-                <Typography variant={'h6'} marginBottom={4}>
+                <Typography variant={'h6'} marginBottom={1}>
                   History Approval
                 </Typography>
-                <Box maxHeight={500} overflow={'auto'} padding={3}>
+                <Box maxHeight={500} overflow={'auto'} padding={3} paddingTop={1}>
                   {data.history.map((hist, i) => (
-                    <Card key={hist.id} sx={{ marginTop: i > 0 ? 4 : 0, '& .MuiCardContent-root': { padding: 3 } }}>
+                    <Card key={hist.id} sx={{ marginTop: i > 0 ? 3.5 : 0, '& .MuiCardContent-root': { padding: 3 } }}>
                       <CardContent>
-                        <Typography fontSize={13} fontWeight={500}>
+                        <Typography fontSize={11.5} fontWeight={500}>
                           {hist.user?.name}
                         </Typography>
-                        <Typography fontSize={11} color={theme.palette.grey['500']} fontStyle={'italic'}>
+                        <Typography fontSize={10} color={theme.palette.grey['500']} fontStyle={'italic'}>
                           {hist.user?.role?.name} • {dayjs(hist.createdAt).format('D MMMM YYYY HH:mm')}
                         </Typography>
-                        <Divider />
+                        <Divider sx={{ marginY: 1 }} />
                         <Grid container>
                           <Grid md={2} item>
-                            <Typography fontWeight={500} fontSize={13}>
+                            <Typography fontWeight={500} fontSize={11.5}>
                               Status
                             </Typography>
                           </Grid>
                           <Grid md={10} item>
                             {/* @ts-ignore */}
-                            <Typography fontSize={13} color={theme.palette[VerificationStatusColor[hist.status]].main}>
+                            <Typography fontSize={11.5} color={theme.palette[VerificationStatusColor[hist.status]].main}>
                               {ReverseVerificationStatus[hist.status]}
                             </Typography>
                           </Grid>
                         </Grid>
                         <Grid container>
                           <Grid md={2} item>
-                            <Typography fontWeight={500} fontSize={13}>
+                            <Typography fontWeight={500} fontSize={11.5}>
                               Note
                             </Typography>
                           </Grid>
                           <Grid md={10} item>
-                            <Typography fontSize={13} color={theme.palette.grey['500']}>
+                            <Typography fontSize={11.5} color={theme.palette.grey['500']}>
                               {hist.note || '-'}
                             </Typography>
                           </Grid>
@@ -259,7 +259,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                 <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
                   <Grid item>
                     <Button type={'button'} color={'warning'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleRevision}>
-                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={11.5} fontWeight={'bold'}>
                         Revisi
                       </Typography>
                     </Button>
@@ -267,7 +267,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   {auth.user?.role?.id !== 2 && (
                     <Grid item>
                       <Button type={'button'} color={'error'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleReject}>
-                        <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                        <Typography color={'white'} fontSize={11.5} fontWeight={'bold'}>
                           Tolak
                         </Typography>
                       </Button>
@@ -275,7 +275,7 @@ export default function PenyusunanRKTVerification(props: IProps) {
                   )}
                   <Grid item>
                     <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
-                      <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
+                      <Typography color={'white'} fontSize={11.5} fontWeight={'bold'}>
                         Setujui
                       </Typography>
                     </Button>

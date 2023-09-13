@@ -103,7 +103,7 @@ const PerjanjianKerjaPage = () => {
       minWidth: 120,
       noWrap: true,
       maxWidth: 200,
-      fontSize: isMobile ? 11 : undefined
+      fontSize: isMobile ? 11 : 11.5
     },
     {
       id: 'rkt.usulan_anggaran',
@@ -111,13 +111,13 @@ const PerjanjianKerjaPage = () => {
       align: 'center',
       transform: value => (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
       minWidth: 150,
-      fontSize: isMobile ? 11 : undefined
+      fontSize: isMobile ? 11 : 11.5
     },
     {
       id: 'rkt.tahun',
       label: 'Tahun Pengajuan',
       align: 'center',
-      fontSize: isMobile ? 11 : undefined,
+      fontSize: isMobile ? 11 : 11.5,
       minWidth: 100
     },
     {
@@ -134,10 +134,10 @@ const PerjanjianKerjaPage = () => {
       badgeOnClick: data => {
         if (data.status === '4') handleDetailClick(data.id)
       },
-      fontSize: isMobile ? 11 : undefined,
+      fontSize: 11,
       minWidth: 200
     },
-    { id: 'action', label: 'Aksi', minWidth: 120, fontSize: isMobile ? 11 : undefined }
+    { id: 'action', label: 'Aksi', minWidth: 120, fontSize: isMobile ? 11 : 11.5 }
   ]
 
   let idleTimer: NodeJS.Timeout
@@ -158,7 +158,7 @@ const PerjanjianKerjaPage = () => {
                   <OutlinedInput
                     placeholder={'Nama RKT...'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, minWidth: 250 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 250 }}
                     onKeyUp={() => {
                       if (idleTimer) clearTimeout(idleTimer)
 
@@ -173,18 +173,22 @@ const PerjanjianKerjaPage = () => {
                   <Select
                     value={filterDT.rkt_tahun || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, rkt_tahun: value })
                       else setFilterDT({ ...filterDT, rkt_tahun: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Tahun RKT
                     </MenuItem>
                     {yearFilter.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        key={item}
+                        value={item}
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                      >
                         {item}
                       </MenuItem>
                     ))}
@@ -194,18 +198,22 @@ const PerjanjianKerjaPage = () => {
                   <Select
                     value={filterDT.rkt_anggaran || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, rkt_anggaran: value })
                       else setFilterDT({ ...filterDT, rkt_anggaran: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Usulan Anggaran
                     </MenuItem>
                     {anggaranFilter?.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        key={item}
+                        value={item}
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                      >
                         {currencyFormatter.format(Number(item))}
                       </MenuItem>
                     ))}
@@ -215,21 +223,21 @@ const PerjanjianKerjaPage = () => {
                   <Select
                     value={filterDT.status || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, status: value })
                       else setFilterDT({ ...filterDT, status: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Status
                     </MenuItem>
                     {Object.keys(VerificationStatus).map(key => {
                       if (VerificationStatus[key] !== '0') {
                         return (
                           <MenuItem
-                            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                            sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
                             key={key}
                             value={VerificationStatus[key]}
                           >
@@ -253,7 +261,7 @@ const PerjanjianKerjaPage = () => {
                         verticalAlign: 'center',
                         alignItems: 'center',
                         boxShadow: 4,
-                        height: 40
+                        height: 35
                       }}
                       disabled={downloadLoading}
                       onClick={handleDownloadClick}
@@ -261,10 +269,10 @@ const PerjanjianKerjaPage = () => {
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={'small'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={isMobile ? 11 : 12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
                             {downloadLoading ? 'Downloading...' : 'Download Excel'}
                           </Typography>
                         </Grid>
@@ -275,7 +283,7 @@ const PerjanjianKerjaPage = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Box mt={7}>
+          <Box mt={3}>
             <CustomTable
               columns={column}
               url={'perjanjian-kerja'}
@@ -311,7 +319,7 @@ const PerjanjianKerjaPage = () => {
                   </Grid>
                 </Grid>
               )}
-              paginationFontSize={isMobile ? 12 : undefined}
+              paginationFontSize={11.5}
             />
           </Box>
           {showUpload && (

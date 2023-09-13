@@ -54,7 +54,9 @@ const UserDropdown = () => {
   if (typeof window !== 'undefined') {
     name = window.localStorage.getItem('name') as string
     avatar = (window.localStorage.getItem('avatar') as string) || '/images/avatars/1.png'
-    role = window.localStorage.getItem('role_name') as string
+    role = window.localStorage.getItem('role') as string
+
+    if (role) role = JSON.parse(role).name
   }
 
   return (
@@ -72,7 +74,7 @@ const UserDropdown = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => handleDropdownClose()}
-        sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
+        sx={{ '& .MuiMenu-paper': { width: 200, marginTop: 4 } }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
@@ -83,19 +85,21 @@ const UserDropdown = () => {
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
-              <Avatar src={avatar} sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar src={avatar} sx={{ width: '2.2rem', height: '2.2rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>{name}</Typography>
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
+              <Typography sx={{ fontWeight: 600 }} fontSize={13}>
+                {name}
+              </Typography>
+              <Typography variant='body2' fontSize={11} sx={{ color: 'text.disabled' }}>
                 {role}
               </Typography>
             </Box>
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ py: 2 }} onClick={() => auth.logout()}>
-          <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+        <MenuItem sx={{ py: 2, fontSize: 13 }} onClick={() => auth.logout()}>
+          <LogoutVariant sx={{ marginRight: 2, fontSize: '1.1rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>
       </Menu>

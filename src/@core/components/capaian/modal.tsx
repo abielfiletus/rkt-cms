@@ -74,7 +74,7 @@ export default function CapaianModal(props: IModalProp) {
       {!isLoading && (
         <>
           <DialogTitle>
-            <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+            <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
               Input Pengukuran Indikator Kinerja Kegiatan
             </Typography>
           </DialogTitle>
@@ -85,7 +85,7 @@ export default function CapaianModal(props: IModalProp) {
                   const rktIku = rktIkuHash[item?.iku_id]
 
                   return (
-                    <Box mt={i > 0 ? 15 : 0} key={item.id_capaian_iku}>
+                    <Box mt={i > 0 ? 12 : 0} key={item.id_capaian_iku} sx={{ fontSize: 11.5 }}>
                       <Grid container>
                         <Grid fontWeight={500} mt={2} md={4} item>
                           Kode IKU
@@ -130,6 +130,7 @@ export default function CapaianModal(props: IModalProp) {
                             value={item.capaian}
                             onChange={formik.handleChange}
                             error={formik.touched?.data?.[i]?.capaian && Boolean((formik.errors?.data?.[i] as any)?.['capaian'])}
+                            inputProps={{ style: { fontSize: 11.5 } }}
                           />
                         </Grid>
                       </Grid>
@@ -149,6 +150,7 @@ export default function CapaianModal(props: IModalProp) {
                               error={
                                 formik.touched?.data?.[i]?.progress && Boolean((formik.errors?.data?.[i] as any)?.['progress'])
                               }
+                              inputProps={{ style: { fontSize: 11.5 } }}
                               multiline
                             />
                           </FormControl>
@@ -170,6 +172,7 @@ export default function CapaianModal(props: IModalProp) {
                               error={
                                 formik.touched?.data?.[i]?.masalah && Boolean((formik.errors?.data?.[i] as any)?.['masalah'])
                               }
+                              inputProps={{ style: { fontSize: 11.5 } }}
                               multiline
                             />
                           </FormControl>
@@ -191,6 +194,7 @@ export default function CapaianModal(props: IModalProp) {
                               error={
                                 formik.touched?.data?.[i]?.strategi && Boolean((formik.errors?.data?.[i] as any)?.['strategi'])
                               }
+                              inputProps={{ style: { fontSize: 11.5 } }}
                               multiline
                             />
                           </FormControl>
@@ -207,14 +211,27 @@ export default function CapaianModal(props: IModalProp) {
               {type !== 'detail' && (
                 <Grid item>
                   {/* @ts-ignore */}
-                  <Button onClick={formik.handleSubmit} color={'primary'} variant={'contained'}>
-                    AJUKAN
+                  <Button
+                    onClick={formik.handleSubmit}
+                    color={'primary'}
+                    variant={'contained'}
+                    size={'small'}
+                    sx={{ textTransform: 'none', fontSize: 12 }}
+                  >
+                    Ajukan
                   </Button>
                 </Grid>
               )}
               <Grid item>
-                <Button type={'button'} variant={'contained'} onClick={() => handleClose(false)} color={'secondary'}>
-                  BATAL
+                <Button
+                  type={'button'}
+                  variant={'contained'}
+                  onClick={() => handleClose(false)}
+                  color={'secondary'}
+                  size={'small'}
+                  sx={{ textTransform: 'none', fontSize: 12 }}
+                >
+                  Batal
                 </Button>
               </Grid>
             </Grid>

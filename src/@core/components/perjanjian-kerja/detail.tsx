@@ -42,7 +42,7 @@ export default function DetailPerjanjianKerja(props: IProps) {
             <DialogTitle>
               <Grid justifyContent={'space-between'} container>
                 <Grid item>
-                  <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+                  <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
                     Detail Perjanjian Kerja
                   </Typography>
                 </Grid>
@@ -59,7 +59,12 @@ export default function DetailPerjanjianKerja(props: IProps) {
             <DialogActions>
               <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
                 <Grid item>
-                  <Button type={'button'} variant={'contained'} sx={{ paddingX: 7 }} onClick={() => handleClose()}>
+                  <Button
+                    type={'button'}
+                    variant={'contained'}
+                    sx={{ paddingX: 7, textTransform: 'none' }}
+                    onClick={() => handleClose()}
+                  >
                     <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
                       Tutup
                     </Typography>

@@ -11,10 +11,12 @@ interface IProps {
   disabled: boolean
   errorMessage: string
   value: string
+  height?: number
+  width?: number
 }
 
 export default function AvatarInput(props: IProps) {
-  const { name, error, handleChange, disabled, errorMessage, value } = props
+  const { name, error, handleChange, disabled, errorMessage, value, height, width } = props
 
   const theme = useTheme()
 
@@ -57,8 +59,8 @@ export default function AvatarInput(props: IProps) {
           <Avatar
             src={value}
             sx={{
-              height: 200,
-              width: 200,
+              height: height || 200,
+              width: width || 200,
               marginLeft: 'auto',
               marginRight: 'auto',
               marginTop: 5,

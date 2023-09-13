@@ -50,16 +50,19 @@ const DocumentPage = () => {
               backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 150%)`,
               justifyContent: 'space-between',
               verticalAlign: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              boxShadow: 5,
+              height: 35
             }}
+            size={'small'}
             onClick={handleAddClick}
           >
             <Grid alignItems={'center'} container>
               <Grid mt={1.2} item>
-                <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'inherit'} />
+                <PlusCircleOutline sx={{ color: 'white' }} fontSize={'small'} />
               </Grid>
               <Grid item ml={2}>
-                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 'inherit'}>
+                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 11}>
                   Tambah Dokumen
                 </Typography>
               </Grid>
@@ -67,12 +70,12 @@ const DocumentPage = () => {
           </Button>
         )}
       </Box>
-      <Box mt={isMobile ? 5 : 10}>
+      <Box mt={3}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID', fontSize: isMobile ? 10 : 13 },
-            { id: 'name', label: 'Nama Dokumen', fontSize: isMobile ? 10 : 13 },
-            { id: 'description', label: 'Keterangan Dokumen', fontSize: isMobile ? 10 : 13 },
+            { id: 'id', label: 'ID', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'name', label: 'Nama Dokumen', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'description', label: 'Keterangan Dokumen', fontSize: isMobile ? 10 : 11.5 },
             {
               id: 'file',
               label: 'File',
@@ -87,7 +90,8 @@ const DocumentPage = () => {
               id: 'action',
               label: 'Aksi',
               minWidth: 120,
-              content: { edit: ability.can('update', 'dokumen'), delete: ability.can('delete', 'dokumen') }
+              content: { edit: ability.can('update', 'dokumen'), delete: ability.can('delete', 'dokumen') },
+              iconSize: 'small'
             }
           ]}
           url={'document'}
@@ -97,7 +101,7 @@ const DocumentPage = () => {
           setReFetch={setReFetchDT}
           initialized={initializedDT}
           setInitialized={setInitializedDT}
-          paginationFontSize={isMobile ? 12 : undefined}
+          paginationFontSize={11.5}
         />
       </Box>
       {showEdit && (

@@ -72,7 +72,6 @@ const PenyusunanRktPage = () => {
   const auth = useAuth()
   const theme = useTheme()
   const ability = useContext(AbilityContext)
-  const isTabletAndBelow = useMediaQuery(theme.breakpoints.down('lg'))
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'))
 
   // handler
@@ -136,7 +135,7 @@ const PenyusunanRktPage = () => {
                   <OutlinedInput
                     placeholder={'Nama RKT...'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, minWidth: 250 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 170 }}
                     onKeyUp={() => {
                       if (idleTimer) clearTimeout(idleTimer)
 
@@ -151,18 +150,22 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.tahun || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, tahun: value })
                       else setFilterDT({ ...filterDT, tahun: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
                       Tahun RKT
                     </MenuItem>
                     {yearFilter.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                        key={item}
+                        value={item}
+                      >
                         {item}
                       </MenuItem>
                     ))}
@@ -172,18 +175,22 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.submit_name || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, submit_name: value })
                       else setFilterDT({ ...filterDT, submit_name: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }} value='0'>
                       Pengusul
                     </MenuItem>
                     {submitFilter.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                        key={item}
+                        value={item}
+                      >
                         {item}
                       </MenuItem>
                     ))}
@@ -193,14 +200,14 @@ const PenyusunanRktPage = () => {
                   <Select
                     value={filterDT.status || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, status: value })
                       else setFilterDT({ ...filterDT, status: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Status
                     </MenuItem>
                     {Object.keys(VerificationStatus).map(key => {
@@ -209,7 +216,7 @@ const PenyusunanRktPage = () => {
                           <MenuItem
                             key={key}
                             value={VerificationStatus[key]}
-                            sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                            sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
                           >
                             {key}
                           </MenuItem>
@@ -231,7 +238,7 @@ const PenyusunanRktPage = () => {
                         verticalAlign: 'center',
                         alignItems: 'center',
                         boxShadow: 4,
-                        height: 40
+                        height: 35
                       }}
                       size={'small'}
                       disabled={downloadLoading}
@@ -239,10 +246,10 @@ const PenyusunanRktPage = () => {
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                          <MicrosoftExcel sx={{ color: 'white' }} fontSize={'small'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
                             {downloadLoading ? 'Downloading...' : 'Download Excel'}
                           </Typography>
                         </Grid>
@@ -259,17 +266,17 @@ const PenyusunanRktPage = () => {
                         verticalAlign: 'center',
                         alignItems: 'center',
                         boxShadow: 5,
-                        height: 40
+                        height: 35
                       }}
                       size={'small'}
                       onClick={handleAddClick}
                     >
                       <Grid alignItems={'center'} container>
                         <Grid mt={1.2} item>
-                          <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                          <PlusCircleOutline sx={{ color: 'white' }} fontSize={'small'} />
                         </Grid>
                         <Grid item ml={2}>
-                          <Typography color={'white'} fontSize={isMobile ? 10 : 12} fontWeight={'bold'}>
+                          <Typography color={'white'} fontSize={isMobile ? 10 : 11} fontWeight={'bold'}>
                             Tambah RKT
                           </Typography>
                         </Grid>
@@ -280,7 +287,7 @@ const PenyusunanRktPage = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Box mt={7}>
+          <Box mt={3}>
             <CustomTable
               columns={[
                 {
@@ -290,7 +297,7 @@ const PenyusunanRktPage = () => {
                   minWidth: 120,
                   noWrap: true,
                   maxWidth: 200,
-                  fontSize: isMobile ? 10 : 13
+                  fontSize: isMobile ? 10 : 11.5
                 },
                 {
                   id: 'usulan_anggaran',
@@ -299,7 +306,7 @@ const PenyusunanRktPage = () => {
                   transform: value =>
                     (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
                   minWidth: 150,
-                  fontSize: isMobile ? 10 : 13
+                  fontSize: isMobile ? 10 : 11.5
                 },
                 {
                   id: 'user_submit.name',
@@ -308,9 +315,9 @@ const PenyusunanRktPage = () => {
                   maxWidth: 200,
                   align: 'center',
                   noWrap: true,
-                  fontSize: isMobile ? 10 : 13
+                  fontSize: isMobile ? 10 : 11.5
                 },
-                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center', fontSize: isMobile ? 10 : 13 },
+                { id: 'tahun', label: 'Tahun Pengajuan', align: 'center', fontSize: isMobile ? 10 : 11.5 },
                 {
                   id: 'status',
                   label: 'Status',
@@ -329,13 +336,14 @@ const PenyusunanRktPage = () => {
                     ability.can('approve', 'penyusunan-rkt') || ability.can('read', 'penyusunan-rkt')
                       ? handleApproveClick
                       : undefined,
-                  fontSize: isMobile ? 10 : isTabletAndBelow ? 11 : 13,
+                  fontSize: isMobile ? 10 : 11,
                   minWidth: 150
                 },
                 {
                   id: 'action',
                   label: 'Aksi',
-                  minWidth: isMobile ? 150 : undefined
+                  minWidth: isMobile ? 150 : undefined,
+                  iconSize: 'small'
                 }
               ]}
               url={'penyusunan-rkt'}
@@ -347,14 +355,14 @@ const PenyusunanRktPage = () => {
               handleDeleteClick={handleDeleteClick}
               handleEditClick={handleEditClick}
               handleDetailClick={handleDetailClick}
-              paginationFontSize={isMobile ? 12 : undefined}
+              paginationFontSize={11.5}
               customIcon={data => {
                 return (
                   <Grid container>
                     {ability.can('read', 'penyusunan-rkt') && (
                       <Grid item>
                         <IconButton title={'Detail'} onClick={() => handleDetailClick(data)}>
-                          <FileEyeOutline color={'success'} fontSize={isMobile ? 'small' : 'inherit'} />
+                          <FileEyeOutline color={'success'} fontSize={'small'} />
                         </IconButton>
                       </Grid>
                     )}
@@ -365,7 +373,7 @@ const PenyusunanRktPage = () => {
                       data.status !== VerificationStatus.Selesai && (
                         <Grid item>
                           <IconButton title={'Ubah'} onClick={() => handleEditClick(data)}>
-                            <PencilOutline color={'primary'} fontSize={isMobile ? 'small' : 'inherit'} />
+                            <PencilOutline color={'primary'} fontSize={'small'} />
                           </IconButton>
                         </Grid>
                       )}
@@ -376,7 +384,7 @@ const PenyusunanRktPage = () => {
                       data.status !== VerificationStatus.Selesai && (
                         <Grid item>
                           <IconButton title={'Hapus'} onClick={() => handleDeleteClick(data)}>
-                            <DeleteOutline color={'error'} fontSize={isMobile ? 'small' : 'inherit'} />
+                            <DeleteOutline color={'error'} fontSize={'small'} />
                           </IconButton>
                         </Grid>
                       )}

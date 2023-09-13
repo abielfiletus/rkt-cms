@@ -303,12 +303,7 @@ export default function PenyusunanRKTModal(props: IModalProp) {
       {!isLoading && (
         <>
           <DialogTitle>
-            <Typography
-              fontWeight={'bold'}
-              fontSize={15}
-              textTransform={'capitalize'}
-              sx={{ [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
-            >
+            <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
               {type} Penyusunan Usulan RKT
             </Typography>
           </DialogTitle>

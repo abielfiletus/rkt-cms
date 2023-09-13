@@ -48,11 +48,6 @@ export default function VerificationPerjanjianKerja(props: IProps) {
     setType('setujui')
   }
 
-  const handleReject = () => {
-    setShowModal(true)
-    setType('tolak')
-  }
-
   const handleModalClose = (hasData: boolean) => {
     setShowModal(false)
 
@@ -68,13 +63,13 @@ export default function VerificationPerjanjianKerja(props: IProps) {
             <DialogTitle>
               <Grid justifyContent={'space-between'} container>
                 <Grid item>
-                  <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+                  <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
                     Draft Perjanjian Kerja
                   </Typography>
                 </Grid>
                 <Grid item>
                   <IconButton onClick={() => handleClose(false)}>
-                    <Close />
+                    <Close fontSize={'small'} />
                   </IconButton>
                 </Grid>
               </Grid>
@@ -83,9 +78,15 @@ export default function VerificationPerjanjianKerja(props: IProps) {
               {pdf && <iframe src={pdf + '#toolbar=0'} frameBorder='1' width={'100%'} height={'600px'} />}
             </DialogContent>
             <DialogActions>
-              <Grid justifyContent={'right'} columnSpacing={5} marginTop={10} container>
+              <Grid justifyContent={'right'} columnSpacing={3} marginTop={10} container>
                 <Grid item>
-                  <Button type={'button'} color={'warning'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleRevision}>
+                  <Button
+                    type={'button'}
+                    color={'warning'}
+                    variant={'contained'}
+                    sx={{ paddingX: 7, textTransform: 'none' }}
+                    onClick={handleRevision}
+                  >
                     <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
                       Revisi
                     </Typography>
@@ -99,7 +100,13 @@ export default function VerificationPerjanjianKerja(props: IProps) {
                 {/*  </Button>*/}
                 {/*</Grid>*/}
                 <Grid item>
-                  <Button type={'button'} color={'success'} variant={'contained'} sx={{ paddingX: 7 }} onClick={handleApprove}>
+                  <Button
+                    type={'button'}
+                    color={'success'}
+                    variant={'contained'}
+                    sx={{ paddingX: 7, textTransform: 'none' }}
+                    onClick={handleApprove}
+                  >
                     <Typography color={'white'} fontSize={12} fontWeight={'bold'}>
                       Setujui
                     </Typography>

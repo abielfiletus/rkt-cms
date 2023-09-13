@@ -56,12 +56,7 @@ export default function IKUModal(props: IModalProp) {
       fullWidth
     >
       <DialogTitle>
-        <Typography
-          fontWeight={'bold'}
-          textTransform={'capitalize'}
-          fontSize={15}
-          sx={{ [theme.breakpoints.only('xs')]: { fontSize: 13 } }}
-        >
+        <Typography fontWeight={'bold'} textTransform={'capitalize'} fontSize={15}>
           {type} Indikator Kinerja Utama (IKU)
         </Typography>
       </DialogTitle>

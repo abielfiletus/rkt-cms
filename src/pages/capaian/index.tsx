@@ -58,7 +58,7 @@ const CapaianPage = () => {
         minWidth: 120,
         noWrap: true,
         maxWidth: 200,
-        fontSize: isMobile ? 11 : undefined
+        fontSize: isMobile ? 11 : 11.5
       },
       {
         id: 'rkt.usulan_anggaran',
@@ -66,13 +66,13 @@ const CapaianPage = () => {
         align: 'center',
         transform: value => (value as number).toLocaleString(undefined, { maximumFractionDigits: 0 }).replace(/,/g, '.'),
         minWidth: 170,
-        fontSize: isMobile ? 11 : undefined
+        fontSize: isMobile ? 11 : 11.5
       },
       {
         id: 'rkt.tahun',
         label: 'Tahun Pengajuan',
         align: 'center',
-        fontSize: isMobile ? 11 : undefined,
+        fontSize: isMobile ? 11 : 11.5,
         minWidth: 140
       },
       {
@@ -88,7 +88,7 @@ const CapaianPage = () => {
             )
           }
         },
-        fontSize: isMobile ? 11 : undefined,
+        fontSize: isMobile ? 11 : 11.5,
         minWidth: 130
       }
     ]
@@ -160,7 +160,7 @@ const CapaianPage = () => {
         sx={{
           cursor: disabled ? 'default' : 'pointer',
           fontWeight: 'bold',
-          fontSize: isMobile ? 11 : 14,
+          fontSize: isMobile ? 11 : 11.5,
           color: disabled ? theme.palette.grey['500'] : 'black'
         }}
         onClick={disabled ? undefined : () => handleShowInputTwClick(tw_index, id)}
@@ -186,7 +186,7 @@ const CapaianPage = () => {
                   <OutlinedInput
                     placeholder={'Nama RKT...'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, minWidth: 250 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, minWidth: 250 }}
                     onKeyUp={() => {
                       if (idleTimer) clearTimeout(idleTimer)
 
@@ -201,18 +201,22 @@ const CapaianPage = () => {
                   <Select
                     value={filterDT.tahun || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, tahun: value })
                       else setFilterDT({ ...filterDT, tahun: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Tahun RKT
                     </MenuItem>
                     {yearFilter.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        key={item}
+                        value={item}
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                      >
                         {item}
                       </MenuItem>
                     ))}
@@ -222,18 +226,22 @@ const CapaianPage = () => {
                   <Select
                     value={filterDT.submit_name || '0'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '0') setFilterDT({ ...filterDT, submit_name: value })
                       else setFilterDT({ ...filterDT, submit_name: '' })
                     }}
                   >
-                    <MenuItem value='0' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='0' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Pengusul
                     </MenuItem>
                     {submitFilter.map(item => (
-                      <MenuItem key={item} value={item} sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                      <MenuItem
+                        key={item}
+                        value={item}
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                      >
                         {item}
                       </MenuItem>
                     ))}
@@ -243,21 +251,21 @@ const CapaianPage = () => {
                   <Select
                     value={filterDT.status || '-1'}
                     size={'small'}
-                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 11 : 15, maxWidth: 170 }}
+                    sx={{ backgroundColor: 'white', fontSize: isMobile ? 10 : 11, maxWidth: 170 }}
                     onChange={event => {
                       const value = event.target.value
                       if (value !== '-1') setFilterDT({ ...filterDT, status: value })
                       else setFilterDT({ ...filterDT, status: '' })
                     }}
                   >
-                    <MenuItem value='-1' sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
+                    <MenuItem value='-1' sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}>
                       Status
                     </MenuItem>
                     {Object.keys(ReverseCapaianStatus).map(key => (
                       <MenuItem
                         key={key}
                         value={ReverseCapaianStatus[key]}
-                        sx={{ [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
+                        sx={{ fontSize: 12, [theme.breakpoints.only('xs')]: { fontSize: 11, minHeight: 0 } }}
                       >
                         {key}
                       </MenuItem>
@@ -267,7 +275,7 @@ const CapaianPage = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Box mt={7}>
+          <Box mt={3}>
             <CustomTable
               columns={columns}
               url={'capaian'}
@@ -277,6 +285,7 @@ const CapaianPage = () => {
               setInitialized={setInitializedDT}
               queryParams={queryParams}
               handleDetailClick={handleDetailClick}
+              paginationFontSize={11.5}
               customIcon={data => {
                 return (
                   <Grid container>

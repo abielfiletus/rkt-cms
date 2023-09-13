@@ -8,7 +8,6 @@ import { IModalProp } from '../../../configs/modalConfig'
 import { apiGet, apiPatch, apiPost } from '../../../util/api-fetch'
 import LoaderPage from '../../../views/loader'
 import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import { AddUserSchema, EditUserSchema } from './user.schema'
@@ -19,6 +18,7 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import Button from '@mui/material/Button'
 import ErrorMessage from '../error-message'
 import AvatarInput from '../avatar-input'
+import CustomInputLabel from '../../../views/form-layouts/custom-input-label'
 
 export default function UserModal(props: IModalProp) {
   const { data, type, handleClose } = props
@@ -114,16 +114,16 @@ export default function UserModal(props: IModalProp) {
       {!isLoading && (
         <>
           <DialogTitle>
-            <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+            <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
               {type} Data User
             </Typography>
           </DialogTitle>
           <DialogContent>
             <form autoComplete='off' onSubmit={formik.handleSubmit} noValidate>
-              <Grid padding={10} spacing={5} container>
+              <Grid paddingY={5} spacing={5} container>
                 <Grid xs={4} item>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'role'}>Akses</InputLabel>
+                    <CustomInputLabel id={'role'} label={'Akses'} />
                     <Select
                       label={'Akses'}
                       labelId={'role'}
@@ -131,21 +131,26 @@ export default function UserModal(props: IModalProp) {
                       value={formik.values.role_id}
                       onChange={formik.handleChange}
                       error={formik.touched.role_id && Boolean(formik.errors.role_id)}
-                      readOnly={type === 'detail'}
+                      disabled={type === 'detail'}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      size={'small'}
                       fullWidth
                     >
                       {role?.length ? (
                         role.map(item => (
-                          <MenuItem key={item.id} value={item.id}>
+                          <MenuItem sx={{ fontSize: 11.5 }} key={item.id} value={item.id}>
                             {item.name}
                           </MenuItem>
                         ))
                       ) : (
-                        <MenuItem value={data?.role_id}>{data?.role?.name}</MenuItem>
+                        <MenuItem sx={{ fontSize: 11.5 }} value={data?.role_id}>
+                          {data?.role?.name}
+                        </MenuItem>
                       )}
                     </Select>
                     {formik.touched.role_id && formik.errors.role_id && (
-                      <ErrorMessage message={formik.errors.role_id as string} />
+                      <ErrorMessage fontSize={11.5} message={formik.errors.role_id as string} />
                     )}
                   </FormControl>
                   <AvatarInput
@@ -159,59 +164,69 @@ export default function UserModal(props: IModalProp) {
                 </Grid>
                 <Grid xs={8} item>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'department'}>Bagian</InputLabel>
+                    <CustomInputLabel id={'department'} label={'Bagian'} />
                     <Select
                       label={'Bagian'}
                       labelId={'department'}
                       name={'department_id'}
-                      readOnly={type === 'detail'}
+                      disabled={type === 'detail'}
                       value={formik.values.department_id}
                       onChange={formik.handleChange}
                       error={formik.touched.department_id && Boolean(formik.errors.department_id)}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      size={'small'}
                       fullWidth
                     >
                       {department?.length ? (
                         department.map(item => (
-                          <MenuItem key={item.id} value={item.id}>
+                          <MenuItem sx={{ fontSize: 11.5 }} key={item.id} value={item.id}>
                             {item.name}
                           </MenuItem>
                         ))
                       ) : (
-                        <MenuItem value={data?.department_id}>{data?.department?.name}</MenuItem>
+                        <MenuItem sx={{ fontSize: 11.5 }} value={data?.department_id}>
+                          {data?.department?.name}
+                        </MenuItem>
                       )}
                     </Select>
                     {formik.touched.department_id && formik.errors.department_id && (
-                      <ErrorMessage message={formik.errors.department_id as string} />
+                      <ErrorMessage fontSize={11.5} message={formik.errors.department_id as string} />
                     )}
                   </FormControl>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'prodi'}>Prodi</InputLabel>
+                    <CustomInputLabel id={'prodi'} label={'Prodi'} />
                     <Select
                       label={'Prodi'}
                       labelId={'prodi'}
                       name={'kode_prodi'}
-                      readOnly={type === 'detail'}
+                      disabled={type === 'detail'}
                       value={formik.values.kode_prodi}
                       onChange={formik.handleChange}
                       error={formik.touched.kode_prodi && Boolean(formik.errors.kode_prodi)}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      size={'small'}
                       fullWidth
                     >
                       {prodi?.length ? (
                         prodi.map(item => (
-                          <MenuItem key={item.kode_prodi} value={item.kode_prodi}>
+                          <MenuItem sx={{ fontSize: 11.5 }} key={item.kode_prodi} value={item.kode_prodi}>
                             {item.name}
                           </MenuItem>
                         ))
                       ) : (
-                        <MenuItem value={data?.kode_prodi}>{data?.prodi?.name}</MenuItem>
+                        <MenuItem sx={{ fontSize: 11.5 }} value={data?.kode_prodi}>
+                          {data?.prodi?.name}
+                        </MenuItem>
                       )}
                     </Select>
                     {formik.touched.kode_prodi && formik.errors.kode_prodi && (
-                      <ErrorMessage message={formik.errors.kode_prodi as string} />
+                      <ErrorMessage fontSize={11.5} message={formik.errors.kode_prodi as string} />
                     )}
                   </FormControl>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'name'}>Nama Lengkap</InputLabel>
+                    <CustomInputLabel id={'name'} label={'Nama Lengkap'} />
                     <OutlinedInput
                       label={'Nama Lengkap'}
                       value={formik.values.name}
@@ -219,12 +234,18 @@ export default function UserModal(props: IModalProp) {
                       error={formik.touched.name && Boolean(formik.errors.name)}
                       id={'name'}
                       name={'name'}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      size={'small'}
+                      disabled={type === 'detail'}
                       fullWidth
                     />
-                    {formik.touched.name && formik.errors.name && <ErrorMessage message={formik.errors.name as string} />}
+                    {formik.touched.name && formik.errors.name && (
+                      <ErrorMessage fontSize={11.5} message={formik.errors.name as string} />
+                    )}
                   </FormControl>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'nip'}>Nomer Induk Pegawai (NIP)</InputLabel>
+                    <CustomInputLabel id={'nip'} label={'Nomer Induk Pegawai (NIP)'} />
                     <OutlinedInput
                       label={'Nomer Induk Pegawai (NIP)'}
                       value={formik.values.nip}
@@ -232,12 +253,18 @@ export default function UserModal(props: IModalProp) {
                       error={formik.touched.nip && Boolean(formik.errors.nip)}
                       id={'nip'}
                       name={'nip'}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      disabled={type === 'detail'}
+                      size={'small'}
                       fullWidth
                     />
-                    {formik.touched.nip && formik.errors.nip && <ErrorMessage message={formik.errors.nip as string} />}
+                    {formik.touched.nip && formik.errors.nip && (
+                      <ErrorMessage fontSize={11.5} message={formik.errors.nip as string} />
+                    )}
                   </FormControl>
                   <FormControl margin={'dense'} fullWidth>
-                    <InputLabel id={'email'}>Email</InputLabel>
+                    <CustomInputLabel id={'email'} label={'Email'} />
                     <OutlinedInput
                       label={'Email'}
                       value={formik.values.email}
@@ -245,13 +272,19 @@ export default function UserModal(props: IModalProp) {
                       error={formik.touched.email && Boolean(formik.errors.email)}
                       id={'email'}
                       name={'email'}
+                      inputProps={{ style: { fontSize: 11.5 } }}
+                      sx={{ fontSize: 11.5 }}
+                      disabled={type === 'detail'}
+                      size={'small'}
                       fullWidth
                     />
-                    {formik.touched.email && formik.errors.email && <ErrorMessage message={formik.errors.email as string} />}
+                    {formik.touched.email && formik.errors.email && (
+                      <ErrorMessage fontSize={11.5} message={formik.errors.email as string} />
+                    )}
                   </FormControl>
                   {type !== 'detail' && (
                     <FormControl margin={'dense'} fullWidth>
-                      <InputLabel id={'password'}>Password</InputLabel>
+                      <CustomInputLabel id={'password'} label={'Password'} />
                       <OutlinedInput
                         label={'Password'}
                         id={'password'}
@@ -260,6 +293,9 @@ export default function UserModal(props: IModalProp) {
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
+                        inputProps={{ style: { fontSize: 11.5 } }}
+                        sx={{ fontSize: 11.5 }}
+                        size={'small'}
                         endAdornment={
                           <InputAdornment position='end'>
                             <IconButton
@@ -268,20 +304,20 @@ export default function UserModal(props: IModalProp) {
                               onMouseDown={event => event.preventDefault()}
                               aria-label='toggle password visibility'
                             >
-                              {showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                              {showPassword ? <EyeOutline sx={{ fontSize: 18 }} /> : <EyeOffOutline sx={{ fontSize: 18 }} />}
                             </IconButton>
                           </InputAdornment>
                         }
                         fullWidth
                       />
                       {formik.touched.password && formik.errors.password && (
-                        <ErrorMessage message={formik.errors.password as string} />
+                        <ErrorMessage fontSize={11.5} message={formik.errors.password as string} />
                       )}
                     </FormControl>
                   )}
                   {type === 'tambah' && (
                     <FormControl margin={'dense'} fullWidth>
-                      <InputLabel id={'confirmation_password'}>Konfirmasi Password</InputLabel>
+                      <CustomInputLabel id={'confirmation_password'} label={'Konfirmasi Password'} />
                       <OutlinedInput
                         label={'Konfirmasi Password'}
                         id={'confirmation_password'}
@@ -290,6 +326,9 @@ export default function UserModal(props: IModalProp) {
                         value={formik.values.confirmation_password}
                         onChange={formik.handleChange}
                         error={formik.touched.confirmation_password && Boolean(formik.errors.confirmation_password)}
+                        inputProps={{ style: { fontSize: 11.5 } }}
+                        sx={{ fontSize: 11.5 }}
+                        size={'small'}
                         endAdornment={
                           <InputAdornment position='end'>
                             <IconButton
@@ -298,14 +337,14 @@ export default function UserModal(props: IModalProp) {
                               onMouseDown={event => event.preventDefault()}
                               aria-label='toggle password visibility'
                             >
-                              {showPassword ? <EyeOutline /> : <EyeOffOutline />}
+                              {showPassword ? <EyeOutline sx={{ fontSize: 18 }} /> : <EyeOffOutline sx={{ fontSize: 18 }} />}
                             </IconButton>
                           </InputAdornment>
                         }
                         fullWidth
                       />
                       {formik.touched.confirmation_password && formik.errors.confirmation_password && (
-                        <ErrorMessage message={formik.errors.confirmation_password as string} />
+                        <ErrorMessage fontSize={11.5} message={formik.errors.confirmation_password as string} />
                       )}
                     </FormControl>
                   )}
@@ -313,12 +352,18 @@ export default function UserModal(props: IModalProp) {
               </Grid>
               <Box textAlign={'right'}>
                 {type !== 'detail' && (
-                  <Button type={'submit'} color={'primary'}>
-                    SIMPAN
+                  <Button type={'submit'} color={'primary'} size={'small'} sx={{ fontSize: 12 }}>
+                    Simpan
                   </Button>
                 )}
-                <Button type={'button'} onClick={() => handleClose(false)} color={'secondary'}>
-                  BATAL
+                <Button
+                  type={'button'}
+                  onClick={() => handleClose(false)}
+                  color={'secondary'}
+                  size={'small'}
+                  sx={{ fontSize: 12 }}
+                >
+                  Batal
                 </Button>
               </Box>
             </form>

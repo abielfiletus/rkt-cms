@@ -50,7 +50,7 @@ export default function DraftPerjanjianKerja(props: IProps) {
       {!isLoading && (
         <>
           <DialogTitle>
-            <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+            <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
               Draft Perjanjian Kerja
             </Typography>
           </DialogTitle>
@@ -60,13 +60,25 @@ export default function DraftPerjanjianKerja(props: IProps) {
           <DialogActions>
             <Grid spacing={2} justifyContent={'right'} marginTop={2} container>
               <Grid item>
-                <Button onClick={handleClickDownload} color={'primary'} variant={'contained'} disabled={isLoadingText}>
+                <Button
+                  onClick={handleClickDownload}
+                  color={'primary'}
+                  size={'small'}
+                  variant={'contained'}
+                  disabled={isLoadingText}
+                >
                   {isLoadingText && 'DOWNLOADING...'}
                   {!isLoadingText && 'DOWNLOAD'}
                 </Button>
               </Grid>
               <Grid item>
-                <Button type={'button'} variant={'contained'} onClick={() => handleClose(false)} color={'secondary'}>
+                <Button
+                  type={'button'}
+                  variant={'contained'}
+                  onClick={() => handleClose(false)}
+                  color={'secondary'}
+                  size={'small'}
+                >
                   BATAL
                 </Button>
               </Grid>

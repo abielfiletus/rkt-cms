@@ -55,16 +55,19 @@ const UserPage = () => {
               backgroundImage: `linear-gradient(98deg, ${theme.palette.customColors.primaryGradient}, ${theme.palette.primary.main} 150%)`,
               justifyContent: 'space-between',
               verticalAlign: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              boxShadow: 5,
+              height: 35
             }}
+            size={'small'}
             onClick={handleAddClick}
           >
             <Grid alignItems={'center'} container>
               <Grid mt={1.2} item>
-                <PlusCircleOutline sx={{ color: 'white' }} fontSize={isMobile ? 'small' : 'medium'} />
+                <PlusCircleOutline sx={{ color: 'white' }} fontSize={'small'} />
               </Grid>
               <Grid item ml={2}>
-                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 'inherit'}>
+                <Typography color={'white'} variant={'body2'} fontWeight={'bold'} fontSize={isMobile ? 10 : 11}>
                   Tambah User
                 </Typography>
               </Grid>
@@ -72,20 +75,20 @@ const UserPage = () => {
           </Button>
         )}
       </Box>
-      <Box mt={isMobile ? 5 : 10}>
+      <Box mt={3}>
         <TableStickyHeader
           columns={[
-            { id: 'id', label: 'ID User', fontSize: isMobile ? 10 : 13 },
-            { id: 'name', label: 'Name', fontSize: isMobile ? 10 : 13 },
-            { id: 'email', label: 'Email', fontSize: isMobile ? 10 : 13 },
-            { id: 'department.name', label: 'Bagian', fontSize: isMobile ? 10 : 13 },
-            { id: 'role.name', label: 'Akses', fontSize: isMobile ? 10 : 13 },
+            { id: 'id', label: 'ID User', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'name', label: 'Name', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'email', label: 'Email', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'department.name', label: 'Bagian', fontSize: isMobile ? 10 : 11.5 },
+            { id: 'role.name', label: 'Akses', fontSize: isMobile ? 10 : 11.5 },
             {
               id: 'action',
               label: 'Aksi',
               content: { edit: ability.can('update', 'user'), delete: ability.can('delete', 'user') },
               minWidth: 120,
-              iconSize: isMobile ? 'small' : 'inherit'
+              iconSize: 'small'
             }
           ]}
           url={'user'}
@@ -97,7 +100,7 @@ const UserPage = () => {
           setReFetch={setReFetchDT}
           initialized={initializedDT}
           setInitialized={setInitializedDT}
-          paginationFontSize={isMobile ? 12 : undefined}
+          paginationFontSize={11.5}
         />
       </Box>
       {showDetail && <UserModal data={data} type={'detail'} handleClose={() => setShowDetail(false)} />}

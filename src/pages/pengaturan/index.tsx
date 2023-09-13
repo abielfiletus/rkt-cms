@@ -63,12 +63,12 @@ const PengaturanPage = () => {
                   value='required'
                   label={item.name}
                   onChange={() => handleClickSlider(i)}
-                  control={<Switch size={isMobile ? 'small' : undefined} />}
+                  control={<Switch size={'small'} />}
                   checked={item.status}
                   disabled={item.isLoading || !hasPermission}
-                  sx={{ '& .MuiFormControlLabel-label': { fontSize: isMobile ? '10px !important' : 'inherit' } }}
+                  sx={{ '& .MuiFormControlLabel-label': { fontSize: isMobile ? '10px !important' : '11.5px !important' } }}
                 />
-                {item.isLoading && <CircularProgress size={20} />}
+                {item.isLoading && <CircularProgress size={12} />}
               </Box>
             ))}
           </Box>

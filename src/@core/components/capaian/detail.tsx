@@ -36,25 +36,25 @@ export default function DetailCapaian(props: IModalProp) {
   const CapaianCell = (data: Record<string, any>) => {
     return checkedTw.map(tw_index => (
       <Fragment key={tw_index}>
-        <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 'inherit' }}>
+        <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 11.5 }}>
           {data?.[`tw_${tw_index}`]}
         </TableCell>
-        <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 'inherit' }}>
+        <TableCell rowSpan={data.row_span} sx={{ fontSize: isMobile ? 10 : 11.5 }}>
           {data?.capaian?.[`capaian_${tw_index}`]}
         </TableCell>
         <TableCell rowSpan={data.row_span} valign={'top'}>
-          <Typography fontSize={isMobile ? 10 : 14} fontWeight={500} marginBottom={1}>
+          <Typography fontSize={isMobile ? 10 : 11.5} fontWeight={500} marginBottom={1}>
             Progress / Kegiatan :
           </Typography>
-          <Typography fontSize={isMobile ? 10 : 14}>{data?.capaian?.[`progress_${tw_index}`] || '-'}</Typography>
-          <Typography fontSize={isMobile ? 10 : 14} fontWeight={500} marginBottom={1} marginTop={4}>
+          <Typography fontSize={isMobile ? 10 : 11.5}>{data?.capaian?.[`progress_${tw_index}`] || '-'}</Typography>
+          <Typography fontSize={isMobile ? 10 : 11.5} fontWeight={500} marginBottom={1} marginTop={4}>
             Kendala :
           </Typography>
-          <Typography fontSize={isMobile ? 10 : 14}>{data?.capaian?.[`masalah_${tw_index}`] || '-'}</Typography>
-          <Typography fontSize={isMobile ? 10 : 14} fontWeight={500} marginBottom={1} marginTop={4}>
+          <Typography fontSize={isMobile ? 10 : 11.5}>{data?.capaian?.[`masalah_${tw_index}`] || '-'}</Typography>
+          <Typography fontSize={isMobile ? 10 : 11.5} fontWeight={500} marginBottom={1} marginTop={4}>
             Strategi / Tindak Lanjut :
           </Typography>
-          <Typography fontSize={isMobile ? 10 : 14}>{data?.capaian?.[`strategi_${tw_index}`] || '-'}</Typography>
+          <Typography fontSize={isMobile ? 10 : 11.5}>{data?.capaian?.[`strategi_${tw_index}`] || '-'}</Typography>
         </TableCell>
       </Fragment>
     ))
@@ -78,7 +78,9 @@ export default function DetailCapaian(props: IModalProp) {
           if (j > 0) {
             aksiTable.push(
               <TableRow>
-                <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>{aksi.rencana_aksi}</TableCell>
+                <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }}>
+                  {aksi.rencana_aksi}
+                </TableCell>
               </TableRow>
             )
           }
@@ -89,13 +91,13 @@ export default function DetailCapaian(props: IModalProp) {
         if (i > 0) {
           table.push(
             <TableRow>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanIku}>
                 {item?.iku?.name}
               </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }}>
                 {item?.iku_x_aksi?.[0]?.rencana_aksi}
               </TableCell>
-              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanIku}>
+              <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanIku}>
                 {data.target_perjanjian_kerja}
               </TableCell>
               {CapaianCell(item)}
@@ -111,17 +113,19 @@ export default function DetailCapaian(props: IModalProp) {
       const rowspanFirst = firstIku.iku_x_aksi.length
       table = [
         <TableRow key={'rkt-table'}>
-          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanRkt}>
             {data.id}
           </TableCell>
-          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanRkt}>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanRkt}>
             {data.name}
           </TableCell>
-          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanFirst}>
             {firstIku.iku.name}
           </TableCell>
-          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }}>{firstIku.iku_x_aksi[0].rencana_aksi}</TableCell>
-          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 } }} rowSpan={rowspanFirst}>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }}>
+            {firstIku.iku_x_aksi[0].rencana_aksi}
+          </TableCell>
+          <TableCell sx={{ [theme.breakpoints.only('xs')]: { fontSize: 10 }, fontSize: 11.5 }} rowSpan={rowspanFirst}>
             {data.target_perjanjian_kerja}
           </TableCell>
           {CapaianCell(firstIku)}
@@ -193,18 +197,13 @@ export default function DetailCapaian(props: IModalProp) {
           <DialogTitle>
             <Grid justifyContent={'space-between'} container>
               <Grid xs={10} sm={'auto'} item>
-                <Typography
-                  fontWeight={'bold'}
-                  fontSize={23}
-                  sx={{ [theme.breakpoints.only('xs')]: { fontSize: 18 } }}
-                  textTransform={'capitalize'}
-                >
+                <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
                   Pengukuran Indikator Kinerja Kegiatan
                 </Typography>
               </Grid>
               <Grid xs={2} sm={'auto'} item>
                 <IconButton onClick={() => handleClose(false)}>
-                  <Close />
+                  <Close sx={{ fontSize: 15 }} />
                 </IconButton>
               </Grid>
             </Grid>
@@ -213,7 +212,7 @@ export default function DetailCapaian(props: IModalProp) {
             <Box justifyContent={'center'} display={'flex'}>
               <FormControlLabel
                 label='Analisa Capaian TW 1'
-                control={<Checkbox name='form-layouts-alignment-checkbox' size={isMobile ? 'small' : 'medium'} />}
+                control={<Checkbox name='form-layouts-alignment-checkbox' size={'small'} />}
                 color={theme.palette.primary.main}
                 sx={{
                   '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 },
@@ -221,7 +220,7 @@ export default function DetailCapaian(props: IModalProp) {
                   '& .MuiTypography-root': {
                     color: 'black !important',
                     fontWeight: 500,
-                    fontSize: 12,
+                    fontSize: 11.5,
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
@@ -231,7 +230,7 @@ export default function DetailCapaian(props: IModalProp) {
               />
               <FormControlLabel
                 label='Analisa Capaian TW 2'
-                control={<Checkbox name='form-layouts-alignment-checkbox' size={isMobile ? 'small' : 'medium'} />}
+                control={<Checkbox name='form-layouts-alignment-checkbox' size={'small'} />}
                 color={theme.palette.primary.main}
                 sx={{
                   '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 },
@@ -239,7 +238,7 @@ export default function DetailCapaian(props: IModalProp) {
                   '& .MuiTypography-root': {
                     color: 'black !important',
                     fontWeight: 500,
-                    fontSize: 12,
+                    fontSize: 11.5,
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
@@ -249,7 +248,7 @@ export default function DetailCapaian(props: IModalProp) {
               />
               <FormControlLabel
                 label='Analisa Capaian TW 3'
-                control={<Checkbox name='form-layouts-alignment-checkbox' size={isMobile ? 'small' : 'medium'} />}
+                control={<Checkbox name='form-layouts-alignment-checkbox' size={'small'} />}
                 color={theme.palette.primary.main}
                 sx={{
                   '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 },
@@ -257,7 +256,7 @@ export default function DetailCapaian(props: IModalProp) {
                   '& .MuiTypography-root': {
                     color: 'black !important',
                     fontWeight: 500,
-                    fontSize: 12,
+                    fontSize: 11.5,
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
@@ -267,7 +266,7 @@ export default function DetailCapaian(props: IModalProp) {
               />
               <FormControlLabel
                 label='Analisa Capaian TW 4'
-                control={<Checkbox name='form-layouts-alignment-checkbox' size={isMobile ? 'small' : 'medium'} />}
+                control={<Checkbox name='form-layouts-alignment-checkbox' size={'small'} />}
                 color={theme.palette.primary.main}
                 sx={{
                   '& .MuiButtonBase-root': { paddingTop: 0, paddingBottom: 0 },
@@ -275,7 +274,7 @@ export default function DetailCapaian(props: IModalProp) {
                   '& .MuiTypography-root': {
                     color: 'black !important',
                     fontWeight: 500,
-                    fontSize: 12,
+                    fontSize: 11.5,
                     [theme.breakpoints.only('xs')]: { fontSize: 9 }
                   }
                 }}
@@ -305,31 +304,37 @@ export default function DetailCapaian(props: IModalProp) {
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell align={'center'} sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}>
+                    <TableCell
+                      align={'center'}
+                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }, fontSize: '11.5px !important' }}
+                    >
                       ID
                     </TableCell>
                     <TableCell
                       align={'center'}
                       width={300}
-                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}
+                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }, fontSize: '11.5px !important' }}
                     >
                       Nama Kegiatan
                     </TableCell>
                     <TableCell
                       align={'center'}
                       width={500}
-                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}
+                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }, fontSize: '11.5px !important' }}
                     >
                       Indikator Kinerja Kegiatan
                     </TableCell>
                     <TableCell
                       align={'center'}
                       width={500}
-                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}
+                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }, fontSize: '11.5px !important' }}
                     >
                       Aksi
                     </TableCell>
-                    <TableCell align={'center'} sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' } }}>
+                    <TableCell
+                      align={'center'}
+                      sx={{ [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }, fontSize: '11.5px !important' }}
+                    >
                       Target Perjanjian
                     </TableCell>
                     {checkedTw.map(item => (
@@ -337,7 +342,8 @@ export default function DetailCapaian(props: IModalProp) {
                         <TableCell
                           align={'center'}
                           sx={{
-                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' },
+                            fontSize: '11.5px !important'
                           }}
                         >
                           Target Diajukan TW{item}
@@ -345,7 +351,8 @@ export default function DetailCapaian(props: IModalProp) {
                         <TableCell
                           align={'center'}
                           sx={{
-                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' },
+                            fontSize: '11.5px !important'
                           }}
                         >
                           Capaian Target TW{item}
@@ -354,7 +361,8 @@ export default function DetailCapaian(props: IModalProp) {
                           align={'center'}
                           width={600}
                           sx={{
-                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' }
+                            [theme.breakpoints.only('xs')]: { fontSize: '10px !important' },
+                            fontSize: '11.5px !important'
                           }}
                         >
                           Analisa Progress Capaian TW{item}
@@ -369,12 +377,19 @@ export default function DetailCapaian(props: IModalProp) {
           </DialogContent>
           <DialogActions>
             <Box marginTop={5}>
-              <Button color={'secondary'} variant={'contained'} onClick={handleDownload} disabled={downloadLoading}>
+              <Button
+                color={'secondary'}
+                variant={'contained'}
+                onClick={handleDownload}
+                disabled={downloadLoading}
+                sx={{ textTransform: 'none' }}
+                size={'small'}
+              >
                 <Grid paddingTop={1} columnSpacing={2} container>
                   <Grid item>
-                    <FilePdfBox fontSize={isMobile ? 'small' : 'medium'} />
+                    <FilePdfBox fontSize={'small'} />
                   </Grid>
-                  <Grid fontSize={isMobile ? 10 : 'inherit'} item>
+                  <Grid fontSize={isMobile ? 10 : 12} item>
                     {downloadLoading ? 'Downloading...' : 'Download'}
                   </Grid>
                 </Grid>

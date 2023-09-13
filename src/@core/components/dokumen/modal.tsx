@@ -5,13 +5,13 @@ import { useMemo, useState } from 'react'
 import { IModalProp } from '../../../configs/modalConfig'
 import { apiPatch, apiPost } from '../../../util/api-fetch'
 import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import { AddDocumentSchema, EditDocumentSchema } from './dokumen.schema'
 import Button from '@mui/material/Button'
 import ErrorMessage from '../error-message'
 import FileInput from '../file-input'
+import CustomInputLabel from '../../../views/form-layouts/custom-input-label'
 
 export default function DocumentModal(props: IModalProp) {
   const { data, type, handleClose } = props
@@ -78,14 +78,14 @@ export default function DocumentModal(props: IModalProp) {
       fullWidth
     >
       <DialogTitle>
-        <Typography fontWeight={'bold'} fontSize={23} textTransform={'capitalize'}>
+        <Typography fontWeight={'bold'} fontSize={15} textTransform={'capitalize'}>
           {type} Data Dokumen Peraturan
         </Typography>
       </DialogTitle>
       <DialogContent>
         <form autoComplete='off' onSubmit={formik.handleSubmit} noValidate>
           <FormControl margin={'dense'} fullWidth>
-            <InputLabel id={'name'}>Nama Dokumen</InputLabel>
+            <CustomInputLabel id={'name'} label={'Nama Dokumen'} />
             <OutlinedInput
               label={'Nama Dokumen'}
               value={formik.values.name}
@@ -93,12 +93,15 @@ export default function DocumentModal(props: IModalProp) {
               error={formik.touched.name && Boolean(formik.errors.name)}
               id={'name'}
               name={'name'}
+              sx={{ fontSize: 11.5 }}
+              disabled={type === 'detail'}
+              size={'small'}
               fullWidth
             />
             {formik.touched.name && formik.errors.name && <ErrorMessage message={formik.errors.name as string} />}
           </FormControl>
           <FormControl margin={'dense'} fullWidth>
-            <InputLabel id={'name'}>Keterangan Dokumen</InputLabel>
+            <CustomInputLabel id={'desc'} label={'Keterangan Dokumen'} />
             <OutlinedInput
               label={'Keterangan Dokumen'}
               value={formik.values.description}
@@ -108,16 +111,19 @@ export default function DocumentModal(props: IModalProp) {
               name={'description'}
               minRows={2}
               inputProps={{ maxLength: 255 }}
+              sx={{ fontSize: 11.5 }}
+              disabled={type === 'detail'}
+              size={'small'}
               fullWidth
               multiline
             />
             {formik.touched.name && formik.errors.name && <ErrorMessage message={formik.errors.name as string} />}
           </FormControl>
           <Box marginTop={3} width={250} textAlign={'left'}>
-            <Typography fontWeight={'500'}>
+            <Typography fontWeight={'500'} fontSize={12}>
               Upload berkas pendukung <span style={{ color: theme.palette.error.main }}>*</span>
             </Typography>
-            <Typography variant={'caption'} fontStyle={'italic'}>
+            <Typography fontStyle={'italic'} fontSize={10.5} color={'error'}>
               {'*File dalam bentuk PDF < 1 MB'}
             </Typography>
             <FileInput
@@ -131,16 +137,18 @@ export default function DocumentModal(props: IModalProp) {
               paddingTopError={'7px'}
               sx={{ marginLeft: '0 !important' }}
               url={process.env.NEXT_PUBLIC_BE_URL + '/' + data?.file}
+              width={120}
+              height={120}
             />
           </Box>
           <Box textAlign={'right'}>
             {type !== 'detail' && (
-              <Button type={'submit'} color={'primary'}>
-                SIMPAN
+              <Button type={'submit'} color={'primary'} size={'small'} sx={{ fontSize: 12 }}>
+                Simpan
               </Button>
             )}
-            <Button type={'button'} onClick={() => handleClose(false)} color={'secondary'}>
-              BATAL
+            <Button type={'button'} onClick={() => handleClose(false)} color={'secondary'} size={'small'} sx={{ fontSize: 12 }}>
+              Batal
             </Button>
           </Box>
         </form>
