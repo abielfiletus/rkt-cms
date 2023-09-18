@@ -111,7 +111,13 @@ const AuthProvider = ({ children }: Props) => {
 
       let redirectURL = '/'
 
-      if (permissions?.data?.length) redirectURL = permissions?.data[0].subject
+      if (permissions?.data?.length) {
+        if (permissions?.data[0].subject === 'penyusunan-rkt' && permissions?.data[0].action.includes('approve')) {
+          redirectURL = 'verifikasi-rkt'
+        } else {
+          redirectURL = permissions?.data[0].subject
+        }
+      }
       if (returnUrl && returnUrl !== '/') redirectURL = returnUrl as string
 
       await router.replace(redirectURL as string)
