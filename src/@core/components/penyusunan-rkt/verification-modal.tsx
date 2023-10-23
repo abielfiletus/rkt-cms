@@ -102,7 +102,23 @@ export default function VerificationModal(props: IProps) {
             </>
           )}
 
-          {type === 'setujui' && <Typography>Apakah Anda yakin untuk menyetujui pengajuan ini ?</Typography>}
+          {type === 'setujui' && (
+            <>
+              <Typography>Apakah Anda yakin untuk menyetujui pengajuan ini ?</Typography>
+              <FormControl fullWidth>
+                <TextField
+                  name={'notes'}
+                  value={formik.values.notes}
+                  onChange={formik.handleChange}
+                  error={formik.touched.notes && Boolean(formik.errors.notes)}
+                  placeholder={'Keterangan setuju pengajuan'}
+                  rows={3}
+                  multiline
+                />
+                <ErrorMessage message={formik.errors.notes as string} />
+              </FormControl>
+            </>
+          )}
           <Grid justifyContent={'right'} columnSpacing={3} marginTop={7} container>
             <Grid item>
               {/* @ts-ignore */}
