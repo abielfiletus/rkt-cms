@@ -82,10 +82,8 @@ const TableStickyHeader = (props: IProps) => {
 
   useMemo(() => {
     if (!initialized || reFetch) {
-      let reqUrl = baseUrl
-      if (queryParams) reqUrl += '?' + new URLSearchParams(queryParams)
-
-      apiGet(reqUrl).then(res => {
+      setLoadingDT(true)
+      apiGet(baseUrl, { ...(queryParams || {}), page: page + 1, limit: rowsPerPage }).then(res => {
         setData(res?.data?.data)
         setCount(res?.data?.recordsFiltered)
         setLoadingDT(false)
@@ -98,11 +96,13 @@ const TableStickyHeader = (props: IProps) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
+    setReFetch(true)
   }
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
+    setReFetch(true)
   }
 
   const validateShowActionButton = (columnContent: boolean | ColumnActionValues | undefined, rowValues: Record<string, any>) => {

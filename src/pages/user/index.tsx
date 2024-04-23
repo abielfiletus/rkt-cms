@@ -92,7 +92,7 @@ const UserPage = () => {
             }
           ]}
           url={'user'}
-          queryParams={{ join: 'all' }}
+          queryParams={{ join: 'all', sort_dir: 'ASC', sort_field: 'name' }}
           handleRowClick={handleRowClick}
           handleEditClick={handleEditClick}
           handleDeleteClick={handleDeleteClick}
